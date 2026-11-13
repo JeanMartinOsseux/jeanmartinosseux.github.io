@@ -10,7 +10,7 @@
 <script>
 const sections=[["Illustrations","🖼️","01_ILLUS"],["Films","📺","02_FILMS"],["Musiques","💿","03_MUSIQUES"],["BD","📖","04_BD"],["Photos","📷","05_PHOTO"],["Liens","🌳","06_LIENS"],["Pro","🗂️","07_PRO"],["Textes","📝","08_TEXTE"],["Carnets","✏️","09_CARNETS_DE_CROQUIS"],["Zinzine Online","🐸","10_ZINZINE_ONLINE"]];
 const desktop=document.querySelector("#desktop"),win=document.querySelector("#window"),content=document.querySelector("#content");
-for(const [name,emoji,id] of sections){const b=document.createElement("button");b.className="shortcut";b.innerHTML='<span class="emoji">'+emoji+'</span>'+name;b.onclick=()=>{if(id==="01_ILLUS"){window.open("./illustrations.html","_blank")}else{openSection(name,id)}};desktop.append(b)}
+for(const [name,emoji,id] of sections){const b=document.createElement("button");b.className="shortcut";b.innerHTML='<span class="emoji">'+emoji+'</span>'+name;b.onclick=()=>{if(id==="01_ILLUS"){window.location.href="./illustrations.html"}else{openSection(name,id)}};desktop.append(b)}
 const artworks=["allin.jpg","bagarre  tout.jpg","bagarre all.jpg","BLEDcolo.jpg","casino.jpg","ecran.jpg","enfant seul.jpg","fegeff.png","illu insta.jpg","illuinsta.jpg","INSTA1.jpg","INSTA2.jpg","INSTA6.jpg","MAGICUS AND GUN1.jpg","MRSTEAKGREBIK.png","MRSTEAKGREBIK2.png","portrait alt.jpg","portugall.jpg","pose.jpg","RATNORM.jpg","sketch.jpg","tapisserie post insta.jpg","truc cool boutique.jpg"];
 let galleryIndex=0;
 function showGallery(){
@@ -27,7 +27,7 @@ function showGallery(){
  next.onclick=()=>{galleryIndex=(galleryIndex+1)%artworks.length;draw()};
  controls.append(prev,count,next);content.append(heading,room,controls,info);draw();
 }
-function openSection(name,id){document.querySelector("#windowtitle").textContent=name;content.replaceChildren();const h=document.createElement("h1");h.textContent=name;const p=document.createElement("div");p.className="notice";p.textContent="Section "+id+" — structure interactive initiale. Les décors, assets et liens du ZIP seront intégrés dans la prochaine étape.";content.append(h,p);if(id==="01_ILLUS")showGallery();win.classList.remove("hidden")}
+function openSection(name,id){document.querySelector("#windowtitle").textContent=name;content.replaceChildren();const h=document.createElement("h1");h.textContent=name;const p=document.createElement("div");p.className="notice";p.textContent="Section "+id+" — structure interactive initiale. Les décors, assets et liens du ZIP seront intégrés dans la prochaine étape.";content.append(h,p);win.classList.remove("hidden")}
 document.querySelector("#close").onclick=()=>win.classList.add("hidden");
 document.querySelector("#start").onclick=()=>openSection("Bienvenue","00_GLOBAL");
 let drag=false,dx=0,dy=0;const bar=document.querySelector("#titlebar");bar.addEventListener("pointerdown",e=>{if(e.target.closest("button"))return;drag=true;dx=e.clientX-win.offsetLeft;dy=e.clientY-win.offsetTop;bar.setPointerCapture(e.pointerId)});bar.addEventListener("pointermove",e=>{if(!drag)return;win.style.left=Math.max(0,Math.min(innerWidth-win.offsetWidth,e.clientX-dx))+"px";win.style.top=Math.max(0,Math.min(innerHeight-win.offsetHeight-36,e.clientY-dy))+"px"});bar.addEventListener("pointerup",()=>drag=false);
