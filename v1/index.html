@@ -34,15 +34,15 @@ function openLinks(){
  const stage=document.createElement("div");stage.style.cssText="position:relative;width:100%;max-width:1100px;aspect-ratio:16/9;flex-shrink:0;background:#050b10";
  const tree=document.createElement("img");tree.src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/liens/LIENSARBRE.png";tree.alt="Arbre des liens";tree.style.cssText="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none";stage.append(tree);
  const links=[
- ["SoundCloud DJ JeanMa","https://soundcloud.com/djjeanma-75865563",27,37],
- ["SoundCloud PDM","https://soundcloud.com/prisonniers-du-micro",39,21],
- ["YouTube Grebik","https://www.youtube.com/@grebik_jmo_prod",52,14],
- ["YouTube PDM","https://www.youtube.com/@PrisonniersduMicro",65,22],
- ["Spotify DJ JeanMa","https://open.spotify.com/artist/1ewcTedZYHOdOnjtPXDIC6?si=NO1I2343RNuvSbZsRHv6eg",73,38],
- ["Instagram Grebik","https://www.instagram.com/grebikovitch/",29,55],
- ["Instagram PDM","https://www.instagram.com/prisonniers_du_micro/",44,44],
- ["Instagram On se déréalise","https://www.instagram.com/onsederealise/",61,48],
- ["Zinzine Online","https://fanzinzine.neocities.org/",52,34]
+ ["SoundCloud DJ JeanMa","https://soundcloud.com/djjeanma-75865563",34,38],
+ ["SoundCloud PDM","https://soundcloud.com/prisonniers-du-micro",42,27],
+ ["YouTube Grebik","https://www.youtube.com/@grebik_jmo_prod",53,21],
+ ["YouTube PDM","https://www.youtube.com/@PrisonniersduMicro",62,28],
+ ["Spotify DJ JeanMa","https://open.spotify.com/artist/1ewcTedZYHOdOnjtPXDIC6?si=NO1I2343RNuvSbZsRHv6eg",68,40],
+ ["Instagram Grebik","https://www.instagram.com/grebikovitch/",36,53],
+ ["Instagram PDM","https://www.instagram.com/prisonniers_du_micro/",46,43],
+ ["Instagram On se déréalise","https://www.instagram.com/onsederealise/",60,48],
+ ["Zinzine Online","https://fanzinzine.neocities.org/",53,35]
  ];
  for(const [name,url,x,y] of links){const a=document.createElement("a");a.href=url;a.target="_blank";a.rel="noopener noreferrer";a.title=name;a.style.cssText="position:absolute;left:"+x+"%;top:"+y+"%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;color:#fff;font:clamp(9px,1.05vw,13px) Tahoma,sans-serif;text-shadow:0 2px 4px #000,0 0 4px #000;z-index:2;max-width:16%;text-align:center";const fruit=document.createElement("span");fruit.textContent="🍒";fruit.style.cssText="font-size:clamp(22px,3.2vw,39px);filter:drop-shadow(1px 3px 2px #0009);transition:transform .15s";const label=document.createElement("span");label.textContent=name;label.style.cssText="background:#07151bc9;border:1px solid #a6ebdf88;border-radius:5px;padding:3px 5px;line-height:1.2";a.addEventListener("mouseenter",()=>fruit.style.transform="scale(1.25)");a.addEventListener("mouseleave",()=>fruit.style.transform="");a.append(fruit,label);stage.append(a)}
  content.append(stage);win.classList.remove("hidden");
