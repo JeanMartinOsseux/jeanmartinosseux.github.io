@@ -6,6 +6,9 @@
 #eightLeft{left:0;top:0;width:50%}
 #eightRight{left:50%;top:0;width:50%}
 .reader:not(.book-eight) .page-spread,.reader.book-eight .page-spread{left:8%;top:3%;width:84%;height:94%}
+.page-spread,.reader:not(.book-eight) .page-spread{left:0!important;top:0!important;width:100%!important;height:100%!important;overflow:visible!important;isolation:isolate!important}
+#newSpread{position:absolute;inset:0;width:100%!important;height:100%!important;object-fit:fill;mix-blend-mode:multiply;opacity:1;transform:none!important;clip-path:none!important}
+#eightLeft,#eightRight{mix-blend-mode:multiply;opacity:1}
 </style></head><body><a class="back" href="./index.html">← Bureau</a><section class="choice" id="choice"><div class="choice-hotspots" id="hotspots" aria-label="Choisir une BD"></div><div class="choice-actions"><button id="openPdf">Choisir une BD (1 à 8)</button></div></section><section class="reader" id="reader"><div class="book"><img class="book-decoration" src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/BD/LIVRE.png" alt=""><div class="page-spread"><div class="page" id="leftPage"><img id="left" alt="Page de gauche"><canvas id="leftCanvas"></canvas></div><div class="page" id="rightPage"><img id="right" alt="Page de droite"><canvas id="rightCanvas"></canvas></div><div class="page-turn" id="turn"><img id="turnImage" alt=""></div></div></div><div class="toolbar"><button id="prev">◀ Précédent</button><span id="count"></span><button id="next">Suivant ▶</button><button id="return">Choix</button></div><div class="help">Flèches du clavier pour tourner les pages</div></section><section class="pdfs" id="pdfs"><div class="pdf-grid" id="pdfGrid"></div><button id="pdfBack">Retour au choix</button></section><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script><script>
 const base="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/BD/";
 const sets={
@@ -32,7 +35,7 @@ function draw(){
  eightLeft.style.display=eightRight.style.display=isEight?'block':'none';
  if(isEight){eightLeft.src=files[spread*2];eightRight.src=files[spread*2+1]}
  else newSpread.src=files[spread];
- count.textContent=(spread*2+1)+'–'+(spread*2+2)+' / '+(total*2)+' · BD '+book;
+ count.textContent=isEight?((spread*2+1)+'–'+(spread*2+2)+' / 24 · BD 8'):((spread+1)+' / '+total+' · BD '+book);
 }
 function openBook(n){book=n;spread=0;mode('reader');draw()}
 function move(dir){const max=(book===8?12:sets[book].length)-1;spread=Math.max(0,Math.min(max,spread+dir));draw()}
