@@ -25,9 +25,8 @@ function draw(){
  button.append(img,frame);wall.append(button);
  const layout=()=>{
   if(!img.naturalWidth||!frame.naturalWidth)return;
-  const fallback=[{x:.105,y:.11,w:.79,h:.78},{x:.12,y:.13,w:.76,h:.74},{x:.145,y:.145,w:.71,h:.71}][model];
-  let bounds;try{bounds=openingBounds(frame)}catch(e){bounds=null}
-  bounds=bounds||fallback;
+  const fallback=[{x:.09,y:.165,w:.82,h:.67},{x:.115,y:.17,w:.77,h:.66},{x:.12,y:.16,w:.76,h:.68}][model];
+  const bounds=fallback;
   // Image fills the opening exactly. Its aspect ratio is preserved by sizing the outer frame.
   const imageRatio=img.naturalWidth/img.naturalHeight;
   const outerRatio=imageRatio*bounds.h/bounds.w;
@@ -36,7 +35,7 @@ function draw(){
   button.style.width=width+'px';button.style.height=height+'px';
   img.style.left=(bounds.x*100)+'%';img.style.top=(bounds.y*100)+'%';
   img.style.width=(bounds.w*100)+'%';img.style.height=(bounds.h*100)+'%';
-  img.style.objectFit='fill';
+  img.style.objectFit='fill';img.style.clipPath='inset(0)';
  };
  img.onload=layout;frame.onload=layout;
  button.addEventListener('click',()=>{index=(index+1)%artworks.length;draw()});
