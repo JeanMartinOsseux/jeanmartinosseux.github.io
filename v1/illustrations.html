@@ -42,9 +42,10 @@ function draw(){
   canvas.width=Math.round(fw);canvas.height=Math.round(fh);
   const ctx=canvas.getContext('2d');
   // Artwork is drawn ONLY in the frame opening, never outside its edges.
+  ctx.drawImage(frame,0,0,fw,fh);
+  // Draw artwork last, clipped precisely to the measured opening so the frame cannot cover its edges.
   ctx.save();ctx.beginPath();ctx.rect(bounds.x,bounds.y,bounds.w,bounds.h);ctx.clip();
   ctx.drawImage(art,bounds.x,bounds.y,bounds.w,bounds.h);ctx.restore();
-  ctx.drawImage(frame,0,0,fw,fh);
  };
  art.onload=render;frame.onload=render;
  art.src='./assets/illustrations/ILLUS/'+encodeURIComponent(name);
