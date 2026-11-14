@@ -15,6 +15,28 @@ const count=document.getElementById('count'),spreadLayer=document.querySelector(
 spreadLayer.innerHTML='<img id="newSpread" alt="Double page de bande dessinée"><img id="eightLeft" alt="Page gauche"><img id="eightRight" alt="Page droite">';
 const newSpread=document.getElementById('newSpread'),eightLeft=document.getElementById('eightLeft'),eightRight=document.getElementById('eightRight');
 let book=1,spread=0;
+const inkCache=new Map();
+function transparentInk(url){
+ if(inkCache.has(url))return inkCache.get(url);
+ const promise=new Promise(resolve=>{
+  const img=new Image();img.crossOrigin='anonymous';
+  img.onload=()=>{
+   try{
+    const canvas=document.createElement('canvas');canvas.width=img.naturalWidth;canvas.height=img.naturalHeight;
+    const ctx=canvas.getContext('2d',{willReadFrequently:true});ctx.drawImage(img,0,0);
+    const pixels=ctx.getImageData(0,0,canvas.width,canvas.height),data=pixels.data;
+    for(let i=0;i<data.length;i+=4){
+     const brightness=Math.min(data[i],data[i+1],data[i+2]);
+     data[i]=0;data[i+1]=0;data[i+2]=0;
+     data[i+3]=Math.round(data[i+3]*(255-brightness)/255);
+    }
+    ctx.putImageData(pixels,0,0);resolve(canvas.toDataURL('image/png'));
+   }catch(e){resolve(url)}
+  };
+  img.onerror=()=>resolve(url);img.src=url;
+ });
+ inkCache.set(url,promise);return promise;
+}
 function mode(name){choice.style.display=name==='choice'?'block':'none';reader.style.display=name==='reader'?'flex':'none';pdfs.style.display=name==='pdfs'?'flex':'none'}
 function draw(){
  const files=sets[book],isEight=book===8,total=Math.ceil(files.length/2);
@@ -23,7 +45,15 @@ function draw(){
  newSpread.style.display='none';
  eightLeft.style.display='block';
  eightRight.style.display=files[spread*2+1]?'block':'none';
- eightLeft.src=files[spread*2];if(files[spread*2+1])eightRight.src=files[spread*2+1];
+ const leftUrl=files[spread*2],rightUrl=files[spread*2+1];
+ if(isEight){
+  const currentBook=book,currentSpread=spread;
+  eightLeft.removeAttribute('src');eightRight.removeAttribute('src');
+  transparentInk(leftUrl).then(src=>{if(book===currentBook&&spread===currentSpread)eightLeft.src=src});
+  if(rightUrl)transparentInk(rightUrl).then(src=>{if(book===currentBook&&spread===currentSpread)eightRight.src=src});
+ }else{
+  eightLeft.src=leftUrl;if(rightUrl)eightRight.src=rightUrl;
+ }
  count.textContent=(spread*2+1)+'–'+Math.min(spread*2+2,files.length)+' / '+files.length+' · BD '+book;
 }
 function openBook(n){book=n;spread=0;mode('reader');draw()}
