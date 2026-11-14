@@ -25,7 +25,7 @@ function draw(){
  button.append(img,frame);wall.append(button);
  const layout=()=>{
   if(!img.naturalWidth||!frame.naturalWidth)return;
-  const fallback=[{x:.09,y:.165,w:.82,h:.67},{x:.115,y:.17,w:.77,h:.66},{x:.12,y:.16,w:.76,h:.68}][model];
+  const fallback=[{x:.125,y:.225,w:.75,h:.55},{x:.135,y:.225,w:.73,h:.55},{x:.145,y:.22,w:.71,h:.56}][model];
   const bounds=fallback;
   // Image fills the opening exactly. Its aspect ratio is preserved by sizing the outer frame.
   const imageRatio=img.naturalWidth/img.naturalHeight;
