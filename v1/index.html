@@ -10,7 +10,7 @@
 <script>
 const sections=[["Illustrations","🖼️","01_ILLUS"],["Films","📺","02_FILMS"],["Musiques","💿","03_MUSIQUES"],["BD","📖","04_BD"],["Photos","📷","05_PHOTO"],["Liens","🌳","06_LIENS"],["Pro","🗂️","07_PRO"],["Textes","📝","08_TEXTE"],["Carnets","✏️","09_CARNETS_DE_CROQUIS"],["Zinzine Online","🐸","10_ZINZINE_ONLINE"]];
 const desktop=document.querySelector("#desktop"),win=document.querySelector("#window"),content=document.querySelector("#content");
-for(const [name,emoji,id] of sections){const b=document.createElement("button");b.className="shortcut";b.innerHTML='<span class="emoji">'+emoji+'</span>'+name;b.onclick=()=>{if(id==="01_ILLUS"){window.location.href="./illustrations.html"}else if(id==="03_MUSIQUES"){window.location.href="./musiques.html"}else if(id==="02_FILMS"){window.location.href="./cinema.html"}else if(id==="05_PHOTO"){window.location.href="./photos.html"}else if(id==="04_BD"){window.location.href="./bd.html"}else if(id==="10_ZINZINE_ONLINE"){openZinzine()}else{openSection(name,id)}};desktop.append(b)}
+for(const [name,emoji,id] of sections){const b=document.createElement("button");b.className="shortcut";b.innerHTML='<span class="emoji">'+emoji+'</span>'+name;b.onclick=()=>{if(id==="01_ILLUS"){window.location.href="./illustrations.html"}else if(id==="03_MUSIQUES"){window.location.href="./musiques.html"}else if(id==="02_FILMS"){window.location.href="./cinema.html"}else if(id==="05_PHOTO"){window.location.href="./photos.html"}else if(id==="04_BD"){window.location.href="./bd.html"}else if(id==="10_ZINZINE_ONLINE"){openZinzine()}else if(id==="06_LIENS"){openLinks()}else{openSection(name,id)}};desktop.append(b)}
 const artworks=["allin.jpg","bagarre  tout.jpg","bagarre all.jpg","BLEDcolo.jpg","casino.jpg","ecran.jpg","enfant seul.jpg","fegeff.png","illu insta.jpg","illuinsta.jpg","INSTA1.jpg","INSTA2.jpg","INSTA6.jpg","MAGICUS AND GUN1.jpg","MRSTEAKGREBIK.png","MRSTEAKGREBIK2.png","portrait alt.jpg","portugall.jpg","pose.jpg","RATNORM.jpg","sketch.jpg","tapisserie post insta.jpg","truc cool boutique.jpg"];
 let galleryIndex=0;
 function showGallery(){
@@ -26,6 +26,26 @@ function showGallery(){
  prev.onclick=()=>{galleryIndex=(galleryIndex-1+artworks.length)%artworks.length;draw()};
  next.onclick=()=>{galleryIndex=(galleryIndex+1)%artworks.length;draw()};
  controls.append(prev,count,next);content.append(heading,room,controls,info);draw();
+}
+function openLinks(){
+ document.querySelector("#windowtitle").textContent="Liens — Arbre des connexions";
+ content.replaceChildren();content.style.cssText="padding:0;overflow:auto;flex:1;background:#050b10;display:flex;align-items:center;justify-content:center";
+ win.style.width="min(1120px,94vw)";win.style.height="min(740px,88vh)";win.style.left="max(0px,calc(50% - min(560px,47vw)))";win.style.top="5%";
+ const stage=document.createElement("div");stage.style.cssText="position:relative;width:100%;max-width:1100px;aspect-ratio:16/9;flex-shrink:0;background:#050b10";
+ const tree=document.createElement("img");tree.src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/liens/LIENSARBRE.png";tree.alt="Arbre des liens";tree.style.cssText="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none";stage.append(tree);
+ const links=[
+ ["SoundCloud DJ JeanMa","https://soundcloud.com/djjeanma-75865563",27,37],
+ ["SoundCloud PDM","https://soundcloud.com/prisonniers-du-micro",39,21],
+ ["YouTube Grebik","https://www.youtube.com/@grebik_jmo_prod",52,14],
+ ["YouTube PDM","https://www.youtube.com/@PrisonniersduMicro",65,22],
+ ["Spotify DJ JeanMa","https://open.spotify.com/artist/1ewcTedZYHOdOnjtPXDIC6?si=NO1I2343RNuvSbZsRHv6eg",73,38],
+ ["Instagram Grebik","https://www.instagram.com/grebikovitch/",29,55],
+ ["Instagram PDM","https://www.instagram.com/prisonniers_du_micro/",44,44],
+ ["Instagram On se déréalise","https://www.instagram.com/onsederealise/",61,48],
+ ["Zinzine Online","https://fanzinzine.neocities.org/",52,34]
+ ];
+ for(const [name,url,x,y] of links){const a=document.createElement("a");a.href=url;a.target="_blank";a.rel="noopener noreferrer";a.title=name;a.style.cssText="position:absolute;left:"+x+"%;top:"+y+"%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;color:#fff;font:clamp(9px,1.05vw,13px) Tahoma,sans-serif;text-shadow:0 2px 4px #000,0 0 4px #000;z-index:2;max-width:16%;text-align:center";const fruit=document.createElement("span");fruit.textContent="🍒";fruit.style.cssText="font-size:clamp(22px,3.2vw,39px);filter:drop-shadow(1px 3px 2px #0009);transition:transform .15s";const label=document.createElement("span");label.textContent=name;label.style.cssText="background:#07151bc9;border:1px solid #a6ebdf88;border-radius:5px;padding:3px 5px;line-height:1.2";a.addEventListener("mouseenter",()=>fruit.style.transform="scale(1.25)");a.addEventListener("mouseleave",()=>fruit.style.transform="");a.append(fruit,label);stage.append(a)}
+ content.append(stage);win.classList.remove("hidden");
 }
 function openZinzine(){document.querySelector("#windowtitle").textContent="Zinzine Online";content.replaceChildren();content.style.background="#fff";content.style.display="flex";content.style.alignItems="center";content.style.justifyContent="center";const link=document.createElement("a");link.href="https://fanzinzine.neocities.org/";link.target="_blank";link.rel="noopener noreferrer";link.title="Ouvrir Zinzine Online";const img=document.createElement("img");img.src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/zinzine/IMG.png";img.alt="Zinzine Online";img.style.cssText="display:block;width:min(100%,500px);height:auto;cursor:pointer";link.append(img);content.append(link);win.style.width="min(620px,85vw)";win.style.height="min(390px,65vh)";win.style.left="max(0px,calc(50% - 310px))";win.style.top="15%";win.classList.remove("hidden")}
 function openSection(name,id){content.style.background="";content.style.display="";content.style.alignItems="";content.style.justifyContent="";document.querySelector("#windowtitle").textContent=name;content.replaceChildren();const h=document.createElement("h1");h.textContent=name;const p=document.createElement("div");p.className="notice";p.textContent="Section "+id+" — structure interactive initiale. Les décors, assets et liens du ZIP seront intégrés dans la prochaine étape.";content.append(h,p);win.classList.remove("hidden")}
