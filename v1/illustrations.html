@@ -1,44 +1,55 @@
 <!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Illustrations — Jean Martin Osseux</title><style>
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Tahoma,Verdana,sans-serif}body{background:#242321 url('./assets/illustrations/ILLUS_FOND.png') center center / cover no-repeat fixed;color:#fff}.museum{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:65px 32px 90px}.wall{display:flex;align-items:center;justify-content:center;gap:0;width:min(1100px,95vw)}.painting{appearance:none;position:relative;display:block;flex:none;width:min(86vw,980px);height:min(78vh,780px);border:0;background:transparent;padding:0;cursor:pointer;filter:drop-shadow(3px 7px 8px #0009);transition:transform .2s}.painting:hover{transform:scale(1.035)}.painting .artwork{position:absolute;left:var(--inset-x,12%);top:var(--inset-y,12%);width:calc(100% - 2 * var(--inset-x,12%));height:calc(100% - 2 * var(--inset-y,12%));object-fit:contain;background:transparent}.painting .frame{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none}.controls{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:20px;background:#161616d9;padding:10px 16px;border-radius:8px;white-space:nowrap}.controls button,.home{font:inherit;background:#f1eee5;border:1px solid #999;border-radius:4px;padding:8px 12px;cursor:pointer;color:#111}.home{position:fixed;top:16px;left:16px;text-decoration:none;background:#161616d9;color:#fff;border-color:#aaa8}.count{min-width:60px;text-align:center}@media(max-width:650px){.museum{padding:70px 12px 100px}.wall{gap:0}.painting{max-width:92vw;max-height:72vh}.controls{gap:9px;padding:8px}.controls button{padding:7px}}</style></head><body><a class="home" href="./index.html">← Bureau</a><main class="museum"><div class="wall" id="wall" aria-label="Œuvres accrochées au mur"></div></main><nav class="controls" aria-label="Navigation des illustrations"><button id="prev">← Précédent</button><span id="count" class="count"></span><button id="next">Suivant →</button></nav><script>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Tahoma,Verdana,sans-serif}body{background:#242321 url('./assets/illustrations/ILLUS_FOND.png') center center / cover no-repeat fixed;color:#fff}.museum{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:65px 32px 90px}.wall{display:flex;align-items:center;justify-content:center;gap:0;width:min(1100px,95vw)}.painting{appearance:none;position:relative;display:block;flex:none;width:min(86vw,980px);height:min(78vh,780px);border:0;background:transparent;padding:0;cursor:pointer;filter:drop-shadow(3px 7px 8px #0009);transition:transform .2s}.painting:hover{transform:scale(1.035)}.painting .artwork{position:absolute;left:var(--inset-x,12%);top:var(--inset-y,12%);width:calc(100% - 2 * var(--inset-x,12%));height:calc(100% - 2 * var(--inset-y,12%));object-fit:contain;background:transparent}.painting .frame{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none}.controls{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:20px;background:#161616d9;padding:10px 16px;border-radius:8px;white-space:nowrap}.controls button,.home{font:inherit;background:#f1eee5;border:1px solid #999;border-radius:4px;padding:8px 12px;cursor:pointer;color:#111}.home{position:fixed;top:16px;left:16px;text-decoration:none;background:#161616d9;color:#fff;border-color:#aaa8}.count{min-width:60px;text-align:center}@media(max-width:650px){.museum{padding:70px 12px 100px}.wall{gap:0}.painting{max-width:92vw;max-height:72vh}.controls{gap:9px;padding:8px}.controls button{padding:7px}}.painting .composite{display:block;width:100%;height:100%;object-fit:fill}</style></head><body><a class="home" href="./index.html">← Bureau</a><main class="museum"><div class="wall" id="wall" aria-label="Œuvres accrochées au mur"></div></main><nav class="controls" aria-label="Navigation des illustrations"><button id="prev">← Précédent</button><span id="count" class="count"></span><button id="next">Suivant →</button></nav><script>
 const artworks=["allin.jpg","bagarre  tout.jpg","bagarre all.jpg","BLEDcolo.jpg","casino.jpg","ecran.jpg","enfant seul.jpg","fegeff.png","illu insta.jpg","illuinsta.jpg","INSTA1.jpg","INSTA2.jpg","INSTA6.jpg","MAGICUS AND GUN1.jpg","MRSTEAKGREBIK.png","MRSTEAKGREBIK2.png","portrait alt.jpg","portugall.jpg","pose.jpg","RATNORM.jpg","sketch.jpg","tapisserie post insta.jpg","truc cool boutique.jpg"];let index=0;const wall=document.getElementById('wall'),count=document.getElementById('count');
-function openingBounds(frame){
- const canvas=document.createElement('canvas');canvas.width=frame.naturalWidth;canvas.height=frame.naturalHeight;
- const ctx=canvas.getContext('2d',{willReadFrequently:true});ctx.drawImage(frame,0,0);
- const w=canvas.width,h=canvas.height,pixels=ctx.getImageData(0,0,w,h).data;
- const alpha=(x,y)=>pixels[(y*w+x)*4+3];
+function measureOpening(frame,model){
+ const c=document.createElement('canvas');c.width=frame.naturalWidth;c.height=frame.naturalHeight;
+ const context=c.getContext('2d',{willReadFrequently:true});context.drawImage(frame,0,0);
+ const {data}=context.getImageData(0,0,c.width,c.height),w=c.width,h=c.height;
+ const transparent=(x,y)=>data[(y*w+x)*4+3]<18;
  const cx=Math.floor(w/2),cy=Math.floor(h/2);
- if(alpha(cx,cy)>25)return null;
- let left=cx,right=cx,top=cy,bottom=cy;
- while(left>0&&alpha(left-1,cy)<=25)left--;
- while(right<w-1&&alpha(right+1,cy)<=25)right++;
- while(top>0&&alpha(cx,top-1)<=25)top--;
- while(bottom<h-1&&alpha(cx,bottom+1)<=25)bottom++;
- if(right-left<w*.25||bottom-top<h*.25)return null;
- return {x:left/w,y:top/h,w:(right-left+1)/w,h:(bottom-top+1)/h};
+ if(!transparent(cx,cy))return null;
+ let l=cx,r=cx,t=cy,b=cy;
+ while(l>0&&transparent(l-1,cy))l--;
+ while(r<w-1&&transparent(r+1,cy))r++;
+ while(t>0&&transparent(cx,t-1))t--;
+ while(b<h-1&&transparent(cx,b+1))b++;
+ if(r-l<w*.35||b-t<h*.35)return null;
+ // Take the transparent central rectangle; leave one pixel clear of ornamentation.
+ return {x:l+1,y:t+1,w:r-l-1,h:b-t-1};
 }
 function draw(){
  wall.replaceChildren();
  const name=artworks[index],model=index%3;
- const button=document.createElement('button');button.className='painting';button.title='Illustration suivante';button.setAttribute('aria-label','Illustration : '+name);
- const img=document.createElement('img');img.className='artwork';img.src='./assets/illustrations/ILLUS/'+encodeURIComponent(name);img.alt=name;
- const frame=document.createElement('img');frame.className='frame';frame.src='./assets/illustrations/CADRE'+(model+1)+'.png';frame.alt='';
- button.append(img,frame);wall.append(button);
- const layout=()=>{
-  if(!img.naturalWidth||!frame.naturalWidth)return;
-  const fallback=[{x:.125,y:.225,w:.75,h:.55},{x:.135,y:.225,w:.73,h:.55},{x:.145,y:.22,w:.71,h:.56}][model];
-  const bounds=fallback;
-  // Image fills the opening exactly. Its aspect ratio is preserved by sizing the outer frame.
-  const imageRatio=img.naturalWidth/img.naturalHeight;
-  const outerRatio=imageRatio*bounds.h/bounds.w;
-  const maxW=Math.min(window.innerWidth*.96,1400),maxH=Math.min(window.innerHeight*.89,1050);
-  const width=Math.min(maxW,maxH*outerRatio),height=width/outerRatio;
+ const button=document.createElement('button');button.className='painting';
+ button.title='Illustration suivante';button.setAttribute('aria-label','Illustration : '+name);
+ const canvas=document.createElement('canvas');canvas.className='composite';
+ button.append(canvas);wall.append(button);
+ const art=new Image(),frame=new Image();let loaded=0;
+ const render=()=>{
+  if(++loaded!==2)return;
+  const fw=frame.naturalWidth,fh=frame.naturalHeight;
+  let bounds;
+  try{bounds=measureOpening(frame,model)}catch(e){bounds=null}
+  if(!bounds){
+   const presets=[{x:.125,y:.225,w:.75,h:.55},{x:.135,y:.225,w:.73,h:.55},{x:.145,y:.22,w:.71,h:.56}];
+   const p=presets[model];bounds={x:p.x*fw,y:p.y*fh,w:p.w*fw,h:p.h*fh};
+  }
+  // Scale frame's outer rectangle to make its opening match the original art ratio.
+  const ratio=(art.naturalWidth/art.naturalHeight)*(bounds.h/bounds.w);
+  const maxW=Math.min(innerWidth*.96,1400),maxH=Math.min(innerHeight*.86,1050);
+  const width=Math.min(maxW,maxH*ratio),height=width/ratio;
   button.style.width=width+'px';button.style.height=height+'px';
-  img.style.left=(bounds.x*100)+'%';img.style.top=(bounds.y*100)+'%';
-  img.style.width=(bounds.w*100)+'%';img.style.height=(bounds.h*100)+'%';
-  img.style.objectFit='fill';img.style.clipPath='inset(0)';
+  canvas.width=Math.round(fw);canvas.height=Math.round(fh);
+  const ctx=canvas.getContext('2d');
+  // Artwork is drawn ONLY in the frame opening, never outside its edges.
+  ctx.save();ctx.beginPath();ctx.rect(bounds.x,bounds.y,bounds.w,bounds.h);ctx.clip();
+  ctx.drawImage(art,bounds.x,bounds.y,bounds.w,bounds.h);ctx.restore();
+  ctx.drawImage(frame,0,0,fw,fh);
  };
- img.onload=layout;frame.onload=layout;
- button.addEventListener('click',()=>{index=(index+1)%artworks.length;draw()});
+ art.onload=render;frame.onload=render;
+ art.src='./assets/illustrations/ILLUS/'+encodeURIComponent(name);
+ frame.src='./assets/illustrations/CADRE'+(model+1)+'.png';
+ button.onclick=()=>{index=(index+1)%artworks.length;draw()};
  count.textContent=(index+1)+' / '+artworks.length;
 }
 document.getElementById('prev').onclick=()=>{index=(index-1+artworks.length)%artworks.length;draw()};document.getElementById('next').onclick=()=>{index=(index+1)%artworks.length;draw()};document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')document.getElementById('next').click();if(e.key==='ArrowLeft')document.getElementById('prev').click()});draw();
