@@ -9,6 +9,9 @@
 .page-spread,.reader:not(.book-eight) .page-spread{left:0!important;top:0!important;width:100%!important;height:100%!important;overflow:visible!important;isolation:isolate!important}
 #newSpread{position:absolute;inset:0;width:100%!important;height:100%!important;object-fit:fill;mix-blend-mode:multiply;opacity:1;transform:none!important;clip-path:none!important}
 #eightLeft,#eightRight{mix-blend-mode:multiply;opacity:1}
+.book{isolation:auto}.page-spread,.reader:not(.book-eight) .page-spread,.reader.book-eight .page-spread{left:8%!important;top:5%!important;width:84%!important;height:89%!important;display:flex!important;overflow:visible!important;isolation:auto!important;gap:0!important;pointer-events:none}
+.page-spread>img,#newSpread,#eightLeft,#eightRight{position:relative!important;left:auto!important;top:auto!important;inset:auto!important;width:50%!important;height:100%!important;flex:0 0 50%;max-width:50%!important;object-fit:contain!important;mix-blend-mode:multiply!important;opacity:1!important;transform:none!important;clip-path:none!important;background:transparent!important}
+.book-decoration{transform:scale(1.72,1.55)}
 </style></head><body><a class="back" href="./index.html">← Bureau</a><section class="choice" id="choice"><div class="choice-hotspots" id="hotspots" aria-label="Choisir une BD"></div><div class="choice-actions"><button id="openPdf">Choisir une BD (1 à 8)</button></div></section><section class="reader" id="reader"><div class="book"><img class="book-decoration" src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/BD/LIVRE.png" alt=""><div class="page-spread"><div class="page" id="leftPage"><img id="left" alt="Page de gauche"><canvas id="leftCanvas"></canvas></div><div class="page" id="rightPage"><img id="right" alt="Page de droite"><canvas id="rightCanvas"></canvas></div><div class="page-turn" id="turn"><img id="turnImage" alt=""></div></div></div><div class="toolbar"><button id="prev">◀ Précédent</button><span id="count"></span><button id="next">Suivant ▶</button><button id="return">Choix</button></div><div class="help">Flèches du clavier pour tourner les pages</div></section><section class="pdfs" id="pdfs"><div class="pdf-grid" id="pdfGrid"></div><button id="pdfBack">Retour au choix</button></section><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script><script>
 const base="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/BD/";
 const sets={
@@ -28,17 +31,18 @@ const newSpread=document.getElementById('newSpread'),eightLeft=document.getEleme
 let book=1,spread=0;
 function mode(name){choice.style.display=name==='choice'?'block':'none';reader.style.display=name==='reader'?'flex':'none';pdfs.style.display=name==='pdfs'?'flex':'none'}
 function draw(){
- const files=sets[book],isEight=book===8,total=isEight?12:files.length;
+ const files=sets[book],isEight=book===8,total=Math.ceil(files.length/2);
  spread=Math.max(0,Math.min(total-1,spread));
  reader.classList.toggle('book-eight',isEight);
- newSpread.style.display=isEight?'none':'block';
- eightLeft.style.display=eightRight.style.display=isEight?'block':'none';
- if(isEight){eightLeft.src=files[spread*2];eightRight.src=files[spread*2+1]}
- else newSpread.src=files[spread];
- count.textContent=isEight?((spread*2+1)+'–'+(spread*2+2)+' / 24 · BD 8'):((spread+1)+' / '+total+' · BD '+book);
+ newSpread.style.display='none';
+ eightLeft.style.display='block';
+ eightRight.style.display=files[spread*2+1]?'block':'none';
+ eightLeft.src=files[spread*2];
+ if(files[spread*2+1])eightRight.src=files[spread*2+1];
+ count.textContent=(spread*2+1)+'–'+Math.min(spread*2+2,files.length)+' / '+files.length+' · BD '+book;
 }
 function openBook(n){book=n;spread=0;mode('reader');draw()}
-function move(dir){const max=(book===8?12:sets[book].length)-1;spread=Math.max(0,Math.min(max,spread+dir));draw()}
+function move(dir){const max=Math.ceil(sets[book].length/2)-1;spread=Math.max(0,Math.min(max,spread+dir));draw()}
 document.getElementById('openPdf').onclick=()=>mode('pdfs');
 document.getElementById('return').onclick=()=>mode('choice');
 document.getElementById('pdfBack').onclick=()=>mode('choice');
