@@ -9,12 +9,21 @@
 .toolbar #prev:hover,.toolbar #next:hover,.toolbar #return:hover,.back:hover{filter:brightness(1.2);transform:scale(1.04)}
 .zoom-controls label{width:54px;height:30px;display:block}
 .zoom-controls label .prop-crop{width:100%;height:100%}
-.choice-hotspots button .prop-crop{width:100%;height:100%}
-.choice-hotspots button{opacity:1;display:flex;align-items:center;justify-content:center}
-.choice-hotspots button:hover{filter:brightness(1.2);transform:scale(1.06)}
-.choice-hotspots{top:72%;height:19%;display:flex;align-items:center;justify-content:center}
-.choice-hotspots button{position:relative!important;top:auto!important;left:auto!important;width:12.5%!important;height:100%!important}
+.choice-hotspots{position:absolute;inset:0;display:block;pointer-events:none}
+.choice-hotspots button{position:absolute!important;top:0!important;height:100%!important;opacity:0!important;transform:none!important;filter:none!important}
 @media(max-width:700px){.toolbar #prev,.toolbar #next{width:80px;height:34px}.toolbar #return{width:72px;height:32px}.back{width:95px;height:35px}.zoom-controls label{width:35px}}
+
+/* Compteur illustré et barre de zoom avec boutons superposés */
+.toolbar #count{display:flex;align-items:center;justify-content:center;gap:3px;min-width:170px;white-space:nowrap}
+.bd-number{width:23px;height:31px;flex:none}
+.zoom-controls{position:relative;isolation:isolate;background:transparent;min-height:54px;padding:6px 8px;gap:7px}
+.zoom-controls label{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+.zoom-controls label .prop-crop{width:100%;height:100%;overflow:hidden}
+.zoom-controls label .prop-crop img{left:0!important;top:0!important;width:100%!important;height:100%!important;object-fit:fill}
+.zoom-controls button{background:transparent;border:0;min-width:30px;color:#111}
+.zoom-controls input{position:relative;z-index:1}
+.zoom-controls output{position:relative;z-index:1;color:#111}
+@media(max-width:700px){.bd-number{width:17px;height:25px}.toolbar #count{min-width:120px}.zoom-controls{min-height:43px}}
 </style></head><body><a class="back" href="./index.html">← Bureau</a><section class="choice" id="choice"><div class="choice-hotspots" id="hotspots" aria-label="Choisir une BD"></div><div class="choice-actions"><button id="openPdf">Choisir une BD (1 à 8)</button></div></section><section class="reader" id="reader"><div class="book"><img class="book-decoration" src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/BD/LIVRE.png" alt=""><div class="page-spread"><div class="page" id="leftPage"><img id="left" alt="Page de gauche"><canvas id="leftCanvas"></canvas></div><div class="page" id="rightPage"><img id="right" alt="Page de droite"><canvas id="rightCanvas"></canvas></div><div class="page-turn" id="turn"><img id="turnImage" alt=""></div></div></div><div class="toolbar"><button id="prev">◀ Précédent</button><span id="count"></span><button id="next">Suivant ▶</button><div class="zoom-controls" aria-label="Réglage du zoom"><label for="zoomRange">🔍</label><button id="zoomOut" title="Dézoomer" aria-label="Dézoomer">−</button><input id="zoomRange" type="range" min="100" max="350" step="10" value="100" aria-label="Niveau de zoom"><button id="zoomIn" title="Zoomer" aria-label="Zoomer">+</button><output id="zoomValue" for="zoomRange">100 %</output><button id="resetZoom" title="Revenir immédiatement à 100 %">↩ 100 %</button></div><button id="return">Choix</button></div><div class="help">Flèches du clavier pour tourner les pages</div></section><section class="pdfs" id="pdfs"><div class="pdf-grid" id="pdfGrid"></div><button id="pdfBack">Retour au choix</button></section><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script><script>
 
 const propRoot='https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/PROPS/';
@@ -36,6 +45,10 @@ const sets={
   7:Array.from({length:7},(_,i)=>base+'7/7_0001s_'+String(i).padStart(4,'0')+'_7.png'),
   8:Array.from({length:24},(_,i)=>base+'BD_P_'+String(23-i).padStart(4,'0')+'_BD P'+(i+1)+'.jpg')
 };
+
+const digitBounds={1:[715,208,352,485],2:[737,215,382,477],3:[745,222,317,471],4:[686,216,383,463],5:[731,203,339,484],6:[741,212,316,502],7:[737,250,310,435],8:[746,226,300,492],9:[730,237,321,467],10:[632,194,568,522],11:[679,224,506,468],12:[637,207,577,490],13:[635,215,540,485],14:[636,233,547,471],15:[644,199,511,508],16:[657,208,527,495],17:[636,215,521,490],18:[638,201,500,509],19:[647,213,489,495],20:[624,219,590,481],21:[641,199,599,503],22:[616,218,536,472],23:[608,223,572,463],24:[562,229,583,460],25:[606,224,510,472]};
+function numProp(n){const b=digitBounds[n];if(!b){const e=document.createElement('span');e.textContent=n;return e}const el=prop('PROPS_'+String(74-n).padStart(4,'0')+'_'+n+'.png',b);el.classList.add('bd-number');return el}
+function renderCount(){count.replaceChildren(numProp(spread*2+1),document.createTextNode('–'),numProp(Math.min(spread*2+2,sets[book].length)),document.createTextNode(' / '),numProp(sets[book].length),document.createTextNode(' · BD '),numProp(book))}
 const choice=document.getElementById('choice'),reader=document.getElementById('reader'),pdfs=document.getElementById('pdfs');
 const count=document.getElementById('count'),spreadLayer=document.querySelector('.page-spread');
 spreadLayer.innerHTML='<img id="newSpread" alt="Double page de bande dessinée"><img id="eightLeft" alt="Page gauche"><img id="eightRight" alt="Page droite">';
@@ -86,7 +99,7 @@ function draw(){
  eightLeft.removeAttribute('src');eightRight.removeAttribute('src');
  transparentInk(leftUrl).then(src=>{if(book===currentBook&&spread===currentSpread)eightLeft.src=src});
  if(rightUrl)transparentInk(rightUrl).then(src=>{if(book===currentBook&&spread===currentSpread)eightRight.src=src});
- count.textContent=(spread*2+1)+'–'+Math.min(spread*2+2,files.length)+' / '+files.length+' · BD '+book;
+ renderCount();
 }
 function openBook(n){book=n;spread=0;resetMagnifier();mode('reader');draw()}
 function move(dir){const max=Math.ceil(sets[book].length/2)-1;spread=Math.max(0,Math.min(max,spread+dir));draw()}
@@ -129,6 +142,6 @@ document.getElementById('next').onclick=()=>move(1);
 document.addEventListener('keydown',e=>{if(reader.style.display!=='flex')return;if(e.key==='ArrowRight')move(1);if(e.key==='ArrowLeft')move(-1)});
 for(let i=1;i<=8;i++){
  const a=document.createElement('a');a.href='#';a.textContent='BD '+i;a.onclick=e=>{e.preventDefault();openBook(i)};document.getElementById('pdfGrid').append(a);
- const h=document.createElement('button');h.type='button';h.setAttribute('aria-label','Ouvrir BD '+i);h.title='BD '+i;h.style.left=((i-1)*12.5)+'%';h.style.width='12.5%';h.onclick=()=>openBook(i);h.append(prop('BD/PROPS_'+String(40-i).padStart(4,'0')+'_BD'+i+'.png',bdBounds[i-1]));document.getElementById('hotspots').append(h);
+ const h=document.createElement('button');h.type='button';h.setAttribute('aria-label','Ouvrir BD '+i);h.title='BD '+i;h.style.left=((i-1)*12.5)+'%';h.style.width='12.5%';h.onclick=()=>openBook(i);document.getElementById('hotspots').append(h);
 }
 </script></body></html>
