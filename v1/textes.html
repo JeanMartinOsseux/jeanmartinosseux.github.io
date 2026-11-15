@@ -109,6 +109,24 @@ body{background-image:url('https://raw.githubusercontent.com/JeanMartinOsseux/je
 .bin.tipping{transform:translate(-50%,-50%) rotate(110deg)}
 .bin.tipping .symbol{filter:drop-shadow(4px 8px 3px #0005)}
 @media(max-width:750px){.top{flex-wrap:wrap}.overlay .inside{left:13%;right:12%;top:18%}.shopgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.shopgrid .item{height:220px;min-height:220px;padding:12px 8px}.shopgrid .item img{height:80px;max-height:80px;flex-basis:80px}}
+
+/* V8: keep modal contents strictly inside the illustrated white area */
+.overlay{padding:0;align-items:center;justify-content:center}
+.overlay .panel{position:relative!important;width:min(1300px,96vw)!important;height:min(800px,92vh)!important;max-height:92vh!important;overflow:hidden!important;padding:0!important;background-position:center!important;background-size:100% 100%!important}
+.overlay .bar{position:absolute!important;top:8%!important;left:12%!important;right:13%!important;width:auto!important;height:35px!important;z-index:2}
+.overlay .bar span{font-size:15px;line-height:1.2}
+.overlay .inside{position:absolute!important;top:19%!important;left:15%!important;right:15%!important;bottom:12%!important;width:auto!important;height:auto!important;max-height:none!important;min-height:0!important;padding:0 6px 12px!important;overflow-y:auto!important;overflow-x:hidden!important;scrollbar-width:thin}
+.overlay .inside>p{font-size:12px;margin:0 0 10px}
+.overlay .shopgrid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:14px 12px!important;width:100%!important;max-width:100%!important}
+.overlay .shopgrid .item{width:100%!important;max-width:100%!important;min-width:0!important;height:214px!important;min-height:214px!important;max-height:214px!important;padding:17px 16px 11px!important;gap:2px!important;display:flex!important;flex-direction:column!important;align-items:center!important;overflow:hidden!important;background-size:100% 100%!important}
+.overlay .shopgrid .item img{width:76%!important;max-width:76%!important;height:88px!important;max-height:88px!important;flex:0 0 88px!important;object-fit:contain!important;margin:0 auto!important}
+.overlay .shopgrid .item strong{width:100%!important;flex:none!important;font-size:12px!important;line-height:1.1!important;text-align:center!important;overflow-wrap:anywhere!important}
+.overlay .shopgrid .item span{font-size:11px!important;line-height:1.1!important}
+.overlay .shopgrid .item button{width:75%!important;height:37px!important;min-height:37px!important;flex:0 0 37px!important;margin-top:auto!important;background-size:contain!important}
+.overlay .close{position:absolute!important;top:-10px!important;right:-10px!important;opacity:0!important;width:65px!important;height:65px!important}
+@media(max-width:650px){.overlay .shopgrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.overlay .inside{left:14%!important;right:14%!important}.overlay .shopgrid .item{height:195px!important;min-height:195px!important;max-height:195px!important}}
+/* Papers should emerge above the rim of the tilted bin */
+.paper.spilled{z-index:3!important;pointer-events:auto}
 </style></head><body><div class="top"><button class="xp" id="bureauBtn" aria-label="Bureau" onclick="location.href='./index.html'">Bureau</button><span class="coins" id="coins">0</span><button class="xp" id="shopBtn">🛒 Boutique</button><button class="xp" id="collectionBtn">🗂️ Collection</button><button class="xp reset-button" id="resetBtn">↻ Tout réinitialiser</button><span class="hint">Attrape un texte, déplace la souris et relâche pour le lancer !</span></div><main class="court" id="court"><div class="bin" id="bin"><div class="symbol">🗑️</div><div class="name">Corbeille</div></div></main><script>
 const base='https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/TEXTE/';
 const texts=['GREBIK EST DERRRIERE TOI','3916','121212','KASK','MORDOR ME HANTE','VA AU PULRA','CC CV','444.444.444.','BIENTOT PERF','EXPO'];
@@ -136,10 +154,21 @@ function score(p){
 function spillBin(){
  if(modal||bin.classList.contains('tipping'))return;
  const stored=papers.filter(p=>p.done);if(!stored.length)return;
- bin.classList.add('tipping');setTimeout(()=>bin.classList.remove('tipping'),1000);
- const r=bin.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height*.55;
- setTimeout(()=>stored.forEach((p,i)=>{p.done=false;p.held=false;p.launched=false;p.passedAbove=false;p.x=cx+(i-(stored.length-1)/2)*17;p.y=cy+25;p.vx=(i-(stored.length-1)/2)*2.7;p.vy=-7-(i%3)*1.8;court.append(p.el);draw(p)}),260);
- bin.classList.remove('flash');void bin.offsetWidth;bin.classList.add('flash');
+ const r=bin.getBoundingClientRect();
+ const cx=r.left+r.width*.5, cy=r.top+r.height*.47;
+ bin.classList.add('tipping');
+ setTimeout(()=>{
+  stored.forEach((p,i)=>{
+   p.done=false;p.held=false;p.launched=false;p.passedAbove=false;
+   p.x=cx+18+(i-(stored.length-1)/2)*5;
+   p.y=cy+8+(i%3)*3;
+   p.vx=4+(i%4)*1.25;
+   p.vy=-5-(i%3)*1.2;
+   court.append(p.el);p.el.classList.add('spilled');draw(p);
+   setTimeout(()=>p.el.classList.remove('spilled'),1150);
+  });
+ },290);
+ setTimeout(()=>bin.classList.remove('tipping'),1000);
 }
 bin.addEventListener('click',spillBin);
 function frame(now){const dt=Math.min(2.5,(now-last)/16.67);last=now;if(!modal){const r=bin.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height*.52;for(const p of papers){if(p.done||p.held)continue;if(p.vx||p.vy){p.vy+=.34*dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vx*=Math.pow(.993,dt);const half=p.el.offsetWidth/2;if(p.x<half){p.x=half;p.vx=Math.abs(p.vx)*.5}if(p.x>innerWidth-half){p.x=innerWidth-half;p.vx=-Math.abs(p.vx)*.5}if(p.y>innerHeight-65){p.y=innerHeight-65;p.vy=-Math.abs(p.vy)*.35;p.vx*=.78;if(Math.abs(p.vy)<1.1){p.vy=0;if(Math.abs(p.vx)<.3)p.vx=0}}if(p.y<75){p.y=75;p.vy=Math.abs(p.vy)*.4}if(p.launched&&p.y<cy-48)p.passedAbove=true;if(p.launched&&p.passedAbove&&Math.abs(p.x-cx)<34&&p.y>cy-20&&p.y<cy+22&&p.vy>1){score(p);continue}draw(p)}}}requestAnimationFrame(frame)}spawn();requestAnimationFrame(frame);
