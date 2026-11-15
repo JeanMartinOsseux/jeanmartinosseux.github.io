@@ -24,10 +24,14 @@
 .reader .zoom-controls #zoomOut{left:18%;width:13%}
 .reader .zoom-controls #zoomIn{left:61%;width:13%}
 .reader .zoom-controls #resetZoom{left:80%;width:19%}
-.reader .zoom-controls #zoomRange{position:absolute!important;z-index:5;left:36%!important;top:25%!important;width:24%!important;height:50%!important;opacity:0!important;margin:0!important;padding:0!important;cursor:pointer}
+.reader .zoom-controls #zoomRange{position:absolute!important;z-index:5;left:37%!important;top:25%!important;width:15%!important;height:50%!important;opacity:0!important;margin:0!important;padding:0!important;cursor:pointer}
 .reader .zoom-controls .drawn-thumb{position:absolute;z-index:6;display:block;box-sizing:border-box;width:15px!important;height:15px!important;min-width:0!important;min-height:0!important;max-width:15px!important;max-height:15px!important;aspect-ratio:1;border:2px solid white;border-radius:50%;background:#858094;box-shadow:0 0 0 1px #333;transform:translate(-50%,-50%);top:50%;pointer-events:none}
 .reader .zoom-controls output{position:absolute;clip-path:inset(50%);width:1px;height:1px;overflow:hidden}
 @media(max-width:900px){.reader .zoom-controls{flex-basis:205px;width:205px;height:44px}.toolbar #count .bd-number{width:18px;height:23px;flex-basis:18px}.toolbar #count .bd-label{width:34px;flex-basis:34px}.toolbar #count .bd-separator{width:6px;height:21px;flex-basis:6px}}
+
+/* Ligne blanche reconstruite exactement sous la poignée, avant le bouton + */
+.reader .zoom-controls::after{content:"";position:absolute;left:38%;top:calc(50% - 2px);width:13%;height:4px;background:#fff;border-radius:3px;z-index:4;pointer-events:none}
+.reader .zoom-controls .drawn-thumb{z-index:7}
 </style></head><body><a class="back" href="./index.html">← Bureau</a><section class="choice" id="choice"><div class="choice-hotspots" id="hotspots" aria-label="Choisir une BD"></div><div class="choice-actions"><button id="openPdf">Choisir une BD (1 à 8)</button></div></section><section class="reader" id="reader"><div class="book"><img class="book-decoration" src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/BD/LIVRE.png" alt=""><div class="page-spread"><div class="page" id="leftPage"><img id="left" alt="Page de gauche"><canvas id="leftCanvas"></canvas></div><div class="page" id="rightPage"><img id="right" alt="Page de droite"><canvas id="rightCanvas"></canvas></div><div class="page-turn" id="turn"><img id="turnImage" alt=""></div></div></div><div class="toolbar"><button id="prev">◀ Précédent</button><span id="count"></span><button id="next">Suivant ▶</button><div class="zoom-controls" aria-label="Réglage du zoom"><label for="zoomRange">🔍</label><button id="zoomOut" title="Dézoomer" aria-label="Dézoomer">−</button><input id="zoomRange" type="range" min="100" max="350" step="10" value="100" aria-label="Niveau de zoom"><button id="zoomIn" title="Zoomer" aria-label="Zoomer">+</button><output id="zoomValue" for="zoomRange">100 %</output><button id="resetZoom" title="Revenir immédiatement à 100 %">↩ 100 %</button></div><button id="return">Choix</button></div><div class="help">Flèches du clavier pour tourner les pages</div></section><section class="pdfs" id="pdfs"><div class="pdf-grid" id="pdfGrid"></div><button id="pdfBack">Retour au choix</button></section><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script><script>
 
 const propRoot='https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/PROPS/';
@@ -125,7 +129,7 @@ function renderMagnifier(){
  bookElement.style.transform='translate('+zoomX+'px,'+zoomY+'px) scale('+zoomScale+')';
  bookElement.classList.toggle('zoomed',zoomScale>1);
  zoomRange.value=String(Math.round(zoomScale*100));
- drawnThumb.style.left=(36+(zoomScale-1)/2.5*24)+'%';
+ drawnThumb.style.left=(38+(zoomScale-1)/2.5*13)+'%';
  zoomValue.textContent=Math.round(zoomScale*100)+' %';
  resetButton.disabled=zoomScale===1;
 }
