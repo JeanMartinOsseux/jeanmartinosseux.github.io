@@ -1,70 +1,46 @@
 <!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Musiques — Jean Martin Osseux</title><style>
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:#111;color:white;font-family:Tahoma,Verdana,sans-serif}button,a{cursor:pointer;font:inherit}.back{position:fixed;top:14px;left:14px;z-index:5;background:#222;color:#fff;border:1px solid #aaa;padding:9px 13px;text-decoration:none;border-radius:5px}.screen{min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:75px 20px 35px}#choice{padding:0}.hidden{display:none!important}.choice{width:100vw;height:100vh;position:relative;background:#000}.choice img{width:100%;height:100%;object-fit:fill}.choice button{position:absolute;top:0;width:50%;height:100%;border:0;background:transparent;color:transparent}.choice button:hover,.choice button:focus-visible{outline:5px solid #fff;outline-offset:-5px;background:#ffffff12}.choice .jeanma:hover,.choice .jeanma:focus-visible{outline-color:#000;background:#00000010}.choice .pdm{left:0}.choice .jeanma{right:0}.fallback{display:none;gap:10px;justify-content:center;flex-wrap:wrap}.fallback button{background:#ece9d8;color:#111;padding:12px 18px;border:2px outset white}.music{background:#111 url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/music/CDFOND.png') center/cover no-repeat fixed}.player-layout{width:min(1080px,96vw);display:grid;grid-template-columns:minmax(250px,1fr) minmax(250px,1fr);gap:30px;align-items:center}.deck{position:relative;min-height:300px;display:grid;place-items:center;background:transparent}.deck>img{width:100%;max-height:70vh;object-fit:contain}.disc{position:absolute;width:39%;aspect-ratio:1;border-radius:50%;object-fit:cover;top:43%;left:48%;transform:translate(-50%,-50%);animation:spin 2.2s linear infinite;animation-play-state:paused;filter:drop-shadow(0 2px 5px #000a);clip-path:circle(50%)}.disc.playing{animation-play-state:running}@keyframes spin{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg)}}.panel{background:#101010d9;border:1px solid #888;padding:20px;max-height:80vh;overflow:auto}.panel h1{margin:0 0 14px}.track{display:block;width:100%;margin:7px 0;text-align:left;padding:12px;background:#e6e1d2;border:2px outset white;color:#111}.track.selected{background:#b6d4ff}iframe{border:0;width:100%;height:166px;margin-top:15px}.note{font-size:12px;color:#ccc}.pdm-screen{background:#000 url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/music/PDM_BG.png') center/100% 100% no-repeat}.pdm-links{background:transparent;padding:25px;max-width:1000px;width:100%;text-align:center}.pdm-videos{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:24px 0}.pdm-videos iframe{width:100%;height:auto;aspect-ratio:16/9;border:1px solid white;background:#000}.pdm-social{display:flex;justify-content:center;gap:15px;flex-wrap:wrap;margin-top:18px}.pdm-social a{display:inline-block!important;background:#111c}.pdm-links a{display:block;color:#fff;margin:14px;padding:12px;border:1px solid #aaa}.back-choice{margin-top:20px;background:#eee;border:0;padding:10px 15px;color:#111}@media(max-width:700px){.pdm-videos{grid-template-columns:1fr}.player-layout{grid-template-columns:1fr}.deck{min-height:220px}.panel{max-height:none}}
 .cd-art{position:absolute;top:44%;left:50%;width:61%;aspect-ratio:1;transform:translate(-50%,-50%) scaleY(.86);border-radius:50%;overflow:hidden;background:transparent;animation:cdspin 2.2s linear infinite;animation-play-state:paused;mix-blend-mode:multiply;opacity:.88}.cd-art.playing{animation-play-state:running}.cd-art.exclusive{mix-blend-mode:normal;opacity:1}.cd-art img{width:100%;height:100%;object-fit:cover;display:block}.cd-art:after{content:"";position:absolute;left:50%;top:50%;width:13%;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,#111 0 35%,#b9b9b9 38% 70%,#222 73%);box-shadow:0 0 0 2px #7778}@keyframes cdspin{from{transform:translate(-50%,-50%) scaleY(.86) rotate(0)}to{transform:translate(-50%,-50%) scaleY(.86) rotate(360deg)}}.album-button{display:flex;align-items:center;gap:10px;width:100%;margin:6px 0;padding:7px;border:1px solid #aaa;background:#eee;color:#111;text-align:left}.album-button img{width:46px;height:46px;object-fit:cover}.album-button.selected,.song-button.selected{background:#b6d4ff}.song-button{display:block;width:100%;padding:8px;text-align:left;border:1px solid #aaa;background:#e6e1d2;color:#111;margin:4px 0}.playlist{max-height:170px;overflow:auto;margin:12px 0}.nowplaying{margin-top:12px;font-weight:bold;font-size:14px}#audio{display:block;width:100%;margin-top:10px}.transport{display:flex;gap:10px;margin-top:10px}.transport button{flex:1;padding:8px;background:#eee;color:#111;border:1px solid #aaa}
-/* Habillage personnalisé de la fenêtre CD : la sélection et les lecteurs restent actifs. */
-#jeanma.music{position:relative;isolation:isolate}
-#jeanma.music::before{content:"";position:absolute;inset:3% 2%;background:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/PROPS/PROPS_0012_MUSIQUES.png') center/100% 100% no-repeat;pointer-events:none;z-index:0}
-#jeanma .player-layout{position:relative;z-index:1;width:min(1080px,90vw);padding:30px 24px;gap:24px}
-#jeanma .panel{background:transparent;border:0;box-shadow:none;max-height:70vh}
-#jeanma .deck{background:transparent}
-@media(max-width:700px){#jeanma .player-layout{padding:20px 10px;gap:12px}#jeanma .panel{max-height:45vh}}
-
-/* Fenêtre MP3 étirée aux dimensions de l'écran : aucun défilement vertical */
-#jeanma.music{height:100dvh;min-height:0;overflow:hidden;padding:0;display:flex;align-items:center;justify-content:center;background-size:cover}
-#jeanma.music::before{inset:2.5% 6% 2.5%;background-size:100% 100%}
-#jeanma .player-layout{width:88vw;height:76vh;max-height:76vh;padding:5vh 5vw 2vh;display:grid;grid-template-columns:43% 57%;gap:2%;align-items:center;overflow:hidden}
-#jeanma .deck{display:none;min-height:0;height:100%;width:100%;place-items:center}
-#jeanma.album-open .deck{display:grid}
-#jeanma .deck>img{max-height:100%;max-width:100%;object-fit:contain}
-#jeanma .panel{width:100%;height:100%;max-height:none;min-height:0;padding:0 3% 0 0;overflow:hidden;display:flex;flex-direction:column;justify-content:center;background:transparent;border:0}
-#jeanma:not(.album-open) .panel{grid-column:1 / -1;width:100%;padding:0 6%;justify-content:center}
-#jeanma #albums{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1%;width:100%;height:58%;align-items:stretch}
-#jeanma .album-button{min-width:0;min-height:0;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px;margin:0;padding:6px;background:#f1f1f1;border:1px solid #999;text-align:center;font-size:clamp(10px,1vw,15px);overflow:hidden}
-#jeanma .album-button img{width:min(75%,110px);height:auto;aspect-ratio:1;object-fit:cover;flex:none}
-#jeanma .album-button span{overflow-wrap:anywhere}
-#jeanma #player-detail{height:100%;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:4px}
-#jeanma #player-detail.hidden{display:none}
-#jeanma .playlist{max-height:min(36vh,320px);overflow:auto;margin:0 0 4px}
-#jeanma .song-button{padding:5px 7px;margin:3px 0;font-size:clamp(11px,1vw,14px)}
-#jeanma .nowplaying{font-size:12px;margin:3px 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-#jeanma #audio{height:36px;margin:2px 0;width:100%}
-#jeanma .transport{margin:2px 0;gap:5px}
-#jeanma .transport button{padding:5px;font-size:12px}
-#jeanma .music-actions{position:absolute;z-index:3;bottom:8%;left:50%;transform:translateX(-50%);display:flex;gap:10px}
-#jeanma .music-actions button{background:#eee;border:1px solid #777;padding:5px 12px;color:#111;font-size:12px;white-space:nowrap}
-@media(max-width:700px){#jeanma .player-layout{grid-template-columns:40% 58%;width:92vw;padding:4vh 3vw 1vh}#jeanma #albums{grid-template-columns:repeat(3,1fr);height:75%;gap:4px}#jeanma .album-button img{width:min(60%,65px)}#jeanma .album-button{font-size:10px;padding:3px}#jeanma .playlist{max-height:34vh}#jeanma .music-actions{bottom:5%}}
-
-/* Interface musique : illustration unique étirée, zones blanches et commandes dessinées */
-#jeanma.music::before{display:none}
-#jeanma .art-frame{position:absolute;inset:2.5% 6%;background:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/PROPS/PROPS_0012_MUSIQUES.png') center/100% 100% no-repeat;pointer-events:none;z-index:0}
-#jeanma .choice-button-mask{position:absolute;left:23%;width:52%;top:83%;height:10%;background:white;display:block}
+/* Fenêtre MP3 dessinée — disposition unique, sans anciennes surcharges. */
+#jeanma.music{position:relative;isolation:isolate;height:100dvh;min-height:0;padding:0;overflow:hidden;display:flex;align-items:center;justify-content:center;background-size:cover}
+#jeanma .art-frame{position:absolute;inset:2% 3%;background:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/PROPS/PROPS_0012_MUSIQUES.png') center/100% 100% no-repeat;pointer-events:none;z-index:0}
+#jeanma .choice-button-mask{position:absolute;left:18%;right:17%;top:85%;height:12%;background:white;display:block}
 #jeanma.album-open .choice-button-mask{display:none}
-#jeanma .detail-title-mask{display:none;position:absolute;left:3.5%;width:53%;top:8.7%;height:10%;background:white}
+#jeanma .detail-title-mask{display:none;position:absolute;left:2.8%;top:9%;width:56%;height:10%;background:white}
 #jeanma.album-open .detail-title-mask{display:block}
 #jeanma .drawn-transport{display:none;position:absolute;inset:0;pointer-events:none}
 #jeanma.album-open .drawn-transport{display:block}
-#jeanma .drawn-transport button{position:absolute;top:83%;height:9%;width:10%;border:0;background:transparent;pointer-events:auto;cursor:pointer;font-size:0}
-#jeanma .drawn-transport button:hover{background:#00000015}
-#jeanma #draw-prev{left:23%}#jeanma #draw-play{left:35%}#jeanma #draw-pause{left:46%}#jeanma #draw-next{left:57%}
-#jeanma .player-layout{width:70vw;height:64vh;max-height:64vh;padding:0;grid-template-columns:42% 56%;gap:2%;transform:translateY(-2vh)}
-#jeanma:not(.album-open) .player-layout{width:64vw;height:57vh;transform:translateY(-1vh)}
-#jeanma:not(.album-open) .panel{padding:0;width:100%}
-#jeanma #albums{height:100%;grid-template-columns:repeat(5,minmax(0,1fr));gap:1%;align-items:center}
-#jeanma .album-button{height:78%;max-height:230px;min-width:0;padding:5px;font-size:clamp(10px,.8vw,14px)}
-#jeanma .album-button img{width:min(82%,95px)}
-#jeanma.album-open .deck{height:75%;max-height:58vh}
-#jeanma.album-open .panel{padding:0 3%;height:100%;justify-content:center}
-#jeanma .playlist{max-height:33vh}
-#jeanma .music-actions{bottom:13%;gap:10px}
-#jeanma .music-actions button{border:0;background:transparent;color:transparent;font-size:0;width:115px;height:42px;position:relative;overflow:hidden}
-#jeanma .music-actions button::before{content:"";position:absolute;inset:0;background:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/PROPS/PROPS_0076_PRECEDANT.png') center/100% 100% no-repeat}
-#jeanma .music-actions button:last-child::before{background-image:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/PROPS/PROPS_0031_CHOIX.png')}
-#jeanma .music-actions button{color:#111;font-size:11px;background:#fff;border:1px solid #111}
-#jeanma .music-actions button::before{display:none}
-@media(max-width:700px){#jeanma .player-layout{width:75vw;height:61vh;grid-template-columns:40% 58%}#jeanma:not(.album-open) .player-layout{width:72vw}#jeanma #albums{grid-template-columns:repeat(3,1fr);gap:4px}#jeanma .album-button{height:95%;max-height:120px}#jeanma .music-actions{bottom:10%}}
+#jeanma .drawn-transport button{position:absolute;top:85%;height:10%;width:9%;border:0;background:transparent;pointer-events:auto;cursor:pointer}
+#jeanma #draw-prev{left:26%}#jeanma #draw-play{left:38%}#jeanma #draw-pause{left:49%}#jeanma #draw-next{left:61%}
+#jeanma .player-layout{position:relative;z-index:1;display:grid;grid-template-columns:43% 55%;gap:2%;width:79vw;height:65vh;max-height:65vh;padding:0;margin:0;align-items:center;overflow:visible}
+#jeanma:not(.album-open) .player-layout{display:block;width:78vw;height:53vh;margin-top:0}
+#jeanma .deck{display:none;position:relative;min-height:0;width:100%;height:100%;background:transparent;place-items:center}
+#jeanma.album-open .deck{display:grid}
+#jeanma .deck>img{display:block;width:100%;height:100%;max-height:100%;object-fit:contain}
+#jeanma .cd-art{top:44%;left:50%;width:61%}
+#jeanma .panel{width:100%;height:100%;min-height:0;max-height:none;overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding:0;background:transparent;border:0;box-shadow:none}
+#jeanma:not(.album-open) .panel{height:100%;padding:0}
+#jeanma #albums{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;align-items:center;width:100%;height:100%;padding:0}
+#jeanma .album-button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;width:100%;height:min(36vh,250px);min-width:0;margin:0;padding:8px;background:#eee;color:#111;border:1px solid #aaa;font-size:clamp(10px,1vw,15px);text-align:center}
+#jeanma .album-button img{width:min(85%,110px);height:auto;aspect-ratio:1;object-fit:cover}
+#jeanma .album-button span{overflow-wrap:anywhere}
+#jeanma #player-detail{height:100%;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:7px}
+#jeanma #player-detail.hidden{display:none}
+#jeanma #playlist{min-height:0;overflow:hidden}
+#jeanma .playlist{max-height:36vh;overflow-y:auto;margin:0;padding:0}
+#jeanma .song-button{margin:3px 0;padding:6px 8px;font-size:clamp(11px,.95vw,15px);background:#e6e1d2}
+#jeanma .nowplaying{margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}
+#jeanma #audio{width:100%;height:40px;margin:0}
+#jeanma .transport{display:none}
+#jeanma .music-actions{position:absolute;z-index:5;left:50%;bottom:-8%;transform:translateX(-50%);display:flex;justify-content:center;gap:12px}
+#jeanma .music-actions button{display:block;position:relative;flex:none;width:105px;height:39px;margin:0;padding:0;background:transparent;border:0;color:transparent;font-size:0;overflow:hidden;cursor:pointer}
+#jeanma .music-actions button .prop-crop{position:absolute;inset:0;width:100%;height:100%;display:block;overflow:hidden;pointer-events:none}
+#jeanma .music-actions button .prop-crop img{position:absolute;max-width:none;pointer-events:none}
+#jeanma .music-actions button:hover{filter:brightness(1.2);transform:scale(1.04)}
+@media(max-width:700px){#jeanma .art-frame{inset:3% 1%}#jeanma .player-layout{width:86vw;height:61vh;grid-template-columns:41% 57%}#jeanma:not(.album-open) .player-layout{width:85vw;height:60vh}#jeanma #albums{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}#jeanma .album-button{height:18vh;gap:2px;padding:3px;font-size:10px}#jeanma .album-button img{width:min(65%,65px)}#jeanma .playlist{max-height:31vh}#jeanma .music-actions{bottom:-5%}#jeanma .music-actions button{width:76px;height:31px}}
 </style></head><body><a class="back" href="./index.html">← Bureau</a>
 <section class="screen" id="choice"><div class="choice"><img src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/music/CHOIX.png" alt="Choix entre Prisonniers du Micro et DJ JeanMa" onerror="this.style.display='none'"><button class="pdm" aria-label="Prisonniers du Micro" onclick="show('pdm')">PDM</button><button class="jeanma" aria-label="DJ JeanMa" onclick="show('jeanma')">DJ JeanMa</button></div><div class="fallback"><button onclick="show('pdm')">Prisonniers du Micro</button><button onclick="show('jeanma')">DJ JeanMa</button></div></section>
-<section class="screen music hidden" id="jeanma"><div class="art-frame"><div class="choice-button-mask"></div><div class="detail-title-mask"></div><div class="drawn-transport"><button id="draw-prev" aria-label="Morceau précédent"></button><button id="draw-play" aria-label="Lecture"></button><button id="draw-pause" aria-label="Pause"></button><button id="draw-next" aria-label="Morceau suivant"></button></div></div><div class="player-layout"><div class="deck"><img src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/music/CDPLAYER.png" alt="Lecteur CD"><div class="cd-art" id="cd-art"><img id="cover" alt="Pochette du disque"></div></div><div class="panel"><div id="albums"></div><div id="player-detail" class="hidden"><div id="playlist"></div><div class="nowplaying" id="nowplaying">Sélectionne un disque</div><audio id="audio" controls preload="none"></audio><div class="transport hidden"><button id="previous" aria-label="Piste précédente">⏮ Précédent</button><button id="next" aria-label="Piste suivante">Suivant ⏭</button></div></div></div><div class="music-actions"><button id="back-albums" class="hidden" onclick="backToAlbums()">← Disques</button><button onclick="show('choice')">← Choix musical</button></div></div></section>
+<section class="screen music hidden" id="jeanma"><div class="art-frame"><div class="choice-button-mask"></div><div class="detail-title-mask"></div><div class="drawn-transport"><button id="draw-prev" aria-label="Morceau précédent"></button><button id="draw-play" aria-label="Lecture"></button><button id="draw-pause" aria-label="Pause"></button><button id="draw-next" aria-label="Morceau suivant"></button></div></div><div class="player-layout"><div class="deck"><img src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/music/CDPLAYER.png" alt="Lecteur CD"><div class="cd-art" id="cd-art"><img id="cover" alt="Pochette du disque"></div></div><div class="panel"><div id="albums"></div><div id="player-detail" class="hidden"><div id="playlist"></div><div class="nowplaying" id="nowplaying">Sélectionne un disque</div><audio id="audio" controls preload="none"></audio><div class="transport hidden"><button id="previous" aria-label="Piste précédente">⏮ Précédent</button><button id="next" aria-label="Piste suivante">Suivant ⏭</button></div></div></div><div class="music-actions"><button id="back-albums" class="hidden" onclick="backToAlbums()" aria-label="Retour aux disques"></button><button id="back-choice-music" onclick="show('choice')" aria-label="Retour au choix musical"></button></div></div></section>
 <section class="screen pdm-screen hidden" id="pdm"><div class="pdm-links"><h1>Prisonniers du Micro</h1><div class="pdm-videos"><iframe src="https://www.youtube-nocookie.com/embed/XTmM7M4Q3FI" title="Prisonniers du Micro — vidéo 1" loading="lazy" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><iframe src="https://www.youtube-nocookie.com/embed/AY1q6CbuNyE" title="Prisonniers du Micro — vidéo 2" loading="lazy" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div><div class="pdm-social"><a href="https://soundcloud.com/prisonniers-du-micro" target="_blank" rel="noopener">SoundCloud</a><a href="https://www.youtube.com/@PrisonniersduMicro" target="_blank" rel="noopener">YouTube</a></div><button class="back-choice" onclick="show('choice')">← Choix musical</button></div></section>
 <script>
 const base="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/music/",albums=[{"title":"Окружающий мир","dir":"projet_1","tracks":["окружающий мир.mp3"]},{"title":"Freestyle de la Soirusse bénite","dir":"projet_2","tracks":["freestyle de la soirusse bénite.mp3"]},{"title":"Monologue du Troisième État","dir":"projet_3","tracks":["00 intro.mp3","1 - ya rodilsya.mp3","2 - cherniy youmor .mp3","3 - muravied.mp3","3.5 - interlude 1.mp3","4 - talkie walking.mp3","4.5 - 2 edulretni.mp3","5 - nature étoilée .mp3","6 - kaleidoscope.mp3","7 - blessures soignées.mp3","zz - outro.mp3"]},{"title":"Réflexions sur l'État Post-Tiers","dir":"projet_4","tracks":["0 - intro.mp3","1 - en mode c'est bien la bas.mp3","2 - doublon d'une pate terne (feat. Pyotross).mp3","3 - edit of the doesn't matter (feat. Big LR).mp3","4 - voskresofon (feat. souche).mp3","5 - prosnulsya v psihushke.mp3","6 - outro.mp3"]}];
@@ -82,5 +58,9 @@ document.getElementById('draw-prev').onclick=()=>move(-1);
 document.getElementById('draw-next').onclick=()=>move(1);
 document.getElementById('draw-play').onclick=()=>{if(trackIndex<0)selectTrack(0);else audio.play().catch(()=>{})};
 document.getElementById('draw-pause').onclick=()=>audio.pause();
+const propRoot='https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/PROPS/';
+function buttonArt(file,b){const [x,y,w,h]=b;const span=document.createElement('span');span.className='prop-crop';const img=document.createElement('img');img.alt='';img.src=propRoot+file;img.style.cssText=`left:${-x/w*100}%;top:${-y/h*100}%;width:${1920/w*100}%;height:${1080/h*100}%`;span.append(img);return span}
+document.getElementById('back-albums').replaceChildren(buttonArt('PROPS_0076_PRECEDANT.png',[252,255,1508,565]));
+document.getElementById('back-choice-music').replaceChildren(buttonArt('PROPS_0031_CHOIX.png',[385,317,1151,449]));
 [...albums,{title:'Exclu',dir:null}].forEach((a,i)=>{const b=document.createElement('button');b.className='album-button';const img=document.createElement('img');img.src=i===4?url('CDTOURNE.png'):url(a.dir+'/pochette.jpg');img.alt='';const label=document.createElement('span');label.textContent=a.title;b.append(img,label);b.onclick=()=>selectAlbum(i);albumBox.append(b)});
 </script></body></html>
