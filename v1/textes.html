@@ -163,6 +163,17 @@ body{background-image:url('https://raw.githubusercontent.com/JeanMartinOsseux/je
 .overlay:not(.reward-overlay) .shopgrid .item strong{font-size:11px!important;margin:0!important;line-height:1.1!important}
 .overlay:not(.reward-overlay) .shopgrid .item span{font-size:10px!important;margin:0!important}
 .overlay:not(.reward-overlay) .shopgrid .item button{height:35px!important;min-height:35px!important;flex-basis:35px!important}
+
+/* V12: modal artwork alignment, accurate close area and inset thumbnails */
+.overlay:not(.reward-overlay) .bar{left:23%!important;top:6.2%!important}
+.overlay:not(.reward-overlay) .bar span{left:0!important;top:0!important;white-space:nowrap!important}
+.overlay:not(.reward-overlay) .inside{left:22%!important;right:17%!important;top:19%!important}
+.overlay:not(.reward-overlay) .inside>p{padding-left:8px!important;margin-bottom:18px!important}
+.overlay:not(.reward-overlay) .panel>.modal-close-target{top:4.2%!important;right:7.1%!important;width:7.5%!important;height:8.4%!important;min-width:0!important;min-height:0!important;z-index:300!important;pointer-events:auto!important;touch-action:manipulation!important}
+.overlay:not(.reward-overlay) .shopgrid .item{padding:24px 22px 12px!important;gap:3px!important}
+.overlay:not(.reward-overlay) .shopgrid .item img,.overlay:not(.reward-overlay) .shopgrid .item video{width:58%!important;max-width:58%!important;height:65px!important;max-height:65px!important;flex:0 0 65px!important;object-fit:contain!important}
+.overlay:not(.reward-overlay) .shopgrid .item strong{font-size:10px!important}
+.overlay:not(.reward-overlay) .shopgrid .item button{margin-top:auto!important}
 </style></head><body><div class="top"><button class="xp" id="bureauBtn" aria-label="Bureau" onclick="location.href='./index.html'">Bureau</button><span class="coins" id="coins">0</span><button class="xp" id="shopBtn">🛒 Boutique</button><button class="xp" id="collectionBtn">🗂️ Collection</button><button class="xp reset-button" id="resetBtn">↻ Tout réinitialiser</button><span class="hint">Attrape un texte, déplace la souris et relâche pour le lancer !</span></div><main class="court" id="court"><div class="bin" id="bin"><div class="symbol">🗑️</div><div class="name">Corbeille</div></div></main><script>
 const base='https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/TEXTE/';
 const texts=['GREBIK EST DERRRIERE TOI','3916','121212','KASK','MORDOR ME HANTE','VA AU PULRA','CC CV','444.444.444.','BIENTOT PERF','EXPO'];
