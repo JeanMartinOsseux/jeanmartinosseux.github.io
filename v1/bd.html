@@ -7,75 +7,27 @@
 .toolbar #return{width:100px;height:43px}
 .back{width:125px;height:46px}
 .toolbar #prev:hover,.toolbar #next:hover,.toolbar #return:hover,.back:hover{filter:brightness(1.2);transform:scale(1.04)}
-.zoom-controls label{width:54px;height:30px;display:block}
-.zoom-controls label .prop-crop{width:100%;height:100%}
-.choice-hotspots{position:absolute;inset:0;display:block;pointer-events:none}
-.choice-hotspots button{position:absolute!important;top:0!important;height:100%!important;opacity:0!important;transform:none!important;filter:none!important}
-@media(max-width:700px){.toolbar #prev,.toolbar #next{width:80px;height:34px}.toolbar #return{width:72px;height:32px}.back{width:95px;height:35px}.zoom-controls label{width:35px}}
 
-/* Compteur illustré et barre de zoom avec boutons superposés */
-.toolbar #count{display:flex;align-items:center;justify-content:center;gap:3px;min-width:170px;white-space:nowrap}
-.bd-number{width:23px;height:31px;flex:none}
-.zoom-controls{position:relative;isolation:isolate;background:transparent;min-height:54px;padding:6px 8px;gap:7px}
-.zoom-controls label{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
-.zoom-controls label .prop-crop{width:100%;height:100%;overflow:hidden}
-.zoom-controls label .prop-crop img{left:0!important;top:0!important;width:100%!important;height:100%!important;object-fit:fill}
-.zoom-controls button{background:transparent;border:0;min-width:30px;color:#111}
-.zoom-controls input{position:relative;z-index:1}
-.zoom-controls output{position:relative;z-index:1;color:#111}
-@media(max-width:700px){.bd-number{width:17px;height:25px}.toolbar #count{min-width:120px}.zoom-controls{min-height:43px}}
-
-/* Ajustements fins : les spans imbriqués ne doivent pas hériter du min-width de la toolbar. */
+/* Zoom : un seul dessin, une piste invisible, un rond indépendant */
+.reader .toolbar{display:flex;align-items:center;justify-content:center;gap:8px;background:transparent;border:0;border-radius:0;box-shadow:none;padding:4px 0;max-width:98vw;flex-wrap:wrap}
+.reader .help{display:none}
 .toolbar .prop-crop{min-width:0!important}
-.toolbar #count{gap:3px;min-width:155px;font-size:13px}
-.toolbar #count .bd-number{display:inline-block;width:24px!important;height:27px!important;min-width:0!important;flex:0 0 24px;overflow:hidden}
-.toolbar #count .bd-number img{max-width:none}
-.toolbar #count .bd-label{display:inline-block;width:46px;height:29px;min-width:0!important;flex:0 0 46px}
-.zoom-controls{width:290px;min-width:290px;height:60px;min-height:60px;flex:none;position:relative;display:block;padding:0;background:transparent;border:0}
-.zoom-controls label{position:absolute;inset:0;width:100%;height:100%;z-index:0}
-.zoom-controls label .prop-crop{width:100%;height:100%;min-width:0}
-.zoom-controls label .prop-crop img{left:-13.55%!important;top:-146.25%!important;width:125.65%!important;height:426.88%!important;max-width:none}
-.zoom-controls #zoomOut{position:absolute;left:2%;top:19%;width:14%;height:62%;z-index:2;color:transparent;font-size:0}
-.zoom-controls #zoomIn{position:absolute;left:18%;top:19%;width:14%;height:62%;z-index:2;color:transparent;font-size:0}
-.zoom-controls #zoomRange{position:absolute;left:35%;top:40%;width:32%;height:20%;z-index:2;margin:0}
-.zoom-controls #zoomValue{position:absolute;left:69%;top:33%;width:13%;min-width:0;text-align:center;font-size:11px;z-index:2}
-.zoom-controls #resetZoom{position:absolute;right:0;top:19%;width:17%;height:62%;z-index:2;color:transparent;font-size:0}
-@media(max-width:900px){.zoom-controls{width:220px;min-width:220px;height:49px;min-height:49px}.toolbar #count .bd-number{width:18px!important;height:23px!important;flex-basis:18px}.toolbar #count .bd-label{width:34px;flex-basis:34px}}
-
-/* Separateurs peints et zoom étiré dans son emplacement */
-.toolbar #count .bd-separator{display:inline-block;width:8px!important;height:26px!important;min-width:0!important;flex:0 0 8px;overflow:hidden}
-.zoom-controls{width:260px;min-width:260px;height:52px;min-height:52px;overflow:hidden}
-.zoom-controls label .prop-crop img{left:-13.55%!important;top:-146.25%!important;width:125.65%!important;height:426.88%!important}
-.zoom-controls #zoomOut{left:1%;width:15%}
-.zoom-controls #zoomIn{left:60%;width:15%}
-.zoom-controls #zoomRange{left:35%;width:36%;top:44%;height:14%;accent-color:#eee}
-.zoom-controls #zoomValue{position:absolute;clip-path:inset(50%);width:1px;height:1px;overflow:hidden}
-.zoom-controls #resetZoom{right:1%;width:18%}
-@media(max-width:900px){.zoom-controls{width:205px;min-width:205px;height:44px;min-height:44px}.toolbar #count .bd-separator{width:6px!important;height:21px!important;flex-basis:6px}}
-
-/* Zoom : garder le dessin visible, supprimer la seconde piste native superposée */
-.zoom-controls #zoomRange{appearance:none;-webkit-appearance:none;background:transparent!important;position:absolute;left:36%;top:25%;width:34%;height:50%;margin:0;cursor:pointer;outline-offset:2px}
-.zoom-controls #zoomRange::-webkit-slider-runnable-track{height:4px;background:transparent;border:0;box-shadow:none}
-.zoom-controls #zoomRange::-moz-range-track{height:4px;background:transparent;border:0;box-shadow:none}
-.zoom-controls #zoomRange::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:15px;height:15px;border:2px solid white;border-radius:50%;background:#7c788d;box-shadow:0 0 0 1px #333;margin-top:-5px}
-.zoom-controls #zoomRange::-moz-range-thumb{width:13px;height:13px;border:2px solid white;border-radius:50%;background:#7c788d;box-shadow:0 0 0 1px #333}
-.zoom-controls #zoomOut{left:2%;width:16%}
-.zoom-controls #zoomIn{left:60%;width:14%}
-
-/* Curseur du zoom calé sur la ligne dessinée : poignée indépendante du navigateur */
-.zoom-controls #zoomRange{position:absolute!important;left:35%!important;top:26%!important;width:32%!important;height:48%!important;opacity:0!important;z-index:5!important;cursor:pointer}
-.zoom-controls .drawn-thumb{position:absolute;left:35%;top:50%;width:17px;height:17px;border-radius:50%;background:#858094;border:2px solid white;box-shadow:0 0 0 1px #333;transform:translate(-50%,-50%);pointer-events:none;z-index:6}
-
-/* Piste blanche visible et poignée circulaire (neutralise le min-width des spans toolbar) */
-.zoom-controls::after{content:"";position:absolute;left:35%;width:32%;height:4px;top:calc(50% - 2px);background:#fff;border-radius:4px;pointer-events:none;z-index:4}
-.zoom-controls .drawn-thumb{display:block!important;box-sizing:border-box!important;min-width:0!important;max-width:17px!important;width:17px!important;min-height:0!important;max-height:17px!important;height:17px!important;aspect-ratio:1;border-radius:50%!important;padding:0!important;flex:none!important;z-index:7}
-
-/* Barre de commandes sans panneau semi-transparent ni aide sous le livre */
-.reader .toolbar{background:transparent!important;box-shadow:none!important;border:0!important;padding:4px 0!important;border-radius:0!important;gap:8px!important;max-width:98vw}
-.reader .help{display:none!important}
-.reader .zoom-controls{width:245px!important;min-width:245px!important;height:52px!important;min-height:52px!important;overflow:hidden;margin-left:-8px}
-.reader .zoom-controls label .prop-crop img{left:-13.55%!important;top:-146.25%!important;width:125.65%!important;height:426.88%!important}
-@media(max-width:900px){.reader .zoom-controls{width:190px!important;min-width:190px!important;height:44px!important;min-height:44px!important;margin-left:-5px}.reader .toolbar{gap:4px!important}}
+.toolbar #count{display:flex;align-items:center;justify-content:center;gap:3px;min-width:155px;font-size:13px;white-space:nowrap}
+.toolbar #count .bd-number{display:block;width:24px;height:27px;min-width:0;flex:0 0 24px}
+.toolbar #count .bd-label{display:block;width:46px;height:29px;min-width:0;flex:0 0 46px}
+.toolbar #count .bd-separator{display:block;width:8px;height:26px;min-width:0;flex:0 0 8px}
+.reader .zoom-controls{position:relative;display:block;isolation:isolate;flex:0 0 245px;width:245px;height:52px;min-width:0;min-height:0;padding:0;margin:0;background:transparent;border:0;border-radius:0;overflow:hidden;color:#111}
+.reader .zoom-controls label{position:absolute;inset:0;width:100%;height:100%;padding:0;margin:0;z-index:0;pointer-events:none}
+.reader .zoom-controls label .prop-crop{position:absolute;inset:0;display:block;width:100%;height:100%;min-width:0;overflow:hidden}
+.reader .zoom-controls label .prop-crop img{position:absolute;left:-13.55%!important;top:-146.25%!important;width:125.65%!important;height:426.88%!important;max-width:none;object-fit:fill;pointer-events:none}
+.reader .zoom-controls button{position:absolute;z-index:3;top:20%;height:60%;padding:0;margin:0;min-width:0;background:transparent!important;border:0!important;box-shadow:none!important;color:transparent!important;font-size:0;cursor:pointer}
+.reader .zoom-controls #zoomOut{left:18%;width:13%}
+.reader .zoom-controls #zoomIn{left:61%;width:13%}
+.reader .zoom-controls #resetZoom{left:80%;width:19%}
+.reader .zoom-controls #zoomRange{position:absolute!important;z-index:5;left:36%!important;top:25%!important;width:24%!important;height:50%!important;opacity:0!important;margin:0!important;padding:0!important;cursor:pointer}
+.reader .zoom-controls .drawn-thumb{position:absolute;z-index:6;display:block;box-sizing:border-box;width:15px!important;height:15px!important;min-width:0!important;min-height:0!important;max-width:15px!important;max-height:15px!important;aspect-ratio:1;border:2px solid white;border-radius:50%;background:#858094;box-shadow:0 0 0 1px #333;transform:translate(-50%,-50%);top:50%;pointer-events:none}
+.reader .zoom-controls output{position:absolute;clip-path:inset(50%);width:1px;height:1px;overflow:hidden}
+@media(max-width:900px){.reader .zoom-controls{flex-basis:205px;width:205px;height:44px}.toolbar #count .bd-number{width:18px;height:23px;flex-basis:18px}.toolbar #count .bd-label{width:34px;flex-basis:34px}.toolbar #count .bd-separator{width:6px;height:21px;flex-basis:6px}}
 </style></head><body><a class="back" href="./index.html">← Bureau</a><section class="choice" id="choice"><div class="choice-hotspots" id="hotspots" aria-label="Choisir une BD"></div><div class="choice-actions"><button id="openPdf">Choisir une BD (1 à 8)</button></div></section><section class="reader" id="reader"><div class="book"><img class="book-decoration" src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/BD/LIVRE.png" alt=""><div class="page-spread"><div class="page" id="leftPage"><img id="left" alt="Page de gauche"><canvas id="leftCanvas"></canvas></div><div class="page" id="rightPage"><img id="right" alt="Page de droite"><canvas id="rightCanvas"></canvas></div><div class="page-turn" id="turn"><img id="turnImage" alt=""></div></div></div><div class="toolbar"><button id="prev">◀ Précédent</button><span id="count"></span><button id="next">Suivant ▶</button><div class="zoom-controls" aria-label="Réglage du zoom"><label for="zoomRange">🔍</label><button id="zoomOut" title="Dézoomer" aria-label="Dézoomer">−</button><input id="zoomRange" type="range" min="100" max="350" step="10" value="100" aria-label="Niveau de zoom"><button id="zoomIn" title="Zoomer" aria-label="Zoomer">+</button><output id="zoomValue" for="zoomRange">100 %</output><button id="resetZoom" title="Revenir immédiatement à 100 %">↩ 100 %</button></div><button id="return">Choix</button></div><div class="help">Flèches du clavier pour tourner les pages</div></section><section class="pdfs" id="pdfs"><div class="pdf-grid" id="pdfGrid"></div><button id="pdfBack">Retour au choix</button></section><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script><script>
 
 const propRoot='https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/PROPS/';
@@ -173,7 +125,7 @@ function renderMagnifier(){
  bookElement.style.transform='translate('+zoomX+'px,'+zoomY+'px) scale('+zoomScale+')';
  bookElement.classList.toggle('zoomed',zoomScale>1);
  zoomRange.value=String(Math.round(zoomScale*100));
- drawnThumb.style.left=(35+(zoomScale-1)/2.5*32)+'%';
+ drawnThumb.style.left=(36+(zoomScale-1)/2.5*24)+'%';
  zoomValue.textContent=Math.round(zoomScale*100)+' %';
  resetButton.disabled=zoomScale===1;
 }
