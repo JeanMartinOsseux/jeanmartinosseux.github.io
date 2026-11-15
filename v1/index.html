@@ -62,7 +62,7 @@ function openLinks(){
  content.replaceChildren();content.style.cssText="padding:0;overflow:hidden;flex:1;background:transparent;display:flex;align-items:center;justify-content:center";
  win.style.width="min(1450px,98vw)";win.style.height="min(880px,94vh)";win.style.left="max(0px,calc(50% - min(725px,49vw)))";win.style.top="2%";
  const stage=document.createElement("div");stage.style.cssText="position:relative;width:100%;max-width:1400px;aspect-ratio:16/9;flex-shrink:0;background:transparent";
- const tree=document.createElement("img");tree.src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/liens/LIENSARBRE.png";tree.alt="Arbre des liens";tree.style.cssText="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;mix-blend-mode:screen";stage.append(tree);
+ const tree=document.createElement("img");tree.src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/liens/LIENSARBRE.png";tree.alt="Arbre des liens";tree.style.cssText="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transform:scaleX(1.23);transform-origin:center center;pointer-events:none;mix-blend-mode:screen";stage.append(tree);
  const propBase="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/PROPS/liens/";
  const links=[
  ["SoundCloud DJ JeanMa","https://soundcloud.com/djjeanma-75865563",34,38,"PROPS_0041_SOUNDCLOUD-DJ-JEANMA.png"],
