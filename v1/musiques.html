@@ -33,9 +33,38 @@
 #jeanma .music-actions{position:absolute;z-index:3;bottom:8%;left:50%;transform:translateX(-50%);display:flex;gap:10px}
 #jeanma .music-actions button{background:#eee;border:1px solid #777;padding:5px 12px;color:#111;font-size:12px;white-space:nowrap}
 @media(max-width:700px){#jeanma .player-layout{grid-template-columns:40% 58%;width:92vw;padding:4vh 3vw 1vh}#jeanma #albums{grid-template-columns:repeat(3,1fr);height:75%;gap:4px}#jeanma .album-button img{width:min(60%,65px)}#jeanma .album-button{font-size:10px;padding:3px}#jeanma .playlist{max-height:34vh}#jeanma .music-actions{bottom:5%}}
+
+/* Interface musique : illustration unique étirée, zones blanches et commandes dessinées */
+#jeanma.music::before{display:none}
+#jeanma .art-frame{position:absolute;inset:2.5% 6%;background:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/PROPS/PROPS_0012_MUSIQUES.png') center/100% 100% no-repeat;pointer-events:none;z-index:0}
+#jeanma .choice-button-mask{position:absolute;left:23%;width:52%;top:83%;height:10%;background:white;display:block}
+#jeanma.album-open .choice-button-mask{display:none}
+#jeanma .detail-title-mask{display:none;position:absolute;left:3.5%;width:53%;top:8.7%;height:10%;background:white}
+#jeanma.album-open .detail-title-mask{display:block}
+#jeanma .drawn-transport{display:none;position:absolute;inset:0;pointer-events:none}
+#jeanma.album-open .drawn-transport{display:block}
+#jeanma .drawn-transport button{position:absolute;top:83%;height:9%;width:10%;border:0;background:transparent;pointer-events:auto;cursor:pointer;font-size:0}
+#jeanma .drawn-transport button:hover{background:#00000015}
+#jeanma #draw-prev{left:23%}#jeanma #draw-play{left:35%}#jeanma #draw-pause{left:46%}#jeanma #draw-next{left:57%}
+#jeanma .player-layout{width:70vw;height:64vh;max-height:64vh;padding:0;grid-template-columns:42% 56%;gap:2%;transform:translateY(-2vh)}
+#jeanma:not(.album-open) .player-layout{width:64vw;height:57vh;transform:translateY(-1vh)}
+#jeanma:not(.album-open) .panel{padding:0;width:100%}
+#jeanma #albums{height:100%;grid-template-columns:repeat(5,minmax(0,1fr));gap:1%;align-items:center}
+#jeanma .album-button{height:78%;max-height:230px;min-width:0;padding:5px;font-size:clamp(10px,.8vw,14px)}
+#jeanma .album-button img{width:min(82%,95px)}
+#jeanma.album-open .deck{height:75%;max-height:58vh}
+#jeanma.album-open .panel{padding:0 3%;height:100%;justify-content:center}
+#jeanma .playlist{max-height:33vh}
+#jeanma .music-actions{bottom:13%;gap:10px}
+#jeanma .music-actions button{border:0;background:transparent;color:transparent;font-size:0;width:115px;height:42px;position:relative;overflow:hidden}
+#jeanma .music-actions button::before{content:"";position:absolute;inset:0;background:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/PROPS/PROPS_0076_PRECEDANT.png') center/100% 100% no-repeat}
+#jeanma .music-actions button:last-child::before{background-image:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/PROPS/PROPS_0031_CHOIX.png')}
+#jeanma .music-actions button{color:#111;font-size:11px;background:#fff;border:1px solid #111}
+#jeanma .music-actions button::before{display:none}
+@media(max-width:700px){#jeanma .player-layout{width:75vw;height:61vh;grid-template-columns:40% 58%}#jeanma:not(.album-open) .player-layout{width:72vw}#jeanma #albums{grid-template-columns:repeat(3,1fr);gap:4px}#jeanma .album-button{height:95%;max-height:120px}#jeanma .music-actions{bottom:10%}}
 </style></head><body><a class="back" href="./index.html">← Bureau</a>
 <section class="screen" id="choice"><div class="choice"><img src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/music/CHOIX.png" alt="Choix entre Prisonniers du Micro et DJ JeanMa" onerror="this.style.display='none'"><button class="pdm" aria-label="Prisonniers du Micro" onclick="show('pdm')">PDM</button><button class="jeanma" aria-label="DJ JeanMa" onclick="show('jeanma')">DJ JeanMa</button></div><div class="fallback"><button onclick="show('pdm')">Prisonniers du Micro</button><button onclick="show('jeanma')">DJ JeanMa</button></div></section>
-<section class="screen music hidden" id="jeanma"><div class="player-layout"><div class="deck"><img src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/music/CDPLAYER.png" alt="Lecteur CD"><div class="cd-art" id="cd-art"><img id="cover" alt="Pochette du disque"></div></div><div class="panel"><div id="albums"></div><div id="player-detail" class="hidden"><div id="playlist"></div><div class="nowplaying" id="nowplaying">Sélectionne un disque</div><audio id="audio" controls preload="none"></audio><div class="transport"><button id="previous" aria-label="Piste précédente">⏮ Précédent</button><button id="next" aria-label="Piste suivante">Suivant ⏭</button></div></div></div><div class="music-actions"><button id="back-albums" class="hidden" onclick="backToAlbums()">← Disques</button><button onclick="show('choice')">← Choix musical</button></div></div></section>
+<section class="screen music hidden" id="jeanma"><div class="art-frame"><div class="choice-button-mask"></div><div class="detail-title-mask"></div><div class="drawn-transport"><button id="draw-prev" aria-label="Morceau précédent"></button><button id="draw-play" aria-label="Lecture"></button><button id="draw-pause" aria-label="Pause"></button><button id="draw-next" aria-label="Morceau suivant"></button></div></div><div class="player-layout"><div class="deck"><img src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/music/CDPLAYER.png" alt="Lecteur CD"><div class="cd-art" id="cd-art"><img id="cover" alt="Pochette du disque"></div></div><div class="panel"><div id="albums"></div><div id="player-detail" class="hidden"><div id="playlist"></div><div class="nowplaying" id="nowplaying">Sélectionne un disque</div><audio id="audio" controls preload="none"></audio><div class="transport hidden"><button id="previous" aria-label="Piste précédente">⏮ Précédent</button><button id="next" aria-label="Piste suivante">Suivant ⏭</button></div></div></div><div class="music-actions"><button id="back-albums" class="hidden" onclick="backToAlbums()">← Disques</button><button onclick="show('choice')">← Choix musical</button></div></div></section>
 <section class="screen pdm-screen hidden" id="pdm"><div class="pdm-links"><h1>Prisonniers du Micro</h1><div class="pdm-videos"><iframe src="https://www.youtube-nocookie.com/embed/XTmM7M4Q3FI" title="Prisonniers du Micro — vidéo 1" loading="lazy" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><iframe src="https://www.youtube-nocookie.com/embed/AY1q6CbuNyE" title="Prisonniers du Micro — vidéo 2" loading="lazy" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div><div class="pdm-social"><a href="https://soundcloud.com/prisonniers-du-micro" target="_blank" rel="noopener">SoundCloud</a><a href="https://www.youtube.com/@PrisonniersduMicro" target="_blank" rel="noopener">YouTube</a></div><button class="back-choice" onclick="show('choice')">← Choix musical</button></div></section>
 <script>
 const base="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/music/",albums=[{"title":"Окружающий мир","dir":"projet_1","tracks":["окружающий мир.mp3"]},{"title":"Freestyle de la Soirusse bénite","dir":"projet_2","tracks":["freestyle de la soirusse bénite.mp3"]},{"title":"Monologue du Troisième État","dir":"projet_3","tracks":["00 intro.mp3","1 - ya rodilsya.mp3","2 - cherniy youmor .mp3","3 - muravied.mp3","3.5 - interlude 1.mp3","4 - talkie walking.mp3","4.5 - 2 edulretni.mp3","5 - nature étoilée .mp3","6 - kaleidoscope.mp3","7 - blessures soignées.mp3","zz - outro.mp3"]},{"title":"Réflexions sur l'État Post-Tiers","dir":"projet_4","tracks":["0 - intro.mp3","1 - en mode c'est bien la bas.mp3","2 - doublon d'une pate terne (feat. Pyotross).mp3","3 - edit of the doesn't matter (feat. Big LR).mp3","4 - voskresofon (feat. souche).mp3","5 - prosnulsya v psihushke.mp3","6 - outro.mp3"]}];
@@ -49,5 +78,9 @@ function selectTrack(j){if(albumIndex<0)return;const isExclu=albumIndex===4;cons
 function move(delta){if(albumIndex<0)return;const length=albumIndex===4?1:albums[albumIndex].tracks.length;if(trackIndex<0){selectTrack(0);return}selectTrack((trackIndex+delta+length)%length)}
 audio.addEventListener('play',()=>cd.classList.add('playing'));['pause','ended','emptied'].forEach(ev=>audio.addEventListener(ev,()=>cd.classList.remove('playing')));audio.addEventListener('ended',()=>{const length=albumIndex===4?1:albums[albumIndex].tracks.length;if(trackIndex+1<length)selectTrack(trackIndex+1)});
 document.getElementById('previous').onclick=()=>move(-1);document.getElementById('next').onclick=()=>move(1);
+document.getElementById('draw-prev').onclick=()=>move(-1);
+document.getElementById('draw-next').onclick=()=>move(1);
+document.getElementById('draw-play').onclick=()=>{if(trackIndex<0)selectTrack(0);else audio.play().catch(()=>{})};
+document.getElementById('draw-pause').onclick=()=>audio.pause();
 [...albums,{title:'Exclu',dir:null}].forEach((a,i)=>{const b=document.createElement('button');b.className='album-button';const img=document.createElement('img');img.src=i===4?url('CDTOURNE.png'):url(a.dir+'/pochette.jpg');img.alt='';const label=document.createElement('span');label.textContent=a.title;b.append(img,label);b.onclick=()=>selectAlbum(i);albumBox.append(b)});
 </script></body></html>
