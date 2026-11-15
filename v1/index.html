@@ -27,6 +27,12 @@ body.powered-off #screen-off{display:block}
 .taskbar .start{position:absolute;left:1.2%;top:0;width:4.7%;min-width:0;height:100%;z-index:2}
 .taskbar .refresh-button{position:absolute;left:6.0%;top:0;width:5.7%;height:100%;border:0;padding:0;background:transparent;color:transparent;font-size:0;cursor:pointer;z-index:2}
 .taskbar .start:hover,.taskbar .refresh-button:hover{background:#ffffff25}
+
+/* Contenu interactif au-dessus du dessin de fenêtre, sans fond opaque */
+.window .content{z-index:5;background:transparent!important}
+.window .content[style]{background:transparent!important}
+.window .titlebar{z-index:6}
+.window .close{z-index:7}
 </style></head><body>
 <main class="desktop" id="desktop"></main>
 <section class="window hidden" id="window" aria-label="Fenêtre du musée"><div class="titlebar" id="titlebar"><span id="windowtitle">Musée numérique</span><button class="close" id="close" aria-label="Fermer">✕</button></div><div class="content" id="content"></div></section>
