@@ -52,6 +52,15 @@
 .zoom-controls #zoomValue{position:absolute;clip-path:inset(50%);width:1px;height:1px;overflow:hidden}
 .zoom-controls #resetZoom{right:1%;width:18%}
 @media(max-width:900px){.zoom-controls{width:205px;min-width:205px;height:44px;min-height:44px}.toolbar #count .bd-separator{width:6px!important;height:21px!important;flex-basis:6px}}
+
+/* Zoom : garder le dessin visible, supprimer la seconde piste native superposée */
+.zoom-controls #zoomRange{appearance:none;-webkit-appearance:none;background:transparent!important;position:absolute;left:36%;top:25%;width:34%;height:50%;margin:0;cursor:pointer;outline-offset:2px}
+.zoom-controls #zoomRange::-webkit-slider-runnable-track{height:4px;background:transparent;border:0;box-shadow:none}
+.zoom-controls #zoomRange::-moz-range-track{height:4px;background:transparent;border:0;box-shadow:none}
+.zoom-controls #zoomRange::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:15px;height:15px;border:2px solid white;border-radius:50%;background:#7c788d;box-shadow:0 0 0 1px #333;margin-top:-5px}
+.zoom-controls #zoomRange::-moz-range-thumb{width:13px;height:13px;border:2px solid white;border-radius:50%;background:#7c788d;box-shadow:0 0 0 1px #333}
+.zoom-controls #zoomOut{left:2%;width:16%}
+.zoom-controls #zoomIn{left:60%;width:14%}
 </style></head><body><a class="back" href="./index.html">← Bureau</a><section class="choice" id="choice"><div class="choice-hotspots" id="hotspots" aria-label="Choisir une BD"></div><div class="choice-actions"><button id="openPdf">Choisir une BD (1 à 8)</button></div></section><section class="reader" id="reader"><div class="book"><img class="book-decoration" src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/BD/LIVRE.png" alt=""><div class="page-spread"><div class="page" id="leftPage"><img id="left" alt="Page de gauche"><canvas id="leftCanvas"></canvas></div><div class="page" id="rightPage"><img id="right" alt="Page de droite"><canvas id="rightCanvas"></canvas></div><div class="page-turn" id="turn"><img id="turnImage" alt=""></div></div></div><div class="toolbar"><button id="prev">◀ Précédent</button><span id="count"></span><button id="next">Suivant ▶</button><div class="zoom-controls" aria-label="Réglage du zoom"><label for="zoomRange">🔍</label><button id="zoomOut" title="Dézoomer" aria-label="Dézoomer">−</button><input id="zoomRange" type="range" min="100" max="350" step="10" value="100" aria-label="Niveau de zoom"><button id="zoomIn" title="Zoomer" aria-label="Zoomer">+</button><output id="zoomValue" for="zoomRange">100 %</output><button id="resetZoom" title="Revenir immédiatement à 100 %">↩ 100 %</button></div><button id="return">Choix</button></div><div class="help">Flèches du clavier pour tourner les pages</div></section><section class="pdfs" id="pdfs"><div class="pdf-grid" id="pdfGrid"></div><button id="pdfBack">Retour au choix</button></section><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script><script>
 
 const propRoot='https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/PROPS/';
