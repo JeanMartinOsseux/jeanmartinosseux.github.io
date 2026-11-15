@@ -64,6 +64,21 @@
 #jeanma .playlist{max-height:27vh}
 #jeanma #audio{height:38px}
 @media(max-width:700px){#jeanma .art-frame{left:9%;width:82%}#jeanma .panel{left:15%;width:70%}#jeanma.album-open .art-frame{left:47%;width:50%}#jeanma.album-open .panel{left:52%;width:40%}#jeanma.album-open .deck{left:1%;width:45%}.back{left:6px;top:6px;width:104px;height:36px}#jeanma .music-actions,#jeanma.album-open .music-actions{left:119px;top:6px}#jeanma .music-actions button{width:100px;height:36px}}
+
+/* V14: layout dimensions use the actual visible content and no off-frame masks */
+#jeanma .art-frame{left:13%;top:3%;width:74%;height:93%;overflow:hidden}
+#jeanma .panel{left:18%;top:27%;width:64%;height:44%}
+#jeanma .choice-button-mask{left:3%;top:83%;width:94%;height:13%;background:#fff}
+#jeanma.album-open .art-frame{left:48%;top:5%;width:49%;height:89%;overflow:hidden}
+#jeanma.album-open .panel{left:53%;top:26%;width:39%;height:48%}
+#jeanma.album-open .deck{left:3%;top:17%;width:42%;height:77%}
+#jeanma.album-open .detail-title-mask{left:3%;top:12%;width:94%;height:12%;background:#fff}
+#jeanma .album-button{min-width:0;max-width:100%;height:100%;overflow:hidden}
+#jeanma .album-button img{max-width:85%;max-height:52%}
+#jeanma .playlist{max-height:30vh;overflow:auto}
+#jeanma .song-button{max-width:100%;white-space:normal}
+#jeanma .drawn-transport button{top:82%;height:13%}
+@media(max-width:700px){#jeanma .art-frame{left:4%;width:92%}#jeanma .panel{left:9%;width:82%}#jeanma.album-open .art-frame{left:43%;width:55%}#jeanma.album-open .panel{left:48%;width:45%}}
 </style></head><body><a class="back" href="./index.html">← Bureau</a>
 <section class="screen" id="choice"><div class="choice"><img src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/music/CHOIX.png" alt="Choix entre Prisonniers du Micro et DJ JeanMa" onerror="this.style.display='none'"><button class="pdm" aria-label="Prisonniers du Micro" onclick="show('pdm')">PDM</button><button class="jeanma" aria-label="DJ JeanMa" onclick="show('jeanma')">DJ JeanMa</button></div><div class="fallback"><button onclick="show('pdm')">Prisonniers du Micro</button><button onclick="show('jeanma')">DJ JeanMa</button></div></section>
 <section class="screen music hidden" id="jeanma"><div class="art-frame"><div class="choice-button-mask"></div><div class="detail-title-mask"></div><div class="drawn-transport"><button id="draw-prev" aria-label="Morceau précédent"></button><button id="draw-play" aria-label="Lecture"></button><button id="draw-pause" aria-label="Pause"></button><button id="draw-next" aria-label="Morceau suivant"></button></div></div><div class="player-layout"><div class="deck"><img src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/music/CDPLAYER.png" alt="Lecteur CD"><div class="cd-art" id="cd-art"><img id="cover" alt="Pochette du disque"></div></div><div class="panel"><div id="albums"></div><div id="player-detail" class="hidden"><div id="playlist"></div><div class="nowplaying" id="nowplaying">Sélectionne un disque</div><audio id="audio" controls preload="none"></audio><div class="transport hidden"><button id="previous" aria-label="Piste précédente">⏮ Précédent</button><button id="next" aria-label="Piste suivante">Suivant ⏭</button></div></div></div><div class="music-actions"><button id="back-albums" class="hidden" onclick="backToAlbums()" aria-label="Retour aux disques"></button><button id="back-choice-music" onclick="musicChoiceAction()" aria-label="Retour au choix musical"></button></div></div></section>
