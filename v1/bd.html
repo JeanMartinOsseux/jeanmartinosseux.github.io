@@ -61,6 +61,10 @@
 .zoom-controls #zoomRange::-moz-range-thumb{width:13px;height:13px;border:2px solid white;border-radius:50%;background:#7c788d;box-shadow:0 0 0 1px #333}
 .zoom-controls #zoomOut{left:2%;width:16%}
 .zoom-controls #zoomIn{left:60%;width:14%}
+
+/* Curseur du zoom calé sur la ligne dessinée : poignée indépendante du navigateur */
+.zoom-controls #zoomRange{position:absolute!important;left:35%!important;top:26%!important;width:32%!important;height:48%!important;opacity:0!important;z-index:5!important;cursor:pointer}
+.zoom-controls .drawn-thumb{position:absolute;left:35%;top:50%;width:17px;height:17px;border-radius:50%;background:#858094;border:2px solid white;box-shadow:0 0 0 1px #333;transform:translate(-50%,-50%);pointer-events:none;z-index:6}
 </style></head><body><a class="back" href="./index.html">← Bureau</a><section class="choice" id="choice"><div class="choice-hotspots" id="hotspots" aria-label="Choisir une BD"></div><div class="choice-actions"><button id="openPdf">Choisir une BD (1 à 8)</button></div></section><section class="reader" id="reader"><div class="book"><img class="book-decoration" src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/BD/LIVRE.png" alt=""><div class="page-spread"><div class="page" id="leftPage"><img id="left" alt="Page de gauche"><canvas id="leftCanvas"></canvas></div><div class="page" id="rightPage"><img id="right" alt="Page de droite"><canvas id="rightCanvas"></canvas></div><div class="page-turn" id="turn"><img id="turnImage" alt=""></div></div></div><div class="toolbar"><button id="prev">◀ Précédent</button><span id="count"></span><button id="next">Suivant ▶</button><div class="zoom-controls" aria-label="Réglage du zoom"><label for="zoomRange">🔍</label><button id="zoomOut" title="Dézoomer" aria-label="Dézoomer">−</button><input id="zoomRange" type="range" min="100" max="350" step="10" value="100" aria-label="Niveau de zoom"><button id="zoomIn" title="Zoomer" aria-label="Zoomer">+</button><output id="zoomValue" for="zoomRange">100 %</output><button id="resetZoom" title="Revenir immédiatement à 100 %">↩ 100 %</button></div><button id="return">Choix</button></div><div class="help">Flèches du clavier pour tourner les pages</div></section><section class="pdfs" id="pdfs"><div class="pdf-grid" id="pdfGrid"></div><button id="pdfBack">Retour au choix</button></section><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script><script>
 
 const propRoot='https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/PROPS/';
@@ -147,6 +151,7 @@ function move(dir){const max=Math.ceil(sets[book].length/2)-1;spread=Math.max(0,
 const bookElement=document.querySelector('.book');
 const zoomRange=document.getElementById('zoomRange'),zoomValue=document.getElementById('zoomValue');
 const resetButton=document.getElementById('resetZoom');
+const drawnThumb=document.createElement('span');drawnThumb.className='drawn-thumb';document.querySelector('.zoom-controls').append(drawnThumb);
 let zoomScale=1,zoomX=0,zoomY=0,dragState=null;
 function clampMagnifier(){
  const w=bookElement.offsetWidth,h=bookElement.offsetHeight;
@@ -157,6 +162,7 @@ function renderMagnifier(){
  bookElement.style.transform='translate('+zoomX+'px,'+zoomY+'px) scale('+zoomScale+')';
  bookElement.classList.toggle('zoomed',zoomScale>1);
  zoomRange.value=String(Math.round(zoomScale*100));
+ drawnThumb.style.left=(35+(zoomScale-1)/2.5*32)+'%';
  zoomValue.textContent=Math.round(zoomScale*100)+' %';
  resetButton.disabled=zoomScale===1;
 }
