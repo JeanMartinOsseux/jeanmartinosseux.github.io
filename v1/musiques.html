@@ -62,6 +62,31 @@
 #jeanma .playlist{max-height:30vh}
 #jeanma .drawn-transport button{top:84%;height:10%}
 @media(max-width:700px){#jeanma .art-frame{left:2%;width:96%}#jeanma.album-open .art-frame{left:43%;width:56%}#jeanma .panel{left:8%;width:84%}#jeanma.album-open .panel{left:49%;width:46%}#jeanma .deck{left:0;width:44%}.back{left:8px;top:8px;width:110px;height:36px}#jeanma .music-actions,#jeanma.album-open .music-actions{left:123px;top:8px}#jeanma .music-actions button{width:95px;height:36px}}
+
+/* V10: coherent viewport coordinate system, no content outside painted window */
+#jeanma .art-frame{left:15%;top:3%;width:70%;height:92%;background-size:100% 100%}
+#jeanma.album-open .art-frame{left:52%;top:5%;width:40%;height:87%}
+#jeanma .panel{left:20%;top:30%;width:60%;height:37%;overflow:hidden;justify-content:center}
+#jeanma #albums{gap:7px;grid-template-columns:repeat(5,minmax(0,1fr));height:100%}
+#jeanma .album-button{height:100%;min-height:0;padding:5px 3px;font-size:clamp(10px,.82vw,14px);overflow:hidden}
+#jeanma .album-button img{width:min(85%,110px);height:auto;max-height:58%;object-fit:contain}
+#jeanma.album-open .panel{left:56%;top:24%;width:32%;height:52%;justify-content:center}
+#jeanma .playlist{max-height:33vh;overflow-y:auto}
+#jeanma .song-button{padding:5px;margin:2px 0;font-size:clamp(10px,.82vw,14px)}
+#jeanma #audio{width:100%;height:38px}
+#jeanma .nowplaying{max-width:100%}
+#jeanma .deck{left:5%;top:17%;width:38%;height:73%}
+#jeanma .cd-art{left:50%!important;top:41%!important;width:52%!important}
+#jeanma .choice-button-mask{left:19%;top:82%;width:62%;height:12%;background:#fff}
+#jeanma .detail-title-mask{left:3%;top:10%;width:76%;height:13%;background:#fff}
+#jeanma .drawn-transport button{top:83%;height:11%}
+#jeanma #draw-prev{left:19%}#jeanma #draw-play{left:33%}#jeanma #draw-pause{left:46%}#jeanma #draw-next{left:59%}
+.back{top:14px;left:18px;width:125px;height:32px;overflow:visible}
+.back::before{background-size:contain;background-position:left top}
+#jeanma .music-actions,#jeanma.album-open .music-actions{top:14px;left:160px}
+#jeanma .music-actions button{width:116px;height:32px;overflow:visible}
+#jeanma .music-actions button::before{background-size:contain;background-position:left top}
+@media(max-width:700px){#jeanma .art-frame{left:5%;width:90%}#jeanma.album-open .art-frame{left:46%;width:52%}#jeanma .panel{left:11%;width:78%}#jeanma.album-open .panel{left:52%;width:42%}#jeanma #albums{grid-template-columns:repeat(5,minmax(0,1fr))}#jeanma .album-button{font-size:9px}#jeanma .album-button img{width:85%}#jeanma .deck{left:1%;width:43%}.back{left:8px;top:8px;width:108px;height:30px}#jeanma .music-actions,#jeanma.album-open .music-actions{left:124px;top:8px}#jeanma .music-actions button{width:94px;height:30px}}
 </style></head><body><a class="back" href="./index.html">← Bureau</a>
 <section class="screen" id="choice"><div class="choice"><img src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/music/CHOIX.png" alt="Choix entre Prisonniers du Micro et DJ JeanMa" onerror="this.style.display='none'"><button class="pdm" aria-label="Prisonniers du Micro" onclick="show('pdm')">PDM</button><button class="jeanma" aria-label="DJ JeanMa" onclick="show('jeanma')">DJ JeanMa</button></div><div class="fallback"><button onclick="show('pdm')">Prisonniers du Micro</button><button onclick="show('jeanma')">DJ JeanMa</button></div></section>
 <section class="screen music hidden" id="jeanma"><div class="art-frame"><div class="choice-button-mask"></div><div class="detail-title-mask"></div><div class="drawn-transport"><button id="draw-prev" aria-label="Morceau précédent"></button><button id="draw-play" aria-label="Lecture"></button><button id="draw-pause" aria-label="Pause"></button><button id="draw-next" aria-label="Morceau suivant"></button></div></div><div class="player-layout"><div class="deck"><img src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/music/CDPLAYER.png" alt="Lecteur CD"><div class="cd-art" id="cd-art"><img id="cover" alt="Pochette du disque"></div></div><div class="panel"><div id="albums"></div><div id="player-detail" class="hidden"><div id="playlist"></div><div class="nowplaying" id="nowplaying">Sélectionne un disque</div><audio id="audio" controls preload="none"></audio><div class="transport hidden"><button id="previous" aria-label="Piste précédente">⏮ Précédent</button><button id="next" aria-label="Piste suivante">Suivant ⏭</button></div></div></div><div class="music-actions"><button id="back-albums" class="hidden" onclick="backToAlbums()" aria-label="Retour aux disques"></button><button id="back-choice-music" onclick="musicChoiceAction()" aria-label="Retour au choix musical"></button></div></div></section>
