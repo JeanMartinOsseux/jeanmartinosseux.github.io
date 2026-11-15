@@ -19,10 +19,18 @@
 .taskbar::before{content:"";position:absolute;z-index:-1;pointer-events:none;left:-.63%;top:-387.5%;width:101.27%;height:937.5%;background:url("https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/PROPS/PROPS_0030_BARRE.png") center/100% 100% no-repeat}
 .taskbar .start{height:100%;width:5.2%;min-width:55px;padding:0;border:0;background:transparent;color:transparent;font-size:0;cursor:pointer}
 .taskbar .tasktitle{display:none}
+
+/* Les deux boutons dessinés de la barre restent interactifs même écran éteint. */
+#screen-off{display:none;position:fixed;inset:0 0 36px;background:#000;z-index:9000}
+body.powered-off #screen-off{display:block}
+.taskbar{z-index:9001;position:fixed}
+.taskbar .start{position:absolute;left:1.2%;top:0;width:4.7%;min-width:0;height:100%;z-index:2}
+.taskbar .refresh-button{position:absolute;left:6.0%;top:0;width:5.7%;height:100%;border:0;padding:0;background:transparent;color:transparent;font-size:0;cursor:pointer;z-index:2}
+.taskbar .start:hover,.taskbar .refresh-button:hover{background:#ffffff25}
 </style></head><body>
 <main class="desktop" id="desktop"></main>
 <section class="window hidden" id="window" aria-label="Fenêtre du musée"><div class="titlebar" id="titlebar"><span id="windowtitle">Musée numérique</span><button class="close" id="close" aria-label="Fermer">✕</button></div><div class="content" id="content"></div></section>
-<footer class="taskbar"><button class="start" id="start">● démarrer</button><span class="tasktitle">JEAN MARTIN OSSEUX — V1 en construction</span></footer>
+<div id="screen-off" aria-hidden="true"></div><footer class="taskbar"><button class="start" id="start" title="Éteindre / rallumer l’écran" aria-label="Éteindre ou rallumer l’écran">Éteindre</button><button class="refresh-button" id="refresh-button" title="Actualiser la page (F5)" aria-label="Actualiser la page">F5</button><span class="tasktitle">JEAN MARTIN OSSEUX — V1 en construction</span></footer>
 <script>
 const sections=[["Illustrations","🖼️","01_ILLUS"],["Films","📺","02_FILMS"],["Musiques","💿","03_MUSIQUES"],["BD","📖","04_BD"],["Photos","📷","05_PHOTO"],["Liens","🌳","06_LIENS"],["Pro","🗂️","07_PRO"],["Textes","📝","08_TEXTE"],["Carnets","✏️","09_CARNETS_DE_CROQUIS"],["Zinzine Online","🐸","10_ZINZINE_ONLINE"]];
 const desktop=document.querySelector("#desktop"),win=document.querySelector("#window"),content=document.querySelector("#content");
@@ -66,6 +74,7 @@ function openLinks(){
 function openZinzine(){document.querySelector("#windowtitle").textContent="Zinzine Online";content.replaceChildren();content.style.background="#fff";content.style.display="flex";content.style.alignItems="center";content.style.justifyContent="center";const link=document.createElement("a");link.href="https://fanzinzine.neocities.org/";link.target="_blank";link.rel="noopener noreferrer";link.title="Ouvrir Zinzine Online";const img=document.createElement("img");img.src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/zinzine/IMG.png";img.alt="Zinzine Online";img.style.cssText="display:block;width:min(100%,500px);height:auto;cursor:pointer";link.append(img);content.append(link);win.style.width="min(620px,85vw)";win.style.height="min(390px,65vh)";win.style.left="max(0px,calc(50% - 310px))";win.style.top="15%";win.classList.remove("hidden")}
 function openSection(name,id){content.style.background="";content.style.display="";content.style.alignItems="";content.style.justifyContent="";document.querySelector("#windowtitle").textContent=name;content.replaceChildren();const h=document.createElement("h1");h.textContent=name;const p=document.createElement("div");p.className="notice";p.textContent="Section "+id+" — structure interactive initiale. Les décors, assets et liens du ZIP seront intégrés dans la prochaine étape.";content.append(h,p);win.classList.remove("hidden")}
 document.querySelector("#close").onclick=()=>win.classList.add("hidden");
-document.querySelector("#start").onclick=()=>openSection("Bienvenue","00_GLOBAL");
+document.querySelector("#start").onclick=()=>{const off=document.body.classList.toggle("powered-off");document.querySelector("#screen-off").setAttribute("aria-hidden",String(!off));};
+document.querySelector("#refresh-button").onclick=()=>window.location.reload();
 let drag=false,dx=0,dy=0;const bar=document.querySelector("#titlebar");bar.addEventListener("pointerdown",e=>{if(e.target.closest("button"))return;drag=true;dx=e.clientX-win.offsetLeft;dy=e.clientY-win.offsetTop;bar.setPointerCapture(e.pointerId)});bar.addEventListener("pointermove",e=>{if(!drag)return;win.style.left=Math.max(0,Math.min(innerWidth-win.offsetWidth,e.clientX-dx))+"px";win.style.top=Math.max(0,Math.min(innerHeight-win.offsetHeight-36,e.clientY-dy))+"px"});bar.addEventListener("pointerup",()=>drag=false);
 </script></body></html>
