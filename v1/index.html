@@ -21,7 +21,7 @@
 .taskbar .tasktitle{display:none}
 
 /* Les deux boutons dessinés de la barre restent interactifs même écran éteint. */
-#screen-off{display:none;position:fixed;inset:0 0 36px;background:#000;z-index:9000}
+#screen-off{display:none;position:fixed;inset:0;background:#000;z-index:9000}
 body.powered-off #screen-off{display:block}
 .taskbar{z-index:9001;position:fixed}
 .taskbar .start{position:absolute;left:1.2%;top:0;width:4.7%;min-width:0;height:100%;z-index:2}
@@ -59,10 +59,10 @@ function showGallery(){
 }
 function openLinks(){
  document.querySelector("#windowtitle").textContent="Liens — Arbre des connexions";
- content.replaceChildren();content.style.cssText="padding:0;overflow:auto;flex:1;background:#050b10;display:flex;align-items:center;justify-content:center";
+ content.replaceChildren();content.style.cssText="padding:0;overflow:hidden;flex:1;background:transparent;display:flex;align-items:center;justify-content:center";
  win.style.width="min(1120px,94vw)";win.style.height="min(740px,88vh)";win.style.left="max(0px,calc(50% - min(560px,47vw)))";win.style.top="5%";
- const stage=document.createElement("div");stage.style.cssText="position:relative;width:100%;max-width:1100px;aspect-ratio:16/9;flex-shrink:0;background:#050b10";
- const tree=document.createElement("img");tree.src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/liens/LIENSARBRE.png";tree.alt="Arbre des liens";tree.style.cssText="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none";stage.append(tree);
+ const stage=document.createElement("div");stage.style.cssText="position:relative;width:100%;max-width:1100px;aspect-ratio:16/9;flex-shrink:0;background:transparent";
+ const tree=document.createElement("img");tree.src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/liens/LIENSARBRE.png";tree.alt="Arbre des liens";tree.style.cssText="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;mix-blend-mode:screen";stage.append(tree);
  const links=[
  ["SoundCloud DJ JeanMa","https://soundcloud.com/djjeanma-75865563",34,38],
  ["SoundCloud PDM","https://soundcloud.com/prisonniers-du-micro",42,27],
@@ -78,7 +78,7 @@ function openLinks(){
  content.append(stage);win.classList.remove("hidden");
 }
 function openZinzine(){document.querySelector("#windowtitle").textContent="Zinzine Online";content.replaceChildren();content.style.background="#fff";content.style.display="flex";content.style.alignItems="center";content.style.justifyContent="center";const link=document.createElement("a");link.href="https://fanzinzine.neocities.org/";link.target="_blank";link.rel="noopener noreferrer";link.title="Ouvrir Zinzine Online";const img=document.createElement("img");img.src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/zinzine/IMG.png";img.alt="Zinzine Online";img.style.cssText="display:block;width:min(100%,500px);height:auto;cursor:pointer";link.append(img);content.append(link);win.style.width="min(620px,85vw)";win.style.height="min(390px,65vh)";win.style.left="max(0px,calc(50% - 310px))";win.style.top="15%";win.classList.remove("hidden")}
-function openSection(name,id){content.style.background="";content.style.display="";content.style.alignItems="";content.style.justifyContent="";document.querySelector("#windowtitle").textContent=name;content.replaceChildren();const h=document.createElement("h1");h.textContent=name;const p=document.createElement("div");p.className="notice";p.textContent="Section "+id+" — structure interactive initiale. Les décors, assets et liens du ZIP seront intégrés dans la prochaine étape.";content.append(h,p);win.classList.remove("hidden")}
+function openSection(name,id){content.style.cssText="";content.style.background="";content.style.display="";content.style.alignItems="";content.style.justifyContent="";document.querySelector("#windowtitle").textContent=name;content.replaceChildren();const h=document.createElement("h1");h.textContent=name;const p=document.createElement("div");p.className="notice";p.textContent="Section "+id+" — structure interactive initiale. Les décors, assets et liens du ZIP seront intégrés dans la prochaine étape.";content.append(h,p);win.classList.remove("hidden")}
 document.querySelector("#close").onclick=()=>win.classList.add("hidden");
 document.querySelector("#start").onclick=()=>{const off=document.body.classList.toggle("powered-off");document.querySelector("#screen-off").setAttribute("aria-hidden",String(!off));};
 document.querySelector("#refresh-button").onclick=()=>window.location.reload();
