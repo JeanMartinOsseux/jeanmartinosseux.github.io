@@ -24,6 +24,23 @@
 .zoom-controls input{position:relative;z-index:1}
 .zoom-controls output{position:relative;z-index:1;color:#111}
 @media(max-width:700px){.bd-number{width:17px;height:25px}.toolbar #count{min-width:120px}.zoom-controls{min-height:43px}}
+
+/* Ajustements fins : les spans imbriqués ne doivent pas hériter du min-width de la toolbar. */
+.toolbar .prop-crop{min-width:0!important}
+.toolbar #count{gap:3px;min-width:155px;font-size:13px}
+.toolbar #count .bd-number{display:inline-block;width:24px!important;height:27px!important;min-width:0!important;flex:0 0 24px;overflow:hidden}
+.toolbar #count .bd-number img{max-width:none}
+.toolbar #count .bd-label{display:inline-block;width:46px;height:29px;min-width:0!important;flex:0 0 46px}
+.zoom-controls{width:290px;min-width:290px;height:60px;min-height:60px;flex:none;position:relative;display:block;padding:0;background:transparent;border:0}
+.zoom-controls label{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.zoom-controls label .prop-crop{width:100%;height:100%;min-width:0}
+.zoom-controls label .prop-crop img{left:-13.55%!important;top:-146.25%!important;width:125.65%!important;height:426.88%!important;max-width:none}
+.zoom-controls #zoomOut{position:absolute;left:2%;top:19%;width:14%;height:62%;z-index:2;color:transparent;font-size:0}
+.zoom-controls #zoomIn{position:absolute;left:18%;top:19%;width:14%;height:62%;z-index:2;color:transparent;font-size:0}
+.zoom-controls #zoomRange{position:absolute;left:35%;top:40%;width:32%;height:20%;z-index:2;margin:0}
+.zoom-controls #zoomValue{position:absolute;left:69%;top:33%;width:13%;min-width:0;text-align:center;font-size:11px;z-index:2}
+.zoom-controls #resetZoom{position:absolute;right:0;top:19%;width:17%;height:62%;z-index:2;color:transparent;font-size:0}
+@media(max-width:900px){.zoom-controls{width:220px;min-width:220px;height:49px;min-height:49px}.toolbar #count .bd-number{width:18px!important;height:23px!important;flex-basis:18px}.toolbar #count .bd-label{width:34px;flex-basis:34px}}
 </style></head><body><a class="back" href="./index.html">← Bureau</a><section class="choice" id="choice"><div class="choice-hotspots" id="hotspots" aria-label="Choisir une BD"></div><div class="choice-actions"><button id="openPdf">Choisir une BD (1 à 8)</button></div></section><section class="reader" id="reader"><div class="book"><img class="book-decoration" src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/BD/LIVRE.png" alt=""><div class="page-spread"><div class="page" id="leftPage"><img id="left" alt="Page de gauche"><canvas id="leftCanvas"></canvas></div><div class="page" id="rightPage"><img id="right" alt="Page de droite"><canvas id="rightCanvas"></canvas></div><div class="page-turn" id="turn"><img id="turnImage" alt=""></div></div></div><div class="toolbar"><button id="prev">◀ Précédent</button><span id="count"></span><button id="next">Suivant ▶</button><div class="zoom-controls" aria-label="Réglage du zoom"><label for="zoomRange">🔍</label><button id="zoomOut" title="Dézoomer" aria-label="Dézoomer">−</button><input id="zoomRange" type="range" min="100" max="350" step="10" value="100" aria-label="Niveau de zoom"><button id="zoomIn" title="Zoomer" aria-label="Zoomer">+</button><output id="zoomValue" for="zoomRange">100 %</output><button id="resetZoom" title="Revenir immédiatement à 100 %">↩ 100 %</button></div><button id="return">Choix</button></div><div class="help">Flèches du clavier pour tourner les pages</div></section><section class="pdfs" id="pdfs"><div class="pdf-grid" id="pdfGrid"></div><button id="pdfBack">Retour au choix</button></section><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script><script>
 
 const propRoot='https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/PROPS/';
@@ -48,7 +65,8 @@ const sets={
 
 const digitBounds={1:[715,208,352,485],2:[737,215,382,477],3:[745,222,317,471],4:[686,216,383,463],5:[731,203,339,484],6:[741,212,316,502],7:[737,250,310,435],8:[746,226,300,492],9:[730,237,321,467],10:[632,194,568,522],11:[679,224,506,468],12:[637,207,577,490],13:[635,215,540,485],14:[636,233,547,471],15:[644,199,511,508],16:[657,208,527,495],17:[636,215,521,490],18:[638,201,500,509],19:[647,213,489,495],20:[624,219,590,481],21:[641,199,599,503],22:[616,218,536,472],23:[608,223,572,463],24:[562,229,583,460],25:[606,224,510,472]};
 function numProp(n){const b=digitBounds[n];if(!b){const e=document.createElement('span');e.textContent=n;return e}const el=prop('PROPS_'+String(74-n).padStart(4,'0')+'_'+n+'.png',b);el.classList.add('bd-number');return el}
-function renderCount(){count.replaceChildren(numProp(spread*2+1),document.createTextNode('–'),numProp(Math.min(spread*2+2,sets[book].length)),document.createTextNode(' / '),numProp(sets[book].length),document.createTextNode(' · BD '),numProp(book))}
+function bdLabel(n){const b=bdBounds[n-1];const el=prop('BD/PROPS_'+String(40-n).padStart(4,'0')+'_BD'+n+'.png',b);el.classList.add('bd-label');return el}
+function renderCount(){count.replaceChildren(numProp(spread*2+1),document.createTextNode('–'),numProp(Math.min(spread*2+2,sets[book].length)),document.createTextNode(' / '),numProp(sets[book].length),document.createTextNode(' · '),bdLabel(book))}
 const choice=document.getElementById('choice'),reader=document.getElementById('reader'),pdfs=document.getElementById('pdfs');
 const count=document.getElementById('count'),spreadLayer=document.querySelector('.page-spread');
 spreadLayer.innerHTML='<img id="newSpread" alt="Double page de bande dessinée"><img id="eightLeft" alt="Page gauche"><img id="eightRight" alt="Page droite">';
