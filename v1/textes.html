@@ -184,6 +184,10 @@ body{background-image:url('https://raw.githubusercontent.com/JeanMartinOsseux/je
 .overlay:not(.reward-overlay) .bar{top:10.2%!important;left:23%!important;height:6%!important}
 .overlay:not(.reward-overlay) .bar span{top:0!important;line-height:1.1!important}
 .overlay:not(.reward-overlay) .panel>.modal-close-target{top:1%!important;right:9.6%!important;width:8.3%!important;height:9.2%!important;min-width:0!important;min-height:0!important;z-index:500!important}
+
+/* V15: match the painted header slope and the actual red X */
+.overlay:not(.reward-overlay) .bar span{transform:rotate(-1.8deg)!important;transform-origin:left center!important;top:-4%!important}
+.overlay:not(.reward-overlay) .panel>.modal-close-target{top:0.5%!important;right:2.5%!important;width:9%!important;height:9%!important;z-index:999!important;pointer-events:auto!important}
 </style></head><body><div class="top"><button class="xp" id="bureauBtn" aria-label="Bureau" onclick="location.href='./index.html'">Bureau</button><span class="coins" id="coins">0</span><button class="xp" id="shopBtn">🛒 Boutique</button><button class="xp" id="collectionBtn">🗂️ Collection</button><button class="xp reset-button" id="resetBtn">↻ Tout réinitialiser</button><span class="hint">Attrape un texte, déplace la souris et relâche pour le lancer !</span></div><main class="court" id="court"><div class="bin" id="bin"><div class="symbol">🗑️</div><div class="name">Corbeille</div></div></main><script>
 const base='https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/TEXTE/';
 const texts=['GREBIK EST DERRRIERE TOI','3916','121212','KASK','MORDOR ME HANTE','VA AU PULRA','CC CV','444.444.444.','BIENTOT PERF','EXPO'];
