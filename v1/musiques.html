@@ -4,7 +4,7 @@
 /* V19 — fixed 1920x1080 composition; scaled together */
 #jeanma.music{position:relative;display:block;width:100vw;height:100vh;min-height:0;overflow:hidden;padding:0}
 #jeanma .player-layout{position:absolute;inset:0;width:100%;height:100%;display:block}
-#jeanma .art-frame{position:absolute;left:18%;top:2%;width:64%;height:96%;background:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/PROPS/PROPS_0012_MUSIQUES.png') center/100% 100% no-repeat;pointer-events:none}
+#jeanma .art-frame{position:absolute;left:18%;top:2%;width:64%;height:96%;background:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/PROPS/MUSIQUES_P1.png') center/100% 100% no-repeat;pointer-events:none}
 #jeanma .art-frame .choice-button-mask,#jeanma .art-frame .detail-title-mask{display:none!important}
 #jeanma .panel{position:absolute;left:23%;top:29%;width:54%;height:40%;padding:0;margin:0;border:0;background:transparent;box-shadow:none;overflow:hidden;display:block;max-height:none}
 #jeanma #albums{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;width:100%;height:100%}
@@ -16,7 +16,7 @@
 #jeanma .deck>img{width:100%;height:100%;object-fit:contain}
 #jeanma .cd-art{position:absolute;left:50%;top:43%;width:59%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;overflow:hidden;mix-blend-mode:multiply;opacity:.88;animation:cdspin 2.2s linear infinite;animation-play-state:paused}
 #jeanma .cd-art.playing{animation-play-state:running}
-#jeanma.album-open .art-frame{left:52%;top:9%;width:42%;height:82%}
+#jeanma.album-open .art-frame{left:52%;top:9%;width:42%;height:82%;background-image:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/PROPS/MUSIQUES_P2.png')}
 #jeanma.album-open .deck{display:grid}
 #jeanma.album-open .panel{left:57%;top:29%;width:32%;height:43%;overflow:hidden}
 #jeanma #player-detail{display:flex;flex-direction:column;justify-content:center;gap:6px;width:100%;height:100%;min-width:0;overflow:hidden}
@@ -31,11 +31,11 @@
 #jeanma.album-open .drawn-transport{display:block}
 #jeanma .drawn-transport button{position:absolute;top:81%;height:12%;width:11%;border:0;background:transparent;pointer-events:auto;cursor:pointer}
 #jeanma #draw-prev{left:22%}#jeanma #draw-play{left:37%}#jeanma #draw-pause{left:51%}#jeanma #draw-next{left:65%}
-.back{position:fixed;left:20px;top:10px;z-index:100;width:150px;height:52px;padding:0!important;border:0!important;background:transparent!important;color:transparent!important;font-size:0!important}
+.back{position:fixed;left:20px;top:10px;z-index:100;width:215px;height:78px;padding:0!important;border:0!important;background:transparent!important;color:transparent!important;font-size:0!important}
 .back:before{content:"";position:absolute;inset:0;background:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/PROPS/PROPS_0077_BUREAU.png') center/contain no-repeat}
-#jeanma .music-actions{position:fixed;left:185px;top:10px;z-index:100;display:block}
+#jeanma .music-actions{position:fixed;left:250px;top:10px;z-index:100;display:block}
 #jeanma .music-actions #back-albums{display:none!important}
-#jeanma .music-actions button{position:relative;width:150px;height:52px;padding:0;border:0;background:transparent;color:transparent;font-size:0;cursor:pointer}
+#jeanma .music-actions button{position:relative;width:215px;height:78px;padding:0;border:0;background:transparent;color:transparent;font-size:0;cursor:pointer}
 #jeanma .music-actions button:before{content:"";position:absolute;inset:0;background:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/PROPS/PROPS_0031_CHOIX.png') center/contain no-repeat}
 </style></head><body><a class="back" href="./index.html">← Bureau</a>
 <section class="screen" id="choice"><div class="choice"><img src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/music/CHOIX.png" alt="Choix entre Prisonniers du Micro et DJ JeanMa" onerror="this.style.display='none'"><button class="pdm" aria-label="Prisonniers du Micro" onclick="show('pdm')">PDM</button><button class="jeanma" aria-label="DJ JeanMa" onclick="show('jeanma')">DJ JeanMa</button></div><div class="fallback"><button onclick="show('pdm')">Prisonniers du Micro</button><button onclick="show('jeanma')">DJ JeanMa</button></div></section>
