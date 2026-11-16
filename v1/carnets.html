@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Carnets — Jean Martin Osseux</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden}body{font-family:Tahoma,Verdana,sans-serif;background:#20242a url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/BG.png') center/cover no-repeat;color:white}
+button{font:inherit;cursor:pointer}a{text-decoration:none}.screen{position:fixed;inset:0;display:none}.screen.active{display:block}
+#choice{background:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/carnet/FOND.jpg') center/100% 100% no-repeat}
+.choice-number{position:absolute;width:clamp(88px,13vw,215px);height:clamp(110px,19vh,220px);border:0;background:transparent;display:grid;place-items:center;transition:transform .15s;filter:drop-shadow(3px 5px 5px #0005)}
+.choice-number:hover,.choice-number:focus-visible{transform:scale(1.13);outline:2px dashed #fff8}
+#choose1{left:17%;top:36%}#choose2{left:44%;top:36%}#choose3{left:71%;top:36%}
+.prop-crop{position:relative;display:block;width:100%;height:100%;overflow:hidden;pointer-events:none}.prop-crop img{position:absolute;max-width:none;pointer-events:none}
+.home{position:fixed;top:13px;left:13px;z-index:100;width:128px;height:48px;display:block}
+.home:hover,.prop-button:hover{filter:brightness(1.16);transform:scale(1.04)}
+#gallery,#ribbon,#paint{background:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/BG.png') center/cover no-repeat}
+.gallery-stage{position:absolute;inset:30px 24px 103px;display:flex;align-items:center;justify-content:center;overflow:hidden;touch-action:none}
+.gallery-stage.grabbing{cursor:grabbing}
+#gallery-image{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;transform-origin:center center;user-select:none;-webkit-user-drag:none;filter:drop-shadow(3px 5px 12px #0007)}
+.controls{position:absolute;left:50%;bottom:13px;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;gap:9px;max-width:98vw;flex-wrap:wrap;z-index:10}
+.prop-button{border:0;background:transparent;color:transparent;padding:0;display:flex;align-items:center;justify-content:center;flex:none}
+#prev,#next{width:122px;height:46px}.choice-back{width:108px;height:45px}.count{display:flex;align-items:center;justify-content:center;gap:3px;min-width:84px;height:39px}.count .digit{width:22px;height:31px;flex:none}.count .slash{width:10px;height:30px;flex:none}
+.zoom-controls{position:relative;flex:none;width:238px;height:50px}.zoom-art{position:absolute;inset:0}.zoom-controls button{position:absolute;z-index:4;top:20%;height:60%;border:0;background:transparent;color:transparent;font-size:0}.zoom-out{left:18%;width:13%}.zoom-in{left:61%;width:13%}.zoom-reset{left:80%;width:19%}.zoom-range{position:absolute;z-index:5;left:37%;top:25%;width:15%;height:50%;opacity:0;cursor:pointer}.zoom-thumb{position:absolute;top:50%;width:15px;height:15px;border-radius:50%;background:#858094;border:2px solid white;box-shadow:0 0 0 1px #333;transform:translate(-50%,-50%);z-index:7;pointer-events:none}.zoom-controls:after{content:"";position:absolute;left:38%;top:calc(50% - 2px);width:13%;height:4px;border-radius:3px;background:#fff;pointer-events:none}
+.ribbon-viewport{position:absolute;left:0;right:0;top:65px;bottom:100px;overflow:auto hidden;scrollbar-width:thin;scrollbar-color:#fff9 transparent;display:flex;align-items:center;touch-action:pan-x pan-y}
+.ribbon-track{display:flex;align-items:center;width:max-content;min-width:100%;height:100%;gap:0;padding:0 4vw;transform-origin:left center}
+.ribbon-track img{display:block;flex:none;width:auto;height:76%;max-width:none;object-fit:contain;margin:0;border:0;padding:0;user-select:none;-webkit-user-drag:none}
+.ribbon-controls .play-button{min-width:76px;height:42px;border:0;border-radius:3px;background:#ece9d8;color:#111;font-weight:bold;box-shadow:inset 1px 1px #fff,inset -2px -2px #777}
+.ribbon-controls .play-button[aria-pressed="true"]{background:#b5d5fa}
+#paint{display:none}#paint.active{display:block}
+.paint-app{position:absolute;inset:64px 22px 78px;display:flex;flex-direction:column;background:#ece9d8;border:3px solid #1358ba;box-shadow:7px 8px 22px #0007;color:#111;min-height:0}
+.paint-title{background:linear-gradient(#3c92ff,#0752be);color:white;padding:7px 12px;font-weight:bold}
+.paint-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:9px;background:#ece9d8;border-bottom:2px solid #aaa}
+.paint-tools button{border:2px outset white;background:#ece9d8;padding:5px 10px;color:#111}
+.paint-tools button.selected{background:#b7d8fc;border-style:inset}
+.paint-tools label{display:flex;align-items:center;gap:5px;font-size:13px}.paint-tools input[type=range]{width:100px}
+.swatches{display:flex;align-items:center;gap:4px}.swatch{width:24px;height:24px!important;padding:0!important;border:2px solid #777!important}.swatch.selected{outline:2px solid #2366d2;outline-offset:2px}
+.paint-canvas-area{flex:1;min-height:0;overflow:auto;background:#a5a5a5;padding:14px;display:flex;align-items:flex-start;justify-content:center}
+#drawing{display:block;background:#fff;box-shadow:2px 3px 0 #777;touch-action:none;cursor:crosshair;max-width:100%;height:auto}
+.paint-status{padding:4px 10px;background:#ece9d8;font-size:12px;color:#333}
+@media(max-width:700px){.home{width:96px;height:36px}.choice-number{width:19vw;height:18vh}#choose1{left:13%}#choose2{left:41%}#choose3{left:69%}.gallery-stage{inset:52px 8px 125px}.controls{bottom:8px;gap:4px}#prev,#next{width:86px;height:33px}.choice-back{width:81px;height:34px}.count{min-width:65px}.count .digit{width:17px;height:24px}.count .slash{width:7px;height:23px}.zoom-controls{width:185px;height:40px}.ribbon-viewport{bottom:115px}.paint-app{inset:58px 7px 65px}.paint-tools{gap:5px;padding:5px}}
+</style></head><body>
+<a class="home" href="./index.html" aria-label="Retour au bureau"></a>
+<section id="choice" class="screen active" aria-label="Choix des carnets">
+<button class="choice-number" id="choose1" aria-label="Carnet 1"></button><button class="choice-number" id="choose2" aria-label="Carnet 2"></button><button class="choice-number" id="choose3" aria-label="Carnet 3, atelier de dessin"></button>
+</section>
+<section id="gallery" class="screen" aria-label="Carnet 1"><div class="gallery-stage" id="galleryStage"><img id="gallery-image" alt="Page du carnet 1" draggable="false"></div><nav class="controls"><button class="prop-button" id="prev" aria-label="Précédent"></button><div class="count" id="pageCount" aria-live="polite"></div><button class="prop-button" id="next" aria-label="Suivant"></button><div class="zoom-controls" id="galleryZoom"></div><button class="prop-button choice-back" aria-label="Choix des carnets"></button></nav></section>
+<section id="ribbon" class="screen" aria-label="Carnet 2, bande défilante"><div class="ribbon-viewport" id="ribbonViewport"><div class="ribbon-track" id="ribbonTrack"></div></div><nav class="controls ribbon-controls"><button class="play-button" id="playPause" aria-pressed="true">⏸ Pause</button><div class="zoom-controls" id="ribbonZoom"></div><button class="prop-button choice-back" aria-label="Choix des carnets"></button></nav></section>
+<section id="paint" class="screen" aria-label="Carnet 3, atelier de dessin"><div class="paint-app"><div class="paint-title">Sans titre — Carnets Paint</div><div class="paint-tools"><button id="brush" class="selected">✏️ Pinceau</button><button id="eraser">◻ Gomme</button><label>Taille <input id="brushSize" type="range" min="1" max="65" value="6"><output id="sizeLabel">6</output></label><div class="swatches" id="swatches"></div><label>Couleur <input id="color" type="color" value="#151515"></label><button id="undo">↶ Annuler</button><button id="clear">🗑 Effacer</button><button id="save">💾 Enregistrer PNG</button></div><div class="paint-canvas-area"><canvas id="drawing" width="1400" height="850" aria-label="Surface de dessin"></canvas></div><div class="paint-status">Dessine avec la souris, le doigt ou un stylet. Enregistre ton dessin en PNG.</div></div><nav class="controls"><button class="prop-button choice-back" aria-label="Choix des carnets"></button></nav></section>
+<script>
+const root='https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/';
+const propRoot=root+'PROPS/',carnetRoot=root+'carnet/';
+function prop(file,b){const [x,y,w,h]=b,box=document.createElement('span');box.className='prop-crop';const im=document.createElement('img');im.alt='';im.src=propRoot+file;im.style.cssText='left:'+(-x/w*100)+'%;top:'+(-y/h*100)+'%;width:'+(1920/w*100)+'%;height:'+(1080/h*100)+'%';box.append(im);return box}
+const digits={1:[715,208,352,485],2:[737,215,382,477],3:[745,222,317,471],4:[686,216,383,463],5:[731,203,339,484],6:[741,212,316,502]};
+function digit(n){const b=digits[n];const e=prop('PROPS_'+String(74-n).padStart(4,'0')+'_'+n+'.png',b);e.classList.add('digit');return e}
+function show(name){for(const e of document.querySelectorAll('.screen'))e.classList.toggle('active',e.id===name);if(name!=='ribbon'){playing=false;updatePlay()}else{playing=true;lastFrame=0;updatePlay();requestAnimationFrame(tick)}}
+for(let i=1;i<=3;i++){document.getElementById('choose'+i).append(digit(i));document.getElementById('choose'+i).onclick=()=>{if(i===1){page=1;renderPage();resetZoom('gallery');show('gallery')}else if(i===2){ribbonViewport.scrollLeft=0;resetZoom('ribbon');show('ribbon')}else show('paint')}}
+document.querySelector('.home').append(prop('PROPS_0077_BUREAU.png',[240,240,1431,514]));
+for(const b of document.querySelectorAll('.choice-back')){b.append(prop('PROPS_0031_CHOIX.png',[385,317,1151,449]));b.onclick=()=>show('choice')}
+document.getElementById('prev').append(prop('PROPS_0076_PRECEDANT.png',[252,255,1508,565]));
+document.getElementById('next').append(prop('PROPS_0075_SUIVANT.png',[227,176,1527,581]));
+const pageCount=document.getElementById('pageCount'),galleryImage=document.getElementById('gallery-image'),galleryStage=document.getElementById('galleryStage');
+let page=1,galleryOffset={x:0,y:0};
+function renderPage(){galleryImage.src=carnetRoot+page+'.jpg';galleryImage.alt='Carnet 1 — page '+page;pageCount.replaceChildren(digit(page),slash(),digit(6));document.getElementById('prev').disabled=page===1;document.getElementById('next').disabled=page===6;galleryOffset={x:0,y:0};applyGalleryZoom()}
+function slash(){const e=prop('PROPS_0074__.png',[788,324,147,380]);e.classList.add('slash');return e}
+document.getElementById('prev').onclick=()=>{if(page>1){page--;renderPage()}};
+document.getElementById('next').onclick=()=>{if(page<6){page++;renderPage()}};
+const zoomState={gallery:100,ribbon:100};
+function setupZoom(id){const el=document.getElementById(id+'Zoom');el.innerHTML='<div class="zoom-art"></div><button class="zoom-out" aria-label="Dézoomer">−</button><input class="zoom-range" type="range" min="100" max="350" step="10" value="100" aria-label="Niveau de zoom"><button class="zoom-in" aria-label="Zoomer">+</button><button class="zoom-reset" aria-label="Zoom à 100 %">100%</button><span class="zoom-thumb"></span>';el.querySelector('.zoom-art').append(prop('BD/PROPS_0011_BD-ZOOM.png',[207,370,1528,253]));const range=el.querySelector('input');function set(v){zoomState[id]=Math.min(350,Math.max(100,v));range.value=zoomState[id];el.querySelector('.zoom-thumb').style.left=(37+(zoomState[id]-100)/250*15)+'%';if(id==='gallery')applyGalleryZoom();else applyRibbonZoom()}el.querySelector('.zoom-out').onclick=()=>set(zoomState[id]-10);el.querySelector('.zoom-in').onclick=()=>set(zoomState[id]+10);el.querySelector('.zoom-reset').onclick=()=>set(100);range.oninput=()=>set(+range.value);set(100);return set}
+function applyGalleryZoom(){const z=zoomState.gallery/100;galleryImage.style.transform='translate('+galleryOffset.x+'px,'+galleryOffset.y+'px) scale('+z+')'}
+let dragging=false,dragX=0,dragY=0,originX=0,originY=0;
+galleryStage.addEventListener('pointerdown',e=>{if(zoomState.gallery<=100)return;dragging=true;dragX=e.clientX;dragY=e.clientY;originX=galleryOffset.x;originY=galleryOffset.y;galleryStage.setPointerCapture(e.pointerId);galleryStage.classList.add('grabbing')});
+galleryStage.addEventListener('pointermove',e=>{if(!dragging)return;galleryOffset.x=originX+e.clientX-dragX;galleryOffset.y=originY+e.clientY-dragY;applyGalleryZoom()});
+function stopDrag(){dragging=false;galleryStage.classList.remove('grabbing')}galleryStage.addEventListener('pointerup',stopDrag);galleryStage.addEventListener('pointercancel',stopDrag);
+galleryStage.addEventListener('wheel',e=>{if(!e.ctrlKey)return;e.preventDefault();setGalleryZoom(zoomState.gallery+(e.deltaY<0?10:-10))},{passive:false});
+function resetZoom(id){(id==='gallery'?setGalleryZoom:setRibbonZoom)(100)}
+const setGalleryZoom=setupZoom('gallery'),setRibbonZoom=setupZoom('ribbon');
+const ribbonViewport=document.getElementById('ribbonViewport'),ribbonTrack=document.getElementById('ribbonTrack');
+for(let i=1;i<=20;i++){const im=document.createElement('img');im.src=carnetRoot+'carnet_'+String(i).padStart(2,'0')+'.jpg';im.alt='Carnet 2 — fragment '+i;im.draggable=false;ribbonTrack.append(im)}
+function applyRibbonZoom(){const old=+ribbonViewport.dataset.zoom||100;const ratio=(zoomState.ribbon/old);const center=ribbonViewport.scrollLeft+ribbonViewport.clientWidth/2;for(const im of ribbonTrack.children)im.style.height=(76*zoomState.ribbon/100)+'%';ribbonViewport.dataset.zoom=zoomState.ribbon;requestAnimationFrame(()=>{ribbonViewport.scrollLeft=Math.max(0,center*ratio-ribbonViewport.clientWidth/2)})}
+let playing=false,lastFrame=0;const playPause=document.getElementById('playPause');function updatePlay(){playPause.textContent=playing?'⏸ Pause':'▶ Play';playPause.setAttribute('aria-pressed',String(playing))}
+playPause.onclick=()=>{playing=!playing;updatePlay();if(playing){if(ribbonViewport.scrollLeft>=ribbonViewport.scrollWidth-ribbonViewport.clientWidth-2)ribbonViewport.scrollLeft=0;lastFrame=0;requestAnimationFrame(tick)}};
+function tick(t){if(!playing||!document.getElementById('ribbon').classList.contains('active'))return;if(lastFrame){const dt=Math.min(t-lastFrame,80);ribbonViewport.scrollLeft+=dt*.025;if(ribbonViewport.scrollLeft>=ribbonViewport.scrollWidth-ribbonViewport.clientWidth-2){playing=false;updatePlay();return}}lastFrame=t;requestAnimationFrame(tick)}
+document.addEventListener('keydown',e=>{if(document.getElementById('gallery').classList.contains('active')){if(e.key==='ArrowRight')document.getElementById('next').click();if(e.key==='ArrowLeft')document.getElementById('prev').click()}if(e.key==='Escape')show('choice')});
+const canvas=document.getElementById('drawing'),ctx=canvas.getContext('2d',{willReadFrequently:true});ctx.fillStyle='white';ctx.fillRect(0,0,canvas.width,canvas.height);
+let tool='brush',color='#151515',size=6,painting=false,last=null,history=[];
+const brush=document.getElementById('brush'),eraser=document.getElementById('eraser');
+function setTool(v){tool=v;brush.classList.toggle('selected',v==='brush');eraser.classList.toggle('selected',v==='eraser')}
+brush.onclick=()=>setTool('brush');eraser.onclick=()=>setTool('eraser');
+document.getElementById('brushSize').oninput=e=>{size=+e.target.value;document.getElementById('sizeLabel').textContent=size};
+const picker=document.getElementById('color');picker.oninput=e=>{color=e.target.value;setTool('brush')};
+const swatches=document.getElementById('swatches');for(const c of ['#151515','#ffffff','#ed2024','#f5b523','#22a447','#2264c7','#a342b5']){const b=document.createElement('button');b.className='swatch';b.style.background=c;b.title=c;b.setAttribute('aria-label','Couleur '+c);b.onclick=()=>{color=c;picker.value=c;setTool('brush')};swatches.append(b)}
+function snapshot(){if(history.length>=15)history.shift();history.push(ctx.getImageData(0,0,canvas.width,canvas.height))}
+function point(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*canvas.width/r.width,y:(e.clientY-r.top)*canvas.height/r.height}}
+function stroke(a,b){ctx.strokeStyle=tool==='eraser'?'white':color;ctx.fillStyle=ctx.strokeStyle;ctx.lineWidth=size;ctx.lineCap='round';ctx.lineJoin='round';ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke()}
+canvas.addEventListener('pointerdown',e=>{if(e.button!==0&&e.pointerType==='mouse')return;e.preventDefault();snapshot();painting=true;canvas.setPointerCapture(e.pointerId);last=point(e);stroke(last,last)});
+canvas.addEventListener('pointermove',e=>{if(!painting)return;e.preventDefault();const p=point(e);stroke(last,p);last=p});
+function finish(){painting=false;last=null}canvas.addEventListener('pointerup',finish);canvas.addEventListener('pointercancel',finish);
+document.getElementById('undo').onclick=()=>{if(history.length)ctx.putImageData(history.pop(),0,0)};
+document.getElementById('clear').onclick=()=>{if(confirm('Effacer tout le dessin ?')){snapshot();ctx.fillStyle='white';ctx.fillRect(0,0,canvas.width,canvas.height)}};
+document.getElementById('save').onclick=()=>{const a=document.createElement('a');a.download='mon-dessin-carnets.png';a.href=canvas.toDataURL('image/png');document.body.append(a);a.click();a.remove()};
+renderPage();updatePlay();
+</script></body></html>
