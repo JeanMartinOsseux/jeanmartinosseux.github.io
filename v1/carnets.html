@@ -105,6 +105,8 @@ button{font:inherit;cursor:pointer}a{text-decoration:none}.screen{position:fixed
 #paint .paint-tools{position:relative!important;z-index:2!important;background:#ece9d8f2!important}
 #paint .paint-canvas-area{background:transparent!important}
 #paint #drawing{background:transparent!important;mix-blend-mode:multiply!important}
+
+@font-face{font-family:'JMH Typewriter';src:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/font/JMH%20Typewriter.otf') format('opentype');font-weight:400;font-display:swap}@font-face{font-family:'JMH Typewriter';src:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/font/JMH%20Typewriter-Thin.otf') format('opentype');font-weight:100 300;font-display:swap}@font-face{font-family:'JMH Typewriter';src:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/font/JMH%20Typewriter-Bold.otf') format('opentype');font-weight:600 700;font-display:swap}@font-face{font-family:'JMH Typewriter';src:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/font/JMH%20Typewriter-Black.otf') format('opentype');font-weight:800 900;font-display:swap}html,body,button,input,textarea,select,option,label,output{font-family:'JMH Typewriter',monospace!important}
 </style></head><body>
 <a class="home" href="./index.html" aria-label="Retour au bureau"></a><button class="prop-button choice-back top-choice" id="topChoice" aria-label="Choix des carnets"></button>
 <section id="choice" class="screen active" aria-label="Choix des carnets">
@@ -213,9 +215,28 @@ function point(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.l
 function stroke(a,b){
  ctx.save();
  ctx.globalCompositeOperation=tool==='eraser'?'destination-out':'source-over';
- ctx.strokeStyle=tool==='eraser'?'#000':color;
- ctx.lineWidth=size;ctx.lineCap='round';ctx.lineJoin='round';
- ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+ if(tool==='eraser'){
+  ctx.strokeStyle='#000';ctx.lineWidth=size;ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+ }else{
+  // Slightly uneven felt-tip texture, including the edges of each stroke.
+  const dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy),steps=Math.max(1,Math.ceil(len/1.5));
+  const nx=len>0?-dy/len:0,ny=len>0?dx/len:1;
+  ctx.fillStyle=color;
+  for(let i=0;i<=steps;i++){
+   const t=i/steps,x=a.x+dx*t,y=a.y+dy*t;
+   const jitter=(Math.random()-.5)*Math.min(2.2,size*.22);
+   const px=x+nx*jitter,py=y+ny*jitter;
+   const radius=Math.max(.5,size*(.43+Math.random()*.11));
+   ctx.globalAlpha=.8+Math.random()*.19;
+   ctx.beginPath();ctx.ellipse(px,py,radius,radius*(.86+Math.random()*.18),Math.random()*Math.PI,0,Math.PI*2);ctx.fill();
+   if(size>3&&Math.random()<.25){
+    ctx.globalAlpha=.15+Math.random()*.22;
+    const offset=size*(.38+Math.random()*.15)*(Math.random()<.5?-1:1);
+    ctx.beginPath();ctx.arc(px+nx*offset,py+ny*offset,Math.max(.4,size*.07),0,Math.PI*2);ctx.fill();
+   }
+  }
+ }
  ctx.restore();
 }
 function fillArea(x,y){
