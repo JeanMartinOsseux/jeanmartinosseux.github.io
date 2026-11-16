@@ -107,6 +107,13 @@ button{font:inherit;cursor:pointer}a{text-decoration:none}.screen{position:fixed
 #paint #drawing{background:transparent!important;mix-blend-mode:multiply!important}
 
 @font-face{font-family:'JMH Typewriter';src:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/font/JMH%20Typewriter.otf') format('opentype');font-weight:400;font-display:swap}@font-face{font-family:'JMH Typewriter';src:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/font/JMH%20Typewriter-Thin.otf') format('opentype');font-weight:100 300;font-display:swap}@font-face{font-family:'JMH Typewriter';src:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/font/JMH%20Typewriter-Bold.otf') format('opentype');font-weight:600 700;font-display:swap}@font-face{font-family:'JMH Typewriter';src:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/font/JMH%20Typewriter-Black.otf') format('opentype');font-weight:800 900;font-display:swap}html,body,button,input,textarea,select,option,label,output{font-family:'JMH Typewriter',monospace!important}
+/* V36: floating, draggable Paint toolbar, limited to the red-marked width */
+#paint .paint-app{overflow:visible!important}
+#paint .paint-tools{position:absolute!important;top:0;left:50%;width:min(1200px,calc(100vw - 40px))!important;max-width:calc(100vw - 20px)!important;transform:translateX(-50%);z-index:20!important;align-self:auto!important;justify-content:center!important;flex-wrap:nowrap!important;overflow-x:auto!important;overflow-y:hidden!important;touch-action:pan-x;cursor:grab;box-shadow:2px 4px 7px #0003}
+#paint .paint-tools.dragging{cursor:grabbing;user-select:none}
+#paint .paint-tools>*{flex-shrink:0}
+#paint .paint-canvas-area{height:100%!important}
+@media(max-width:700px){#paint .paint-tools{width:calc(100vw - 20px)!important;justify-content:flex-start!important}}
 </style></head><body>
 <a class="home" href="./index.html" aria-label="Retour au bureau"></a><button class="prop-button choice-back top-choice" id="topChoice" aria-label="Choix des carnets"></button>
 <section id="choice" class="screen active" aria-label="Choix des carnets">
@@ -121,6 +128,12 @@ const propRoot=root+'PROPS/',carnetRoot=root+'carnet/';
 function prop(file,b){const [x,y,w,h]=b,box=document.createElement('span');box.className='prop-crop';const im=document.createElement('img');im.alt='';im.src=propRoot+file;im.style.cssText='left:'+(-x/w*100)+'%;top:'+(-y/h*100)+'%;width:'+(1920/w*100)+'%;height:'+(1080/h*100)+'%';box.append(im);return box}
 const digits={1:[715,208,352,485],2:[737,215,382,477],3:[745,222,317,471],4:[686,216,383,463],5:[731,203,339,484],6:[741,212,316,502]};
 function digit(n){const b=digits[n];const e=prop('PROPS_'+String(74-n).padStart(4,'0')+'_'+n+'.png',b);e.classList.add('digit');return e}
+/* Drag the Paint toolbar by its empty background without stealing clicks from tools. */
+(function(){const bar=document.querySelector('#paint .paint-tools');let dragging=false,startX=0,startY=0,left=0,top=0;
+bar.addEventListener('pointerdown',e=>{if(e.button!==0||e.target!==bar)return;const r=bar.getBoundingClientRect(),parent=bar.offsetParent.getBoundingClientRect();left=r.left-parent.left;top=r.top-parent.top;startX=e.clientX;startY=e.clientY;dragging=true;bar.classList.add('dragging');bar.style.transform='none';bar.style.left=left+'px';bar.style.top=top+'px';bar.setPointerCapture(e.pointerId);e.preventDefault()});
+bar.addEventListener('pointermove',e=>{if(!dragging)return;const parent=bar.offsetParent.getBoundingClientRect();bar.style.left=Math.max(0,Math.min(parent.width-bar.offsetWidth,left+e.clientX-startX))+'px';bar.style.top=Math.max(0,Math.min(parent.height-bar.offsetHeight,top+e.clientY-startY))+'px'});
+const stop=()=>{dragging=false;bar.classList.remove('dragging')};bar.addEventListener('pointerup',stop);bar.addEventListener('pointercancel',stop);
+})();
 function show(name){for(const e of document.querySelectorAll('.screen'))e.classList.toggle('active',e.id===name);document.getElementById('topChoice').style.display=name==='choice'?'none':'flex';if(name==='paint')requestAnimationFrame(fitPaintCanvas);if(name!=='ribbon'){playing=false;updatePlay()}else{playing=true;lastFrame=0;updatePlay();requestAnimationFrame(tick)}}
 for(let i=1;i<=3;i++){document.getElementById('choose'+i).append(digit(i));document.getElementById('choose'+i).onclick=()=>{if(i===1){page=1;renderPage();resetZoom('gallery');show('gallery')}else if(i===2){show('ribbon');resetZoom('ribbon');ribbonViewport.scrollLeft=0;ribbonViewport.scrollTop=0;requestAnimationFrame(()=>applyRibbonZoom())}else show('paint')}}
 document.querySelector('.home').append(prop('PROPS_0077_BUREAU.png',[240,240,1431,514]));
