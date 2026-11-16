@@ -68,21 +68,53 @@ button{font:inherit;cursor:pointer}a{text-decoration:none}.screen{position:fixed
 @media(max-width:700px){
  .paint-app{width:calc(100vw - 16px)!important}
 }
+
+/* V5: fullscreen paper drawing studio and shared top-left navigation */
+.home{top:10px;left:13px}
+.top-choice{position:fixed!important;top:10px!important;left:152px!important;z-index:101!important;width:110px!important;height:45px!important;transform:none!important}
+#gallery .controls .choice-back,#ribbon .controls .choice-back,#paint .controls .choice-back{display:none!important}
+#paint .paint-app{
+ position:absolute!important;top:66px!important;bottom:0!important;left:0!important;right:0!important;
+ width:100%!important;height:auto!important;max-height:none!important;
+ transform:none!important;border:0!important;box-shadow:none!important;
+ background:transparent!important;display:flex!important;flex-direction:column!important;
+}
+#paint .paint-tools{
+ flex:0 0 auto!important;align-self:stretch!important;justify-content:center;
+ background:#ece9d8ed!important;border-top:1px solid #fff!important;border-bottom:2px solid #888!important;
+ padding:7px 8px!important;gap:7px!important;
+}
+#paint .paint-canvas-area{
+ position:relative!important;display:block!important;flex:1 1 auto!important;
+ min-height:0!important;width:100%!important;overflow:hidden!important;
+ padding:0!important;margin:0!important;background:transparent!important;
+}
+#paint #drawing{
+ display:block!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;
+ border:0!important;box-shadow:none!important;object-fit:fill!important;
+ touch-action:none!important;cursor:crosshair;
+}
+@media(max-width:700px){
+ .top-choice{top:8px!important;left:113px!important;width:82px!important;height:35px!important}
+ #paint .paint-app{top:54px!important}
+ #paint .paint-tools{justify-content:flex-start!important;overflow-x:auto!important;flex-wrap:nowrap!important}
+ #paint .paint-tools>*{flex-shrink:0}
+}
 </style></head><body>
-<a class="home" href="./index.html" aria-label="Retour au bureau"></a>
+<a class="home" href="./index.html" aria-label="Retour au bureau"></a><button class="prop-button choice-back top-choice" id="topChoice" aria-label="Choix des carnets"></button>
 <section id="choice" class="screen active" aria-label="Choix des carnets">
 <button class="choice-number" id="choose1" aria-label="Carnet 1"></button><button class="choice-number" id="choose2" aria-label="Carnet 2"></button><button class="choice-number" id="choose3" aria-label="Carnet 3, atelier de dessin"></button>
 </section>
-<section id="gallery" class="screen" aria-label="Carnet 1"><div class="gallery-stage" id="galleryStage"><div class="gallery-inner" id="galleryInner"><img id="gallery-image" alt="Page du carnet 1" draggable="false"></div></div><nav class="controls"><button class="prop-button" id="prev" aria-label="Précédent"></button><div class="count" id="pageCount" aria-live="polite"></div><button class="prop-button" id="next" aria-label="Suivant"></button><div class="zoom-controls" id="galleryZoom"></div><button class="prop-button choice-back" aria-label="Choix des carnets"></button></nav></section>
-<section id="ribbon" class="screen" aria-label="Carnet 2, bande défilante"><div class="ribbon-viewport" id="ribbonViewport"><div class="ribbon-track" id="ribbonTrack"></div></div><nav class="controls ribbon-controls"><button class="prop-button ribbon-nav" id="ribbonPrev" aria-label="Reculer dans la bande"></button><button class="play-button" id="playPause" aria-pressed="true">⏸ Pause</button><button class="prop-button ribbon-nav" id="ribbonNext" aria-label="Avancer dans la bande"></button><div class="zoom-controls" id="ribbonZoom"></div><button class="prop-button choice-back" aria-label="Choix des carnets"></button></nav></section>
-<section id="paint" class="screen" aria-label="Carnet 3, atelier de dessin"><div class="paint-app"><div class="paint-title">Sans titre — Carnets Paint</div><div class="paint-tools"><button id="brush" class="selected">✏️ Pinceau</button><button id="eraser">◻ Gomme</button><button id="bucket">🪣 Pot de peinture</button><label>Taille <input id="brushSize" type="range" min="1" max="65" value="6"><output id="sizeLabel">6</output></label><div class="swatches" id="swatches"></div><label>Couleur <input id="color" type="color" value="#151515"></label><button id="undo">↶ Annuler</button><button id="clear">🗑 Effacer</button><button id="save">💾 Enregistrer PNG</button></div><div class="paint-canvas-area"><canvas id="drawing" width="1400" height="850" aria-label="Surface de dessin"></canvas></div><div class="paint-status">Dessine avec la souris, le doigt ou un stylet. Enregistre ton dessin en PNG.</div></div><nav class="controls"><button class="prop-button choice-back" aria-label="Choix des carnets"></button></nav></section>
+<section id="gallery" class="screen" aria-label="Carnet 1"><div class="gallery-stage" id="galleryStage"><div class="gallery-inner" id="galleryInner"><img id="gallery-image" alt="Page du carnet 1" draggable="false"></div></div><nav class="controls"><button class="prop-button" id="prev" aria-label="Précédent"></button><div class="count" id="pageCount" aria-live="polite"></div><button class="prop-button" id="next" aria-label="Suivant"></button><div class="zoom-controls" id="galleryZoom"></div></nav></section>
+<section id="ribbon" class="screen" aria-label="Carnet 2, bande défilante"><div class="ribbon-viewport" id="ribbonViewport"><div class="ribbon-track" id="ribbonTrack"></div></div><nav class="controls ribbon-controls"><button class="prop-button ribbon-nav" id="ribbonPrev" aria-label="Reculer dans la bande"></button><button class="play-button" id="playPause" aria-pressed="true">⏸ Pause</button><button class="prop-button ribbon-nav" id="ribbonNext" aria-label="Avancer dans la bande"></button><div class="zoom-controls" id="ribbonZoom"></div></nav></section>
+<section id="paint" class="screen" aria-label="Carnet 3, atelier de dessin"><div class="paint-app"><div class="paint-tools"><button id="brush" class="selected">✏️ Pinceau</button><button id="eraser">◻ Gomme</button><button id="bucket">🪣 Pot de peinture</button><label>Taille <input id="brushSize" type="range" min="1" max="65" value="6"><output id="sizeLabel">6</output></label><div class="swatches" id="swatches"></div><label>Couleur <input id="color" type="color" value="#151515"></label><button id="undo">↶ Annuler</button><button id="clear">🗑 Effacer</button><button id="save">💾 Enregistrer PNG</button></div><div class="paint-canvas-area"><canvas id="drawing" width="1400" height="850" aria-label="Surface de dessin"></canvas></div></div><nav class="controls"></nav></section>
 <script>
 const root='https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/';
 const propRoot=root+'PROPS/',carnetRoot=root+'carnet/';
 function prop(file,b){const [x,y,w,h]=b,box=document.createElement('span');box.className='prop-crop';const im=document.createElement('img');im.alt='';im.src=propRoot+file;im.style.cssText='left:'+(-x/w*100)+'%;top:'+(-y/h*100)+'%;width:'+(1920/w*100)+'%;height:'+(1080/h*100)+'%';box.append(im);return box}
 const digits={1:[715,208,352,485],2:[737,215,382,477],3:[745,222,317,471],4:[686,216,383,463],5:[731,203,339,484],6:[741,212,316,502]};
 function digit(n){const b=digits[n];const e=prop('PROPS_'+String(74-n).padStart(4,'0')+'_'+n+'.png',b);e.classList.add('digit');return e}
-function show(name){for(const e of document.querySelectorAll('.screen'))e.classList.toggle('active',e.id===name);if(name!=='ribbon'){playing=false;updatePlay()}else{playing=true;lastFrame=0;updatePlay();requestAnimationFrame(tick)}}
+function show(name){for(const e of document.querySelectorAll('.screen'))e.classList.toggle('active',e.id===name);document.getElementById('topChoice').style.display=name==='choice'?'none':'flex';if(name==='paint')requestAnimationFrame(fitPaintCanvas);if(name!=='ribbon'){playing=false;updatePlay()}else{playing=true;lastFrame=0;updatePlay();requestAnimationFrame(tick)}}
 for(let i=1;i<=3;i++){document.getElementById('choose'+i).append(digit(i));document.getElementById('choose'+i).onclick=()=>{if(i===1){page=1;renderPage();resetZoom('gallery');show('gallery')}else if(i===2){show('ribbon');resetZoom('ribbon');ribbonViewport.scrollLeft=0;ribbonViewport.scrollTop=0;requestAnimationFrame(()=>applyRibbonZoom())}else show('paint')}}
 document.querySelector('.home').append(prop('PROPS_0077_BUREAU.png',[240,240,1431,514]));
 for(const b of document.querySelectorAll('.choice-back')){b.append(prop('PROPS_0031_CHOIX.png',[385,317,1151,449]));b.onclick=()=>show('choice')}
@@ -150,7 +182,20 @@ let playing=false,lastFrame=0;const playPause=document.getElementById('playPause
 playPause.onclick=()=>{playing=!playing;updatePlay();if(playing){if(ribbonViewport.scrollLeft>=ribbonViewport.scrollWidth-ribbonViewport.clientWidth-2)ribbonViewport.scrollLeft=0;lastFrame=0;requestAnimationFrame(tick)}};
 function tick(t){if(!playing||!document.getElementById('ribbon').classList.contains('active'))return;if(lastFrame){const dt=Math.min(t-lastFrame,80);ribbonViewport.scrollLeft+=dt*.025;if(ribbonViewport.scrollLeft>=ribbonViewport.scrollWidth-ribbonViewport.clientWidth-2){playing=false;updatePlay();return}}lastFrame=t;requestAnimationFrame(tick)}
 document.addEventListener('keydown',e=>{if(document.getElementById('gallery').classList.contains('active')){if(e.key==='ArrowRight')document.getElementById('next').click();if(e.key==='ArrowLeft')document.getElementById('prev').click()}if(e.key==='Escape')show('choice')});
-const canvas=document.getElementById('drawing'),ctx=canvas.getContext('2d',{willReadFrequently:true});ctx.fillStyle='white';ctx.fillRect(0,0,canvas.width,canvas.height);
+const canvas=document.getElementById('drawing'),ctx=canvas.getContext('2d',{willReadFrequently:true});
+ctx.fillStyle='white';ctx.fillRect(0,0,canvas.width,canvas.height);
+function fitPaintCanvas(){
+ const area=document.querySelector('.paint-canvas-area');
+ if(!area.clientWidth||!area.clientHeight)return;
+ const w=Math.max(1,Math.round(area.clientWidth)),h=Math.max(1,Math.round(area.clientHeight));
+ if(canvas.width===w&&canvas.height===h)return;
+ const old=document.createElement('canvas');old.width=canvas.width;old.height=canvas.height;old.getContext('2d').drawImage(canvas,0,0);
+ canvas.width=w;canvas.height=h;
+ ctx.fillStyle='white';ctx.fillRect(0,0,w,h);
+ ctx.drawImage(old,0,0,w,h);
+ history.length=0;
+}
+window.addEventListener('resize',()=>{if(document.getElementById('paint').classList.contains('active'))fitPaintCanvas()});
 let tool='brush',color='#151515',size=6,painting=false,last=null,history=[];
 const brush=document.getElementById('brush'),eraser=document.getElementById('eraser'),bucket=document.getElementById('bucket');
 function setTool(v){tool=v;brush.classList.toggle('selected',v==='brush');eraser.classList.toggle('selected',v==='eraser');bucket.classList.toggle('selected',v==='bucket')}
@@ -182,5 +227,5 @@ function finish(){painting=false;last=null}canvas.addEventListener('pointerup',f
 document.getElementById('undo').onclick=()=>{if(history.length)ctx.putImageData(history.pop(),0,0)};
 document.getElementById('clear').onclick=()=>{if(confirm('Effacer tout le dessin ?')){snapshot();ctx.fillStyle='white';ctx.fillRect(0,0,canvas.width,canvas.height)}};
 document.getElementById('save').onclick=()=>{const a=document.createElement('a');a.download='mon-dessin-carnets.png';a.href=canvas.toDataURL('image/png');document.body.append(a);a.click();a.remove()};
-renderPage();updatePlay();
+renderPage();updatePlay();document.getElementById('topChoice').style.display='none';
 </script></body></html>
