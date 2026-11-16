@@ -218,6 +218,11 @@ body{background-image:url('https://raw.githubusercontent.com/JeanMartinOsseux/je
 .top .hint{color:#fff!important}
 
 @font-face{font-family:'JMH Typewriter';src:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/font/JMH%20Typewriter.otf') format('opentype');font-weight:400;font-display:swap}@font-face{font-family:'JMH Typewriter';src:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/font/JMH%20Typewriter-Thin.otf') format('opentype');font-weight:100 300;font-display:swap}@font-face{font-family:'JMH Typewriter';src:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/font/JMH%20Typewriter-Bold.otf') format('opentype');font-weight:600 700;font-display:swap}@font-face{font-family:'JMH Typewriter';src:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/font/JMH%20Typewriter-Black.otf') format('opentype');font-weight:800 900;font-display:swap}html,body,button,input,textarea,select,option,label,output{font-family:'JMH Typewriter',monospace!important}
+/* New hand-drawn reset and round-complete props */
+#resetBtn{width:clamp(125px,11vw,190px);height:65px;min-width:0;padding:0;border:0!important;background:transparent url('../assets/props_new/jeu_renitialiser.png') center/contain no-repeat!important;box-shadow:none!important;color:transparent!important;font-size:0!important;flex-shrink:0}
+#resetBtn:hover{filter:brightness(1.1)}
+.message.round-complete{top:50%;left:50%;transform:translate(-50%,-50%);width:min(700px,88vw);height:min(450px,65vh);background:transparent url('../assets/props_new/jeu_manche_fini.png') center/contain no-repeat;border:0;border-radius:0;box-shadow:none;padding:0;font-size:0;color:transparent;pointer-events:none}
+@media(max-width:750px){#resetBtn{width:115px;height:52px}}
 </style></head><body><div class="top"><button class="xp" id="bureauBtn" aria-label="Bureau" onclick="location.href='./index.html'">Bureau</button><span class="coins" id="coins">0</span><button class="xp" id="shopBtn">🛒 Boutique</button><button class="xp" id="collectionBtn">🗂️ Collection</button><button class="xp reset-button" id="resetBtn">↻ Tout réinitialiser</button><span class="hint">Attrape un texte, déplace la souris et relâche pour le lancer !</span></div><main class="court" id="court"><div class="bin" id="bin"><div class="symbol">🗑️</div><div class="name">Corbeille</div></div></main><script>
 const base='https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/TEXTE/';
 const texts=['GREBIK EST DERRRIERE TOI','3916','121212','KASK','MORDOR ME HANTE','VA AU PULRA','CC CV','444.444.444.','BIENTOT PERF','EXPO'];
@@ -240,7 +245,7 @@ function score(p){
   requestAnimationFrame(()=>{requestAnimationFrame(()=>{pop.style.opacity='0';pop.style.top='22%'})});
   setTimeout(()=>pop.remove(),1300);
  }
- if(papers.every(q=>q.done)&&!won){won=true;const m=document.createElement('div');m.className='message';m.textContent='🏆 Tous les textes jetés ! Nouvelle manche !';document.body.append(m);setTimeout(()=>{m.remove();spawn()},1800)}
+ if(papers.every(q=>q.done)&&!won){won=true;const m=document.createElement('div');m.className='message round-complete';m.setAttribute('aria-label','Manche terminée ! Nouvelle manche !');m.textContent='Manche terminée !';document.body.append(m);setTimeout(()=>{m.remove();spawn()},1800)}
 }
 function spillBin(){
  if(modal||bin.dataset.spilling==='yes')return;
