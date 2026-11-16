@@ -11,9 +11,11 @@ button{font:inherit;cursor:pointer}a{text-decoration:none}.screen{position:fixed
 .home{position:fixed;top:13px;left:13px;z-index:100;width:128px;height:48px;display:block}
 .home:hover,.prop-button:hover{filter:brightness(1.16);transform:scale(1.04)}
 #gallery,#ribbon,#paint{background:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/BG.png') center/cover no-repeat}
-.gallery-stage{position:absolute;inset:30px 24px 103px;display:flex;align-items:center;justify-content:center;overflow:hidden;touch-action:none}
+.gallery-stage{position:absolute;inset:30px 24px 103px;display:block;overflow:auto;touch-action:pan-x pan-y;scrollbar-width:thin;scrollbar-color:#ffffffa0 #0003}
+.gallery-inner{display:flex;align-items:center;justify-content:center;min-width:100%;min-height:100%;width:max-content;height:max-content}
+.gallery-stage.zoomed{cursor:grab;touch-action:none}
 .gallery-stage.grabbing{cursor:grabbing}
-#gallery-image{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;transform-origin:center center;user-select:none;-webkit-user-drag:none;filter:drop-shadow(3px 5px 12px #0007)}
+#gallery-image{display:block;max-width:none;max-height:none;width:auto;height:auto;object-fit:contain;user-select:none;-webkit-user-drag:none;filter:drop-shadow(3px 5px 12px #0007)}
 .controls{position:absolute;left:50%;bottom:13px;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;gap:9px;max-width:98vw;flex-wrap:wrap;z-index:10}
 .prop-button{border:0;background:transparent;color:transparent;padding:0;display:flex;align-items:center;justify-content:center;flex:none}
 #prev,#next{width:122px;height:46px}.choice-back{width:108px;height:45px}.count{display:flex;align-items:center;justify-content:center;gap:3px;min-width:84px;height:39px}.count .digit{width:22px;height:31px;flex:none}.count .slash{width:10px;height:30px;flex:none}
@@ -35,14 +37,29 @@ button{font:inherit;cursor:pointer}a{text-decoration:none}.screen{position:fixed
 #drawing{display:block;background:#fff;box-shadow:2px 3px 0 #777;touch-action:none;cursor:crosshair;max-width:100%;height:auto}
 .paint-status{padding:4px 10px;background:#ece9d8;font-size:12px;color:#333}
 @media(max-width:700px){.home{width:96px;height:36px}.choice-number{width:19vw;height:18vh}#choose1{left:13%}#choose2{left:41%}#choose3{left:69%}.gallery-stage{inset:52px 8px 125px}.controls{bottom:8px;gap:4px}#prev,#next{width:86px;height:33px}.choice-back{width:81px;height:34px}.count{min-width:65px}.count .digit{width:17px;height:24px}.count .slash{width:7px;height:23px}.zoom-controls{width:185px;height:40px}.ribbon-viewport{bottom:115px}.paint-app{inset:58px 7px 65px}.paint-tools{gap:5px;padding:5px}}
+
+/* V2: black number props on choice screen, fully navigable zoom, compact Paint, manual ribbon */
+#choice .choice-number .prop-crop img{filter:brightness(0)!important}
+.ribbon-viewport{cursor:grab;user-select:none;touch-action:pan-y}
+.ribbon-viewport.dragging{cursor:grabbing}
+.ribbon-nav{width:112px;height:43px}
+.paint-app{inset:58px 14px 60px;max-height:calc(100dvh - 118px)}
+.paint-title{padding:4px 9px;font-size:13px;flex:none}
+.paint-tools{padding:5px 7px;gap:5px;flex:none}
+.paint-tools button{padding:4px 7px;font-size:12px}
+.paint-tools label{font-size:12px}
+.paint-canvas-area{padding:7px;align-items:center;overflow:hidden}
+#drawing{width:auto!important;height:auto!important;max-width:100%!important;max-height:100%!important;object-fit:contain}
+.paint-status{padding:2px 8px;font-size:11px;flex:none}
+@media(max-width:700px){.ribbon-nav{width:79px;height:32px}.paint-app{inset:48px 5px 52px;max-height:calc(100dvh - 100px)}.paint-tools button{padding:3px 5px;font-size:11px}.paint-tools input[type=range]{width:70px}.swatch{width:19px;height:19px!important}}
 </style></head><body>
 <a class="home" href="./index.html" aria-label="Retour au bureau"></a>
 <section id="choice" class="screen active" aria-label="Choix des carnets">
 <button class="choice-number" id="choose1" aria-label="Carnet 1"></button><button class="choice-number" id="choose2" aria-label="Carnet 2"></button><button class="choice-number" id="choose3" aria-label="Carnet 3, atelier de dessin"></button>
 </section>
-<section id="gallery" class="screen" aria-label="Carnet 1"><div class="gallery-stage" id="galleryStage"><img id="gallery-image" alt="Page du carnet 1" draggable="false"></div><nav class="controls"><button class="prop-button" id="prev" aria-label="Précédent"></button><div class="count" id="pageCount" aria-live="polite"></div><button class="prop-button" id="next" aria-label="Suivant"></button><div class="zoom-controls" id="galleryZoom"></div><button class="prop-button choice-back" aria-label="Choix des carnets"></button></nav></section>
-<section id="ribbon" class="screen" aria-label="Carnet 2, bande défilante"><div class="ribbon-viewport" id="ribbonViewport"><div class="ribbon-track" id="ribbonTrack"></div></div><nav class="controls ribbon-controls"><button class="play-button" id="playPause" aria-pressed="true">⏸ Pause</button><div class="zoom-controls" id="ribbonZoom"></div><button class="prop-button choice-back" aria-label="Choix des carnets"></button></nav></section>
-<section id="paint" class="screen" aria-label="Carnet 3, atelier de dessin"><div class="paint-app"><div class="paint-title">Sans titre — Carnets Paint</div><div class="paint-tools"><button id="brush" class="selected">✏️ Pinceau</button><button id="eraser">◻ Gomme</button><label>Taille <input id="brushSize" type="range" min="1" max="65" value="6"><output id="sizeLabel">6</output></label><div class="swatches" id="swatches"></div><label>Couleur <input id="color" type="color" value="#151515"></label><button id="undo">↶ Annuler</button><button id="clear">🗑 Effacer</button><button id="save">💾 Enregistrer PNG</button></div><div class="paint-canvas-area"><canvas id="drawing" width="1400" height="850" aria-label="Surface de dessin"></canvas></div><div class="paint-status">Dessine avec la souris, le doigt ou un stylet. Enregistre ton dessin en PNG.</div></div><nav class="controls"><button class="prop-button choice-back" aria-label="Choix des carnets"></button></nav></section>
+<section id="gallery" class="screen" aria-label="Carnet 1"><div class="gallery-stage" id="galleryStage"><div class="gallery-inner" id="galleryInner"><img id="gallery-image" alt="Page du carnet 1" draggable="false"></div></div><nav class="controls"><button class="prop-button" id="prev" aria-label="Précédent"></button><div class="count" id="pageCount" aria-live="polite"></div><button class="prop-button" id="next" aria-label="Suivant"></button><div class="zoom-controls" id="galleryZoom"></div><button class="prop-button choice-back" aria-label="Choix des carnets"></button></nav></section>
+<section id="ribbon" class="screen" aria-label="Carnet 2, bande défilante"><div class="ribbon-viewport" id="ribbonViewport"><div class="ribbon-track" id="ribbonTrack"></div></div><nav class="controls ribbon-controls"><button class="prop-button ribbon-nav" id="ribbonPrev" aria-label="Reculer dans la bande"></button><button class="play-button" id="playPause" aria-pressed="true">⏸ Pause</button><button class="prop-button ribbon-nav" id="ribbonNext" aria-label="Avancer dans la bande"></button><div class="zoom-controls" id="ribbonZoom"></div><button class="prop-button choice-back" aria-label="Choix des carnets"></button></nav></section>
+<section id="paint" class="screen" aria-label="Carnet 3, atelier de dessin"><div class="paint-app"><div class="paint-title">Sans titre — Carnets Paint</div><div class="paint-tools"><button id="brush" class="selected">✏️ Pinceau</button><button id="eraser">◻ Gomme</button><button id="bucket">🪣 Pot de peinture</button><label>Taille <input id="brushSize" type="range" min="1" max="65" value="6"><output id="sizeLabel">6</output></label><div class="swatches" id="swatches"></div><label>Couleur <input id="color" type="color" value="#151515"></label><button id="undo">↶ Annuler</button><button id="clear">🗑 Effacer</button><button id="save">💾 Enregistrer PNG</button></div><div class="paint-canvas-area"><canvas id="drawing" width="1400" height="850" aria-label="Surface de dessin"></canvas></div><div class="paint-status">Dessine avec la souris, le doigt ou un stylet. Enregistre ton dessin en PNG.</div></div><nav class="controls"><button class="prop-button choice-back" aria-label="Choix des carnets"></button></nav></section>
 <script>
 const root='https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/';
 const propRoot=root+'PROPS/',carnetRoot=root+'carnet/';
@@ -55,22 +72,46 @@ document.querySelector('.home').append(prop('PROPS_0077_BUREAU.png',[240,240,143
 for(const b of document.querySelectorAll('.choice-back')){b.append(prop('PROPS_0031_CHOIX.png',[385,317,1151,449]));b.onclick=()=>show('choice')}
 document.getElementById('prev').append(prop('PROPS_0076_PRECEDANT.png',[252,255,1508,565]));
 document.getElementById('next').append(prop('PROPS_0075_SUIVANT.png',[227,176,1527,581]));
-const pageCount=document.getElementById('pageCount'),galleryImage=document.getElementById('gallery-image'),galleryStage=document.getElementById('galleryStage');
-let page=1,galleryOffset={x:0,y:0};
-function renderPage(){galleryImage.src=carnetRoot+page+'.jpg';galleryImage.alt='Carnet 1 — page '+page;pageCount.replaceChildren(digit(page),slash(),digit(6));document.getElementById('prev').disabled=page===1;document.getElementById('next').disabled=page===6;galleryOffset={x:0,y:0};applyGalleryZoom()}
+const pageCount=document.getElementById('pageCount'),galleryImage=document.getElementById('gallery-image'),galleryStage=document.getElementById('galleryStage'),galleryInner=document.getElementById('galleryInner');
+let page=1;
+function renderPage(){galleryImage.src=carnetRoot+page+'.jpg';galleryImage.alt='Carnet 1 — page '+page;pageCount.replaceChildren(digit(page),slash(),digit(6));document.getElementById('prev').disabled=page===1;document.getElementById('next').disabled=page===6;galleryImage.onload=()=>applyGalleryZoom(true);applyGalleryZoom(true)}
 function slash(){const e=prop('PROPS_0074__.png',[788,324,147,380]);e.classList.add('slash');return e}
 document.getElementById('prev').onclick=()=>{if(page>1){page--;renderPage()}};
 document.getElementById('next').onclick=()=>{if(page<6){page++;renderPage()}};
 const zoomState={gallery:100,ribbon:100};
 function setupZoom(id){const el=document.getElementById(id+'Zoom');el.innerHTML='<div class="zoom-art"></div><button class="zoom-out" aria-label="Dézoomer">−</button><input class="zoom-range" type="range" min="100" max="350" step="10" value="100" aria-label="Niveau de zoom"><button class="zoom-in" aria-label="Zoomer">+</button><button class="zoom-reset" aria-label="Zoom à 100 %">100%</button><span class="zoom-thumb"></span>';el.querySelector('.zoom-art').append(prop('BD/PROPS_0011_BD-ZOOM.png',[207,370,1528,253]));const range=el.querySelector('input');function set(v){zoomState[id]=Math.min(350,Math.max(100,v));range.value=zoomState[id];el.querySelector('.zoom-thumb').style.left=(37+(zoomState[id]-100)/250*15)+'%';if(id==='gallery')applyGalleryZoom();else applyRibbonZoom()}el.querySelector('.zoom-out').onclick=()=>set(zoomState[id]-10);el.querySelector('.zoom-in').onclick=()=>set(zoomState[id]+10);el.querySelector('.zoom-reset').onclick=()=>set(100);range.oninput=()=>set(+range.value);set(100);return set}
-function applyGalleryZoom(){const z=zoomState.gallery/100;galleryImage.style.transform='translate('+galleryOffset.x+'px,'+galleryOffset.y+'px) scale('+z+')'}
+function applyGalleryZoom(reset=false){
+ if(!galleryImage.naturalWidth||!galleryImage.naturalHeight)return;
+ const oldW=galleryImage.getBoundingClientRect().width||1,oldH=galleryImage.getBoundingClientRect().height||1;
+ const relativeX=(galleryStage.scrollLeft+galleryStage.clientWidth/2)/Math.max(oldW,galleryInner.scrollWidth);
+ const relativeY=(galleryStage.scrollTop+galleryStage.clientHeight/2)/Math.max(oldH,galleryInner.scrollHeight);
+ const availableW=galleryStage.clientWidth-20,availableH=galleryStage.clientHeight-20;
+ const base=Math.min(availableW/galleryImage.naturalWidth,availableH/galleryImage.naturalHeight,1);
+ const z=zoomState.gallery/100;
+ galleryImage.style.width=Math.round(galleryImage.naturalWidth*base*z)+'px';
+ galleryImage.style.height=Math.round(galleryImage.naturalHeight*base*z)+'px';
+ galleryInner.style.width=Math.max(galleryStage.clientWidth,Math.round(galleryImage.naturalWidth*base*z))+'px';
+ galleryInner.style.height=Math.max(galleryStage.clientHeight,Math.round(galleryImage.naturalHeight*base*z))+'px';
+ galleryStage.classList.toggle('zoomed',z>1);
+ requestAnimationFrame(()=>{galleryStage.scrollLeft=reset?0:Math.max(0,relativeX*galleryInner.scrollWidth-galleryStage.clientWidth/2);galleryStage.scrollTop=reset?0:Math.max(0,relativeY*galleryInner.scrollHeight-galleryStage.clientHeight/2)});
+}
 let dragging=false,dragX=0,dragY=0,originX=0,originY=0;
-galleryStage.addEventListener('pointerdown',e=>{if(zoomState.gallery<=100)return;dragging=true;dragX=e.clientX;dragY=e.clientY;originX=galleryOffset.x;originY=galleryOffset.y;galleryStage.setPointerCapture(e.pointerId);galleryStage.classList.add('grabbing')});
-galleryStage.addEventListener('pointermove',e=>{if(!dragging)return;galleryOffset.x=originX+e.clientX-dragX;galleryOffset.y=originY+e.clientY-dragY;applyGalleryZoom()});
+galleryStage.addEventListener('pointerdown',e=>{if(zoomState.gallery<=100)return;dragging=true;dragX=e.clientX;dragY=e.clientY;originX=galleryStage.scrollLeft;originY=galleryStage.scrollTop;galleryStage.setPointerCapture(e.pointerId);galleryStage.classList.add('grabbing')});
+galleryStage.addEventListener('pointermove',e=>{if(!dragging)return;galleryStage.scrollLeft=originX+dragX-e.clientX;galleryStage.scrollTop=originY+dragY-e.clientY});
 function stopDrag(){dragging=false;galleryStage.classList.remove('grabbing')}galleryStage.addEventListener('pointerup',stopDrag);galleryStage.addEventListener('pointercancel',stopDrag);
 galleryStage.addEventListener('wheel',e=>{if(!e.ctrlKey)return;e.preventDefault();setGalleryZoom(zoomState.gallery+(e.deltaY<0?10:-10))},{passive:false});
+window.addEventListener('resize',()=>{if(document.getElementById('gallery').classList.contains('active'))applyGalleryZoom()});
 function resetZoom(id){(id==='gallery'?setGalleryZoom:setRibbonZoom)(100)}
 const ribbonViewport=document.getElementById('ribbonViewport'),ribbonTrack=document.getElementById('ribbonTrack');
+document.getElementById('ribbonPrev').append(prop('PROPS_0076_PRECEDANT.png',[252,255,1508,565]));
+document.getElementById('ribbonNext').append(prop('PROPS_0075_SUIVANT.png',[227,176,1527,581]));
+document.getElementById('ribbonPrev').onclick=()=>ribbonViewport.scrollBy({left:-ribbonViewport.clientWidth*.8,behavior:'smooth'});
+document.getElementById('ribbonNext').onclick=()=>ribbonViewport.scrollBy({left:ribbonViewport.clientWidth*.8,behavior:'smooth'});
+let ribbonDrag=false,ribbonDragX=0,ribbonStart=0;
+ribbonViewport.addEventListener('pointerdown',e=>{if(e.button!==0&&e.pointerType==='mouse')return;ribbonDrag=true;ribbonDragX=e.clientX;ribbonStart=ribbonViewport.scrollLeft;ribbonViewport.setPointerCapture(e.pointerId);ribbonViewport.classList.add('dragging')});
+ribbonViewport.addEventListener('pointermove',e=>{if(!ribbonDrag)return;const dx=e.clientX-ribbonDragX;if(Math.abs(dx)>4&&playing){playing=false;updatePlay()}ribbonViewport.scrollLeft=ribbonStart-dx});
+function endRibbonDrag(){ribbonDrag=false;ribbonViewport.classList.remove('dragging')}
+ribbonViewport.addEventListener('pointerup',endRibbonDrag);ribbonViewport.addEventListener('pointercancel',endRibbonDrag);
 const setGalleryZoom=setupZoom('gallery'),setRibbonZoom=setupZoom('ribbon');
 for(let i=1;i<=20;i++){const im=document.createElement('img');im.src=carnetRoot+'carnet_'+String(i).padStart(2,'0')+'.jpg';im.alt='Carnet 2 — fragment '+i;im.draggable=false;ribbonTrack.append(im)}
 function applyRibbonZoom(){const old=+ribbonViewport.dataset.zoom||100;const ratio=(zoomState.ribbon/old);const center=ribbonViewport.scrollLeft+ribbonViewport.clientWidth/2;for(const im of ribbonTrack.children)im.style.height=(76*zoomState.ribbon/100)+'%';ribbonViewport.dataset.zoom=zoomState.ribbon;requestAnimationFrame(()=>{ribbonViewport.scrollLeft=Math.max(0,center*ratio-ribbonViewport.clientWidth/2)})}
@@ -80,16 +121,31 @@ function tick(t){if(!playing||!document.getElementById('ribbon').classList.conta
 document.addEventListener('keydown',e=>{if(document.getElementById('gallery').classList.contains('active')){if(e.key==='ArrowRight')document.getElementById('next').click();if(e.key==='ArrowLeft')document.getElementById('prev').click()}if(e.key==='Escape')show('choice')});
 const canvas=document.getElementById('drawing'),ctx=canvas.getContext('2d',{willReadFrequently:true});ctx.fillStyle='white';ctx.fillRect(0,0,canvas.width,canvas.height);
 let tool='brush',color='#151515',size=6,painting=false,last=null,history=[];
-const brush=document.getElementById('brush'),eraser=document.getElementById('eraser');
-function setTool(v){tool=v;brush.classList.toggle('selected',v==='brush');eraser.classList.toggle('selected',v==='eraser')}
-brush.onclick=()=>setTool('brush');eraser.onclick=()=>setTool('eraser');
+const brush=document.getElementById('brush'),eraser=document.getElementById('eraser'),bucket=document.getElementById('bucket');
+function setTool(v){tool=v;brush.classList.toggle('selected',v==='brush');eraser.classList.toggle('selected',v==='eraser');bucket.classList.toggle('selected',v==='bucket')}
+brush.onclick=()=>setTool('brush');eraser.onclick=()=>setTool('eraser');bucket.onclick=()=>setTool('bucket');
 document.getElementById('brushSize').oninput=e=>{size=+e.target.value;document.getElementById('sizeLabel').textContent=size};
 const picker=document.getElementById('color');picker.oninput=e=>{color=e.target.value;setTool('brush')};
 const swatches=document.getElementById('swatches');for(const c of ['#151515','#ffffff','#ed2024','#f5b523','#22a447','#2264c7','#a342b5']){const b=document.createElement('button');b.className='swatch';b.style.background=c;b.title=c;b.setAttribute('aria-label','Couleur '+c);b.onclick=()=>{color=c;picker.value=c;setTool('brush')};swatches.append(b)}
 function snapshot(){if(history.length>=15)history.shift();history.push(ctx.getImageData(0,0,canvas.width,canvas.height))}
 function point(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*canvas.width/r.width,y:(e.clientY-r.top)*canvas.height/r.height}}
 function stroke(a,b){ctx.strokeStyle=tool==='eraser'?'white':color;ctx.fillStyle=ctx.strokeStyle;ctx.lineWidth=size;ctx.lineCap='round';ctx.lineJoin='round';ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke()}
-canvas.addEventListener('pointerdown',e=>{if(e.button!==0&&e.pointerType==='mouse')return;e.preventDefault();snapshot();painting=true;canvas.setPointerCapture(e.pointerId);last=point(e);stroke(last,last)});
+function fillArea(x,y){
+ const w=canvas.width,h=canvas.height,px=Math.max(0,Math.min(w-1,Math.floor(x))),py=Math.max(0,Math.min(h-1,Math.floor(y)));
+ const image=ctx.getImageData(0,0,w,h),data=image.data,at=(py*w+px)*4;
+ const original=[data[at],data[at+1],data[at+2],data[at+3]];
+ const hex=color.replace('#',''),target=[parseInt(hex.slice(0,2),16),parseInt(hex.slice(2,4),16),parseInt(hex.slice(4,6),16),255];
+ if(original.every((v,i)=>v===target[i]))return;
+ const tolerance=25,seen=new Uint8Array(w*h),stack=[py*w+px];
+ while(stack.length){
+  const index=stack.pop();if(seen[index])continue;seen[index]=1;
+  const p=index*4;if(Math.abs(data[p]-original[0])>tolerance||Math.abs(data[p+1]-original[1])>tolerance||Math.abs(data[p+2]-original[2])>tolerance||Math.abs(data[p+3]-original[3])>tolerance)continue;
+  data[p]=target[0];data[p+1]=target[1];data[p+2]=target[2];data[p+3]=255;
+  const xx=index%w;if(xx>0)stack.push(index-1);if(xx<w-1)stack.push(index+1);if(index>=w)stack.push(index-w);if(index<w*(h-1))stack.push(index+w)
+ }
+ ctx.putImageData(image,0,0)
+}
+canvas.addEventListener('pointerdown',e=>{if(e.button!==0&&e.pointerType==='mouse')return;e.preventDefault();snapshot();last=point(e);if(tool==='bucket'){fillArea(last.x,last.y);return}painting=true;canvas.setPointerCapture(e.pointerId);stroke(last,last)});
 canvas.addEventListener('pointermove',e=>{if(!painting)return;e.preventDefault();const p=point(e);stroke(last,p);last=p});
 function finish(){painting=false;last=null}canvas.addEventListener('pointerup',finish);canvas.addEventListener('pointercancel',finish);
 document.getElementById('undo').onclick=()=>{if(history.length)ctx.putImageData(history.pop(),0,0)};
