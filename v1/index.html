@@ -71,6 +71,11 @@ html,body,button,input,textarea,select,option,label,output{font-family:'JMH Type
 .grebik-art img{max-width:100%!important;max-height:85dvh!important}
 .grebik-art button#grebik-error-close{top:37%;left:72%;width:9%;height:10%}
 @media(prefers-reduced-motion:reduce){.grebik-error img{animation:none}}
+/* V42: animate the entire Grebik window, not only its image */
+#grebik-error .grebik-art{animation:grebik-window-pulse 1.8s ease-in-out infinite!important;transform-origin:center center!important;will-change:transform}
+#grebik-error .grebik-art img{animation:none!important}
+@keyframes grebik-window-pulse{0%,100%{transform:scale(.90)}50%{transform:scale(1.075)}}
+@media(prefers-reduced-motion:reduce){#grebik-error .grebik-art{animation:none!important}}
 </style></head><body>
 <main class="desktop" id="desktop"></main>
 <section class="window hidden" id="window" aria-label="Fenêtre du musée"><div class="titlebar" id="titlebar"><span id="windowtitle">Musée numérique</span><button class="close" id="close" aria-label="Fermer">✕</button></div><div class="content" id="content"></div></section>
