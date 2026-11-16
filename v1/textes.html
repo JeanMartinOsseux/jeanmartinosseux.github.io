@@ -226,6 +226,10 @@ body{background-image:url('https://raw.githubusercontent.com/JeanMartinOsseux/je
 /* V39: props contain generous transparent margins; zoom into the painted artwork */
 #resetBtn{background-image:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/props_new/jeu_renitialiser.png')!important;background-size:190% auto!important;background-position:center 22%!important;background-repeat:no-repeat!important;width:clamp(155px,13vw,220px)!important;height:65px!important}
 .message.round-complete{background-image:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/props_new/jeu_manche_fini.png')!important;background-size:230% auto!important;background-position:center 21%!important;width:min(680px,90vw)!important;height:170px!important}
+/* V40: larger reset illustration and high-contrast coin count */
+#resetBtn{width:clamp(195px,17vw,280px)!important;height:76px!important;background-size:190% auto!important;flex-shrink:0!important}
+#coins,.coins{color:#fff!important;font-family:'JMH Typewriter',monospace!important;font-weight:900!important;text-shadow:1px 2px 2px #000!important}
+@media(max-width:700px){#resetBtn{width:175px!important;height:60px!important}}
 </style></head><body><div class="top"><button class="xp" id="bureauBtn" aria-label="Bureau" onclick="location.href='./index.html'">Bureau</button><span class="coins" id="coins">0</span><button class="xp" id="shopBtn">🛒 Boutique</button><button class="xp" id="collectionBtn">🗂️ Collection</button><button class="xp reset-button" id="resetBtn">↻ Tout réinitialiser</button><span class="hint">Attrape un texte, déplace la souris et relâche pour le lancer !</span></div><main class="court" id="court"><div class="bin" id="bin"><div class="symbol">🗑️</div><div class="name">Corbeille</div></div></main><script>
 const base='https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/TEXTE/';
 const texts=['GREBIK EST DERRRIERE TOI','3916','121212','KASK','MORDOR ME HANTE','VA AU PULRA','CC CV','444.444.444.','BIENTOT PERF','EXPO'];
