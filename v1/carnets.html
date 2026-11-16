@@ -100,6 +100,11 @@ button{font:inherit;cursor:pointer}a{text-decoration:none}.screen{position:fixed
  #paint .paint-tools{justify-content:flex-start!important;overflow-x:auto!important;flex-wrap:nowrap!important}
  #paint .paint-tools>*{flex-shrink:0}
 }
+
+/* V6: draw directly on textured paper; ink blended into the sheet */
+#paint .paint-tools{position:relative!important;z-index:2!important;background:#ece9d8f2!important}
+#paint .paint-canvas-area{background:transparent!important}
+#paint #drawing{background:transparent!important;mix-blend-mode:multiply!important}
 </style></head><body>
 <a class="home" href="./index.html" aria-label="Retour au bureau"></a><button class="prop-button choice-back top-choice" id="topChoice" aria-label="Choix des carnets"></button>
 <section id="choice" class="screen active" aria-label="Choix des carnets">
@@ -183,7 +188,7 @@ playPause.onclick=()=>{playing=!playing;updatePlay();if(playing){if(ribbonViewpo
 function tick(t){if(!playing||!document.getElementById('ribbon').classList.contains('active'))return;if(lastFrame){const dt=Math.min(t-lastFrame,80);ribbonViewport.scrollLeft+=dt*.025;if(ribbonViewport.scrollLeft>=ribbonViewport.scrollWidth-ribbonViewport.clientWidth-2){playing=false;updatePlay();return}}lastFrame=t;requestAnimationFrame(tick)}
 document.addEventListener('keydown',e=>{if(document.getElementById('gallery').classList.contains('active')){if(e.key==='ArrowRight')document.getElementById('next').click();if(e.key==='ArrowLeft')document.getElementById('prev').click()}if(e.key==='Escape')show('choice')});
 const canvas=document.getElementById('drawing'),ctx=canvas.getContext('2d',{willReadFrequently:true});
-ctx.fillStyle='white';ctx.fillRect(0,0,canvas.width,canvas.height);
+ctx.clearRect(0,0,canvas.width,canvas.height);
 function fitPaintCanvas(){
  const area=document.querySelector('.paint-canvas-area');
  if(!area.clientWidth||!area.clientHeight)return;
@@ -191,7 +196,7 @@ function fitPaintCanvas(){
  if(canvas.width===w&&canvas.height===h)return;
  const old=document.createElement('canvas');old.width=canvas.width;old.height=canvas.height;old.getContext('2d').drawImage(canvas,0,0);
  canvas.width=w;canvas.height=h;
- ctx.fillStyle='white';ctx.fillRect(0,0,w,h);
+ ctx.clearRect(0,0,w,h);
  ctx.drawImage(old,0,0,w,h);
  history.length=0;
 }
@@ -205,7 +210,14 @@ const picker=document.getElementById('color');picker.oninput=e=>{color=e.target.
 const swatches=document.getElementById('swatches');for(const c of ['#151515','#ffffff','#ed2024','#f5b523','#22a447','#2264c7','#a342b5']){const b=document.createElement('button');b.className='swatch';b.style.background=c;b.title=c;b.setAttribute('aria-label','Couleur '+c);b.onclick=()=>{color=c;picker.value=c;setTool('brush')};swatches.append(b)}
 function snapshot(){if(history.length>=15)history.shift();history.push(ctx.getImageData(0,0,canvas.width,canvas.height))}
 function point(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*canvas.width/r.width,y:(e.clientY-r.top)*canvas.height/r.height}}
-function stroke(a,b){ctx.strokeStyle=tool==='eraser'?'white':color;ctx.fillStyle=ctx.strokeStyle;ctx.lineWidth=size;ctx.lineCap='round';ctx.lineJoin='round';ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke()}
+function stroke(a,b){
+ ctx.save();
+ ctx.globalCompositeOperation=tool==='eraser'?'destination-out':'source-over';
+ ctx.strokeStyle=tool==='eraser'?'#000':color;
+ ctx.lineWidth=size;ctx.lineCap='round';ctx.lineJoin='round';
+ ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+ ctx.restore();
+}
 function fillArea(x,y){
  const w=canvas.width,h=canvas.height,px=Math.max(0,Math.min(w-1,Math.floor(x))),py=Math.max(0,Math.min(h-1,Math.floor(y)));
  const image=ctx.getImageData(0,0,w,h),data=image.data,at=(py*w+px)*4;
@@ -225,7 +237,27 @@ canvas.addEventListener('pointerdown',e=>{if(e.button!==0&&e.pointerType==='mous
 canvas.addEventListener('pointermove',e=>{if(!painting)return;e.preventDefault();const p=point(e);stroke(last,p);last=p});
 function finish(){painting=false;last=null}canvas.addEventListener('pointerup',finish);canvas.addEventListener('pointercancel',finish);
 document.getElementById('undo').onclick=()=>{if(history.length)ctx.putImageData(history.pop(),0,0)};
-document.getElementById('clear').onclick=()=>{if(confirm('Effacer tout le dessin ?')){snapshot();ctx.fillStyle='white';ctx.fillRect(0,0,canvas.width,canvas.height)}};
-document.getElementById('save').onclick=()=>{const a=document.createElement('a');a.download='mon-dessin-carnets.png';a.href=canvas.toDataURL('image/png');document.body.append(a);a.click();a.remove()};
+document.getElementById('clear').onclick=()=>{if(confirm('Effacer tout le dessin ?')){snapshot();ctx.clearRect(0,0,canvas.width,canvas.height)}};
+const paperImage=new Image();paperImage.crossOrigin='anonymous';paperImage.src=carnetRoot+'FOND.jpg';
+const paperReady=new Promise((resolve,reject)=>{paperImage.onload=()=>resolve(paperImage);paperImage.onerror=()=>reject(new Error('Fond papier inaccessible'))});
+document.getElementById('save').onclick=async()=>{
+ try{
+  await paperReady;
+  const out=document.createElement('canvas');out.width=canvas.width;out.height=canvas.height;
+  const o=out.getContext('2d');
+  // The exported background exactly matches the full-page stretched paper.
+  const screen=document.getElementById('paint').getBoundingClientRect();
+  const area=document.querySelector('.paint-canvas-area').getBoundingClientRect();
+  const sx=(area.left-screen.left)/screen.width*paperImage.naturalWidth;
+  const sy=(area.top-screen.top)/screen.height*paperImage.naturalHeight;
+  const sw=area.width/screen.width*paperImage.naturalWidth;
+  const sh=area.height/screen.height*paperImage.naturalHeight;
+  o.drawImage(paperImage,sx,sy,sw,sh,0,0,out.width,out.height);
+  o.globalCompositeOperation='multiply';
+  o.drawImage(canvas,0,0,out.width,out.height);
+  o.globalCompositeOperation='source-over';
+  const a=document.createElement('a');a.download='mon-dessin-carnets.png';a.href=out.toDataURL('image/png');document.body.append(a);a.click();a.remove();
+ }catch(err){alert('Impossible de charger le fond papier pour enregistrer le dessin. Réessaie après le chargement de la page.');console.error(err)}
+};
 renderPage();updatePlay();document.getElementById('topChoice').style.display='none';
 </script></body></html>
