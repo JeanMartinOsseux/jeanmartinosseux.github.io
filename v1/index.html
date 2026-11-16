@@ -33,7 +33,14 @@ body.powered-off #screen-off{display:block}
 .window .content[style]{background:transparent!important}
 .window .titlebar{z-index:6}
 .window .close{z-index:7}
-.window .content.links-content{overflow:hidden!important;overscroll-behavior:contain!important}\n</style></head><body>
+.window .content.links-content{overflow:hidden!important;overscroll-behavior:contain!important}\n
+/* Site-wide custom typeface: JMH Typewriter */
+@font-face{font-family:'JMH Typewriter';src:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/font/JMH%20Typewriter.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'JMH Typewriter';src:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/font/JMH%20Typewriter-Thin.otf') format('opentype');font-weight:100 300;font-style:normal;font-display:swap}
+@font-face{font-family:'JMH Typewriter';src:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/font/JMH%20Typewriter-Bold.otf') format('opentype');font-weight:600 700;font-style:normal;font-display:swap}
+@font-face{font-family:'JMH Typewriter';src:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/font/JMH%20Typewriter-Black.otf') format('opentype');font-weight:800 900;font-style:normal;font-display:swap}
+html,body,button,input,textarea,select,option,label,output{font-family:'JMH Typewriter',monospace!important}
+</style></head><body>
 <main class="desktop" id="desktop"></main>
 <section class="window hidden" id="window" aria-label="Fenêtre du musée"><div class="titlebar" id="titlebar"><span id="windowtitle">Musée numérique</span><button class="close" id="close" aria-label="Fermer">✕</button></div><div class="content" id="content"></div></section>
 <div id="screen-off" aria-hidden="true"></div><footer class="taskbar"><button class="start" id="start" title="Éteindre / rallumer l’écran" aria-label="Éteindre ou rallumer l’écran">Éteindre</button><button class="refresh-button" id="refresh-button" title="Actualiser la page (F5)" aria-label="Actualiser la page">F5</button><span class="tasktitle">JEAN MARTIN OSSEUX — V1 en construction</span></footer>
