@@ -83,7 +83,7 @@ function prop(file,b){const [x,y,w,h]=b,box=document.createElement('span');box.c
 const digits={1:[715,208,352,485],2:[737,215,382,477],3:[745,222,317,471],4:[686,216,383,463],5:[731,203,339,484],6:[741,212,316,502]};
 function digit(n){const b=digits[n];const e=prop('PROPS_'+String(74-n).padStart(4,'0')+'_'+n+'.png',b);e.classList.add('digit');return e}
 function show(name){for(const e of document.querySelectorAll('.screen'))e.classList.toggle('active',e.id===name);if(name!=='ribbon'){playing=false;updatePlay()}else{playing=true;lastFrame=0;updatePlay();requestAnimationFrame(tick)}}
-for(let i=1;i<=3;i++){document.getElementById('choose'+i).append(digit(i));document.getElementById('choose'+i).onclick=()=>{if(i===1){page=1;renderPage();resetZoom('gallery');show('gallery')}else if(i===2){ribbonViewport.scrollLeft=0;resetZoom('ribbon');show('ribbon')}else show('paint')}}
+for(let i=1;i<=3;i++){document.getElementById('choose'+i).append(digit(i));document.getElementById('choose'+i).onclick=()=>{if(i===1){page=1;renderPage();resetZoom('gallery');show('gallery')}else if(i===2){show('ribbon');resetZoom('ribbon');ribbonViewport.scrollLeft=0;ribbonViewport.scrollTop=0;requestAnimationFrame(()=>applyRibbonZoom())}else show('paint')}}
 document.querySelector('.home').append(prop('PROPS_0077_BUREAU.png',[240,240,1431,514]));
 for(const b of document.querySelectorAll('.choice-back')){b.append(prop('PROPS_0031_CHOIX.png',[385,317,1151,449]));b.onclick=()=>show('choice')}
 document.getElementById('prev').append(prop('PROPS_0076_PRECEDANT.png',[252,255,1508,565]));
@@ -135,7 +135,7 @@ function applyRibbonZoom(){
  const ratio=zoomState.ribbon/old;
  const cx=ribbonViewport.scrollLeft+ribbonViewport.clientWidth/2;
  const cy=ribbonViewport.scrollTop+ribbonViewport.clientHeight/2;
- const baseHeight=ribbonViewport.clientHeight*.76;
+ const baseHeight=Math.max(ribbonViewport.clientHeight,300)*.76;
  const newHeight=baseHeight*zoomState.ribbon/100;
  ribbonTrack.style.height=Math.max(ribbonViewport.clientHeight,newHeight)+'px';
  ribbonTrack.style.minHeight=Math.max(ribbonViewport.clientHeight,newHeight)+'px';
