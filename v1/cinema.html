@@ -13,7 +13,21 @@
 .film-hit.r1{top:8.5%}.film-hit.r2{top:19.5%}.film-hit.r3{top:30.4%}.film-hit.r4{top:41.4%}
 .youtube-hit{left:4.5%;top:55.1%;width:86%;height:29%}
 @media(max-width:800px){.room{flex-direction:column;gap:5px;padding:45px 8px 8px;justify-content:center}.tv{width:min(95vw,50dvh)}.film-panel{width:min(68vw,calc((42dvh - 12px)*.73585));max-height:42dvh}}
-</style></head><body><a class="home" href="./index.html">← Bureau</a><main class="room"><div class="tv"><div class="screen" id="screen"><div class="blank">Sélectionne un film<br>pour allumer la télévision 📺</div></div><img class="tv-image" src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/films/TELEVISION.png" alt="Télévision rétro"></div><aside class="film-panel" aria-label="Sélection des films"><img class="film-prop" src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/PROPS/PROPS_0013_FILMS.png" alt="Films : 01 à 08 et chaîne YouTube">
+
+/* V4: keep TV set, hand-drawn Bureau and align Films with TV */
+.home{position:fixed!important;top:12px!important;left:12px!important;z-index:20!important;background:transparent!important;border:0!important;padding:0!important;box-shadow:none!important;display:block;width:148px}
+.home img{display:block;width:100%;height:auto}
+.room{gap:0!important;justify-content:center!important;align-items:center!important}
+.tv{width:min(1050px,68vw,calc(112dvh - 35px))!important}
+.film-panel{width:min(390px,28vw,calc((100dvh - 90px)*.73585))!important;align-self:center!important;margin-left:-3.5vw!important;transform:translateY(-1.5%)}
+.youtube-hit{top:61.5%!important;height:22%!important}
+@media(max-width:800px){
+ .home{width:110px!important;top:8px!important;left:8px!important}
+ .room{gap:5px!important}
+ .tv{width:min(95vw,50dvh)!important}
+ .film-panel{width:min(68vw,calc((42dvh - 12px)*.73585))!important;margin-left:0!important;transform:none!important}
+}
+</style></head><body><a class="home" href="./index.html" aria-label="Retour au bureau"><img src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/PROPS/PROPS_0077_BUREAU.png" alt="Bureau"></a><main class="room"><div class="tv"><div class="screen" id="screen"><div class="blank">Sélectionne un film<br>pour allumer la télévision</div></div><img class="tv-image" src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/films/TELEVISION.png" alt="Télévision rétro"></div><aside class="film-panel" aria-label="Sélection des films"><img class="film-prop" src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/PROPS/PROPS_0013_FILMS.png" alt="Films : 01 à 08 et chaîne YouTube">
 <button class="film-hit left r1" data-film="0" aria-label="Voir le film 01"></button><button class="film-hit right r1" data-film="1" aria-label="Voir le film 02"></button><button class="film-hit left r2" data-film="2" aria-label="Voir le film 03"></button><button class="film-hit right r2" data-film="3" aria-label="Voir le film 04"></button><button class="film-hit left r3" data-film="4" aria-label="Voir le film 05"></button><button class="film-hit right r3" data-film="5" aria-label="Voir le film 06"></button><button class="film-hit left r4" data-film="6" aria-label="Voir le film 07"></button><button class="film-hit right r4" data-film="7" aria-label="Voir le film 08"></button>
 <a class="youtube-hit" href="https://www.youtube.com/@grebik_jmo_prod/videos" target="_blank" rel="noopener noreferrer" aria-label="Ouvrir la chaîne YouTube"></a></aside></main><script>
 const videos=["ROdMvXG-QVk","_4OawqsFceQ","D39tsIiRxV0","3Zy6nMNYn-s","CU7D2iG56eg","i0kYG8s9Sd4","K1BEPaZpkiM","goPgOHYZfRc"];
