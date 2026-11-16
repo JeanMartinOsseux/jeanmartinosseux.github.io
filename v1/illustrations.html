@@ -17,6 +17,13 @@
 .lightbox-close{width:62px;height:54px;top:12px;right:16px;padding:0;background:transparent;border:0;color:transparent;display:flex;align-items:center;justify-content:center}
 .lightbox-close .prop-crop{width:100%;height:100%}
 .lightbox-close:hover{transform:scale(1.08);filter:brightness(1.1)}
+
+/* Site-wide custom typeface: JMH Typewriter */
+@font-face{font-family:'JMH Typewriter';src:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/font/JMH%20Typewriter.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'JMH Typewriter';src:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/font/JMH%20Typewriter-Thin.otf') format('opentype');font-weight:100 300;font-style:normal;font-display:swap}
+@font-face{font-family:'JMH Typewriter';src:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/font/JMH%20Typewriter-Bold.otf') format('opentype');font-weight:600 700;font-style:normal;font-display:swap}
+@font-face{font-family:'JMH Typewriter';src:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/font/JMH%20Typewriter-Black.otf') format('opentype');font-weight:800 900;font-style:normal;font-display:swap}
+html,body,button,input,textarea,select,option,label,output{font-family:'JMH Typewriter',monospace!important}
 </style></head><body><a class="home" href="./index.html">← Bureau</a><main class="museum"><div class="wall" id="wall" aria-label="Œuvres accrochées au mur"></div></main><nav class="controls" aria-label="Navigation des illustrations"><button id="prev">← Précédent</button><span id="count" class="count"></span><button id="next">Suivant →</button></nav><div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Illustration agrandie"><button class="lightbox-close" id="lightbox-close" aria-label="Fermer">×</button><img id="lightbox-image" alt=""></div><script>
 
 const PROP_ROOT='https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/PROPS/';
