@@ -70,8 +70,8 @@ galleryStage.addEventListener('pointermove',e=>{if(!dragging)return;galleryOffse
 function stopDrag(){dragging=false;galleryStage.classList.remove('grabbing')}galleryStage.addEventListener('pointerup',stopDrag);galleryStage.addEventListener('pointercancel',stopDrag);
 galleryStage.addEventListener('wheel',e=>{if(!e.ctrlKey)return;e.preventDefault();setGalleryZoom(zoomState.gallery+(e.deltaY<0?10:-10))},{passive:false});
 function resetZoom(id){(id==='gallery'?setGalleryZoom:setRibbonZoom)(100)}
-const setGalleryZoom=setupZoom('gallery'),setRibbonZoom=setupZoom('ribbon');
 const ribbonViewport=document.getElementById('ribbonViewport'),ribbonTrack=document.getElementById('ribbonTrack');
+const setGalleryZoom=setupZoom('gallery'),setRibbonZoom=setupZoom('ribbon');
 for(let i=1;i<=20;i++){const im=document.createElement('img');im.src=carnetRoot+'carnet_'+String(i).padStart(2,'0')+'.jpg';im.alt='Carnet 2 — fragment '+i;im.draggable=false;ribbonTrack.append(im)}
 function applyRibbonZoom(){const old=+ribbonViewport.dataset.zoom||100;const ratio=(zoomState.ribbon/old);const center=ribbonViewport.scrollLeft+ribbonViewport.clientWidth/2;for(const im of ribbonTrack.children)im.style.height=(76*zoomState.ribbon/100)+'%';ribbonViewport.dataset.zoom=zoomState.ribbon;requestAnimationFrame(()=>{ribbonViewport.scrollLeft=Math.max(0,center*ratio-ribbonViewport.clientWidth/2)})}
 let playing=false,lastFrame=0;const playPause=document.getElementById('playPause');function updatePlay(){playPause.textContent=playing?'⏸ Pause':'▶ Play';playPause.setAttribute('aria-pressed',String(playing))}
