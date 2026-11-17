@@ -7,8 +7,8 @@
 button,input,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.35;cursor:default}
 #scene{position:relative;width:100%;height:100dvh;overflow:hidden}
 .back{position:absolute;z-index:4;left:2%;top:1.5%;width:15%;height:11%;background:url("https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/PROPS/PROPS_0077_BUREAU.png") center/contain no-repeat}
-.logo{position:absolute;left:28%;top:0%;width:44%;height:23%;object-fit:contain}
-.compose{position:absolute;left:22%;top:25%;width:56%;height:31%;background:url("https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/props_new/livre_or_fenetre_laisser_commentaire.png") center/116.3% 193% no-repeat}
+.logo{position:absolute;left:23%;top:0%;width:54%;height:25%;object-fit:contain}
+.compose{position:absolute;left:22%;top:23%;width:56%;height:35%;background:url("https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/props_new/livre_or_fenetre_laisser_commentaire.png") center/100% 100% no-repeat}
 .compose form{position:absolute;inset:0;margin:0}
 .field{position:absolute;background:transparent;border:0;border-radius:4px;color:#21162b;outline-offset:1px}
 #pseudo{left:12%;top:7%;width:34%;height:17%;padding:0 8px;font-size:clamp(14px,1.4vw,22px)}
@@ -17,14 +17,14 @@ button,input,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity
 .send:hover{background:#ffffff22}.send:focus-visible,.field:focus-visible{outline:2px solid #304b92}
 .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
 .honeypot{position:absolute;left:-10000px;width:1px;height:1px}
-.feedback{position:absolute;left:20%;right:20%;top:57%;text-align:center;font-size:clamp(10px,1vw,14px);line-height:1.15}
+.feedback{position:absolute;left:20%;right:20%;top:57.5%;text-align:center;font-size:clamp(10px,1vw,14px);line-height:1.15}
 #status{color:#8c1820;font-weight:700;min-height:1em}
 #messages{position:absolute;left:10%;right:10%;top:60%;height:20%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10%;align-items:center}
 .comment{position:relative;width:100%;height:100%;min-width:0;background:url("https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/props_new/livre_or_fenetre_commentaire_de_quelqun.png") 48% 53%/240.6% 279.8% no-repeat}
 .comment-inner{position:absolute;inset:9% 9% 9%;overflow:auto;overflow-wrap:anywhere;padding:2px 6px}
 .comment h3{font-size:clamp(13px,1.25vw,19px);margin:0 0 2px;line-height:1.1}
-.comment time{display:block;font-size:clamp(10px,.9vw,13px);line-height:1.15}
-.comment p{font-size:clamp(12px,1.05vw,16px);line-height:1.2;white-space:pre-wrap;margin:6px 0 0}
+.comment time{display:inline;font-size:clamp(10px,.9vw,13px);line-height:1.15;margin-left:12px}.comment h3{display:inline}
+.comment-heading{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}.comment-heading time{margin-left:0}.comment p{font-size:clamp(12px,1.05vw,16px);line-height:1.2;white-space:pre-wrap;margin:6px 0 0}
 .empty{grid-column:1/-1;text-align:center}
 .pager{position:absolute;bottom:0.5%;left:0;width:100%;height:8%;display:flex;align-items:center;justify-content:center;gap:12px}
 .arrow{width:clamp(75px,9vw,155px);height:100%;border:0;background:transparent center/contain no-repeat}
@@ -65,7 +65,7 @@ async function load(page=1){
  const name=document.createElement("h3");name.textContent=m.pseudo;
  const date=document.createElement("time");date.textContent=m.date_creation?new Date(m.date_creation.replace(" ","T")+"Z").toLocaleDateString("fr-FR"):"";
  const message=document.createElement("p");message.textContent=m.message;
- inner.append(name,date,message);card.append(inner);$("messages").append(card);
+ const heading=document.createElement("div");heading.className="comment-heading";heading.append(name,date);inner.append(heading,message);card.append(inner);$("messages").append(card);
  }
  showPage(data.page,data.pages);
  $("prev").disabled=data.page<=1;$("next").disabled=data.page>=data.pages;
