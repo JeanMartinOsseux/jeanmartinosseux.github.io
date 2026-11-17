@@ -114,6 +114,9 @@ button{font:inherit;cursor:pointer}a{text-decoration:none}.screen{position:fixed
 #paint .paint-tools>*{flex-shrink:0}
 #paint .paint-canvas-area{height:100%!important}
 @media(max-width:700px){#paint .paint-tools{width:calc(100vw - 20px)!important;justify-content:flex-start!important}}
+/* Custom hand-drawn controls: visual prop size, not source canvas size */
+#ribbon .ribbon-controls #playPause{min-width:0!important;width:76px!important;height:42px!important;padding:0!important;border:0!important;box-shadow:none!important;border-radius:0!important;background:transparent url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/props_new/PLAY.png') center/contain no-repeat!important;color:transparent!important;font-size:0!important;overflow:hidden!important}
+#ribbon .ribbon-controls #playPause.is-playing{background-image:url('https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/props_new/PAUSE.png')!important}
 </style></head><body>
 <a class="home" href="./index.html" aria-label="Retour au bureau"></a><button class="prop-button choice-back top-choice" id="topChoice" aria-label="Choix des carnets"></button>
 <section id="choice" class="screen active" aria-label="Choix des carnets">
@@ -198,7 +201,7 @@ function applyRibbonZoom(){
   ribbonViewport.scrollTop=Math.max(0,cy*ratio-ribbonViewport.clientHeight/2)
  })
 }
-let playing=false,lastFrame=0;const playPause=document.getElementById('playPause');function updatePlay(){playPause.textContent=playing?'⏸ Pause':'▶ Play';playPause.setAttribute('aria-pressed',String(playing))}
+let playing=false,lastFrame=0;const playPause=document.getElementById('playPause');function updatePlay(){playPause.classList.toggle('is-playing',playing);playPause.setAttribute('aria-label',playing?'Pause':'Lecture');playPause.setAttribute('aria-pressed',String(playing))}
 playPause.onclick=()=>{playing=!playing;updatePlay();if(playing){if(ribbonViewport.scrollLeft>=ribbonViewport.scrollWidth-ribbonViewport.clientWidth-2)ribbonViewport.scrollLeft=0;lastFrame=0;requestAnimationFrame(tick)}};
 function tick(t){if(!playing||!document.getElementById('ribbon').classList.contains('active'))return;if(lastFrame){const dt=Math.min(t-lastFrame,80);ribbonViewport.scrollLeft+=dt*.025;if(ribbonViewport.scrollLeft>=ribbonViewport.scrollWidth-ribbonViewport.clientWidth-2){playing=false;updatePlay();return}}lastFrame=t;requestAnimationFrame(tick)}
 document.addEventListener('keydown',e=>{if(document.getElementById('gallery').classList.contains('active')){if(e.key==='ArrowRight')document.getElementById('next').click();if(e.key==='ArrowLeft')document.getElementById('prev').click()}if(e.key==='Escape')show('choice')});
