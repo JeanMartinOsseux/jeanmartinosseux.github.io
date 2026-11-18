@@ -100,6 +100,9 @@ html,body,button,input,textarea,select,option,label,output{font-family:'JMH Type
   .grebik-art{max-height:90dvh}
   .grebik-art img{max-height:90dvh!important}
 }
+
+/* Mobile landscape corrections — November 2026 */
+@media(pointer:coarse) and (orientation:landscape) and (max-width:950px){html,body{width:100%;height:100dvh;overflow:hidden}body{background-size:100% 100%;background-position:center}.window{max-height:calc(100dvh - 24px)}}
 </style></head><body>
 <div class="rotate-notice" aria-label="Tournez votre téléphone pour visiter le musée"><div class="rotate-symbol" aria-hidden="true">↻</div><p>Tourne ton téléphone à l’horizontale pour visiter le musée.</p></div>
 <main class="desktop" id="desktop"></main>
