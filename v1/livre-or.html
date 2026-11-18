@@ -7,7 +7,7 @@
 button,input,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.35;cursor:default}
 #scene{position:relative;width:100%;height:100dvh;overflow:hidden}
 .back{position:absolute;z-index:4;left:2%;top:1.5%;width:15%;height:11%;background:url("https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/PROPS/PROPS_0077_BUREAU.png") center/contain no-repeat}
-.logo{position:absolute;left:8%;top:0%;width:84%;height:39%;object-fit:contain;transform:scale(1.3);transform-origin:center top;pointer-events:none}
+.logo{position:absolute;left:8%;top:0%;width:84%;height:39%;object-fit:contain;transform:scale(1.3);transform-origin:center top;cursor:pointer}
 .compose{position:absolute;left:22%;top:20%;width:56%;height:50%;background:url("https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/props_new/livre_or_fenetre_laisser_commentaire.png") center/100% 100% no-repeat}
 .compose form{position:absolute;inset:0;margin:0}
 .field{position:absolute;background:transparent;border:0;border-radius:4px;color:#21162b;outline-offset:1px}
@@ -50,14 +50,29 @@ button,input,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity
 <script>
 const $=id=>document.getElementById(id);
 const propDigits="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/PROPS/";
-let current=1;
+let current=1,adminMode=false,logoClicks=0,logoClickTime=0;
+document.querySelector(".logo").addEventListener("click",async()=>{
+ const now=Date.now();logoClicks=now-logoClickTime<2500?logoClicks+1:1;logoClickTime=now;
+ if(logoClicks<5)return;logoClicks=0;
+ if(adminMode){
+  if(!confirm("Déconnecter le mode administrateur ?"))return;
+  await fetch("/api/livre-or-admin",{method:"DELETE"});adminMode=false;await load(current);return;
+ }
+ const password=prompt("Accès administrateur — mot de passe :");
+ if(password===null||!password)return;
+ try{
+  const response=await fetch("/api/livre-or-admin",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({password})});
+  const data=await response.json();if(!response.ok)throw Error(data.error||"Connexion impossible");
+  await load(current);alert("Mode administrateur activé !");
+ }catch(e){alert(e.message)}
+});
 function digit(n){const img=document.createElement("img");img.alt=String(n);img.src=propDigits+(n>=1&&n<=25?"PROPS_"+String(74-n).padStart(4,"0")+"_"+n+".png":"PROPS_0073_1.png");return img}
 function showPage(n,pages){const el=$("page-label");el.replaceChildren(digit(n));const slash=document.createElement("span");slash.textContent="/";el.append(slash,digit(pages));el.setAttribute("aria-label","Page "+n+" sur "+pages)}
 async function load(page=1){
  try{
  const response=await fetch("/api/livre-or?page="+page,{cache:"no-store"}),data=await response.json();
  if(!response.ok)throw Error(data.error||"Erreur de chargement");
- current=data.page;$("messages").replaceChildren();
+ current=data.page;adminMode=Boolean(data.admin);$("messages").replaceChildren();
  if(!data.messages.length){const empty=document.createElement("p");empty.className="empty";empty.textContent="Pas encore de commentaire. Sois le premier !";$("messages").append(empty)}
  for(const m of data.messages){
  const card=document.createElement("article");card.className="comment";
@@ -69,7 +84,8 @@ async function load(page=1){
  }
  showPage(data.page,data.pages);
  $("prev").disabled=data.page<=1;$("next").disabled=data.page>=data.pages;
- if(data.remaining!==null){$("remaining").textContent=data.remaining+" message(s) restant(s) sur 3 · 500 caractères maximum";$("form").querySelector(".send").disabled=data.remaining===0}
+ if(adminMode){$("remaining").textContent="Mode administrateur · publications illimitées";$("form").querySelector(".send").disabled=false}
+ else if(data.remaining!==null){$("remaining").textContent=data.remaining+" message(s) restant(s) sur 3 · 500 caractères maximum";$("form").querySelector(".send").disabled=data.remaining===0}
  }catch(err){$("messages").replaceChildren();const p=document.createElement("p");p.className="empty";p.textContent=err.message;$("messages").append(p);$("prev").disabled=$("next").disabled=true}
 }
 $("prev").onclick=()=>load(current-1);$("next").onclick=()=>load(current+1);
