@@ -188,6 +188,20 @@ function openLinks(){
  const oldHitbox=win.querySelector("#links-close-hitbox");
  if(oldHitbox)oldHitbox.remove();
  content.append(stage);win.classList.remove("hidden");
+ // The red X is painted into the frame PNG. Capture taps in its visible
+ // window-relative rectangle, independently of the invisible button layout.
+ if(!win._treeCloseCapture){
+  win._treeCloseCapture=true;
+  win.addEventListener("click",e=>{
+   if(win.classList.contains("hidden")||!content.classList.contains("links-content"))return;
+   const box=win.getBoundingClientRect();
+   const x=(e.clientX-box.left)/box.width;
+   const y=(e.clientY-box.top)/box.height;
+   if(x>=0.84&&x<=0.95&&y>=0&&y<=0.085){
+    e.preventDefault();e.stopImmediatePropagation();resetMuseumWindow();
+   }
+  },true);
+ }
 }
 function openZinzine(){resetMuseumWindow();document.querySelector("#windowtitle").textContent="Zinzine Online";content.replaceChildren();content.style.background="#fff";content.style.display="flex";content.style.alignItems="center";content.style.justifyContent="center";const link=document.createElement("a");link.href="https://fanzinzine.neocities.org/";link.target="_blank";link.rel="noopener noreferrer";link.title="Ouvrir Zinzine Online";const img=document.createElement("img");img.src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/zinzine/IMG.png";img.alt="Zinzine Online";img.style.cssText="display:block;width:min(100%,500px);height:auto;cursor:pointer";link.append(img);content.append(link);win.style.width="min(620px,85vw)";win.style.height="min(390px,65vh)";win.style.transform="";win.style.left="50%";win.style.top="15%";win.style.transform="translateX(-50%)";win.classList.remove("hidden")}
 function openSection(name,id){resetMuseumWindow();win.style.transform="";content.style.cssText="";content.style.background="";content.style.display="";content.style.alignItems="";content.style.justifyContent="";document.querySelector("#windowtitle").textContent=name;content.replaceChildren();const h=document.createElement("h1");h.textContent=name;const p=document.createElement("div");p.className="notice";p.textContent="Section "+id+" — structure interactive initiale. Les décors, assets et liens du ZIP seront intégrés dans la prochaine étape.";content.append(h,p);win.classList.remove("hidden")}
