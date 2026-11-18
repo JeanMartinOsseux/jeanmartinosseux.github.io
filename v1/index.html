@@ -164,9 +164,13 @@ function openLinks(){
   a.addEventListener("mouseleave",()=>a.style.transform="translate(-50%,-50%)");
   a.append(img);stage.append(a);
  }
- if(matchMedia("(pointer:coarse)").matches){for(const a of stage.querySelectorAll("a")){a.style.width="6.5%";a.style.height="10%";a.style.aspectRatio="auto";a.style.padding="0";a.style.touchAction="manipulation";a.style.clipPath="none";const img=a.querySelector("img");img.style.width="100%";img.style.height="100%";img.style.transform="scale(2.6)";img.style.transformOrigin="center";img.style.pointerEvents="none"}}
- if(matchMedia("(pointer:coarse)").matches){const close=win.querySelector(".close");close.style.right="6%";close.style.top="0";close.style.width="9%";close.style.height="100%";close.style.minHeight="28px";close.style.zIndex="20"}
- if(matchMedia("(pointer:coarse)").matches){const close=win.querySelector(".close");close.style.position="absolute";close.style.right="5.5%";close.style.top="1%";close.style.width="9%";close.style.height="8%";close.style.minHeight="0";close.style.zIndex="30";const bar=win.querySelector(".titlebar");bar.style.pointerEvents="none";close.style.pointerEvents="auto"}
+ if(matchMedia("(pointer:coarse)").matches){for(const a of stage.querySelectorAll("a")){a.style.width="12%";a.style.height="14%";a.style.aspectRatio="auto";a.style.padding="0";a.style.touchAction="manipulation";a.style.clipPath="none";a.style.overflow="visible";const img=a.querySelector("img");img.style.width="100%";img.style.height="100%";img.style.transform="none";img.style.pointerEvents="none"}}
+
+ // The painted red X sits in the upper-right corner of the illustrated window.
+ // The titlebar owns the close button, so its hitbox must be positioned inside that bar.
+ const close=win.querySelector(".close");
+ close.style.cssText="position:absolute;right:5.5%;top:0;width:9%;height:100%;min-height:0;z-index:30;border:0;background:transparent;color:transparent;font-size:0;cursor:pointer;pointer-events:auto";
+ const titlebar=win.querySelector(".titlebar");titlebar.style.pointerEvents="auto";
  content.append(stage);win.classList.remove("hidden");
 }
 function openZinzine(){document.querySelector("#windowtitle").textContent="Zinzine Online";content.replaceChildren();content.style.background="#fff";content.style.display="flex";content.style.alignItems="center";content.style.justifyContent="center";const link=document.createElement("a");link.href="https://fanzinzine.neocities.org/";link.target="_blank";link.rel="noopener noreferrer";link.title="Ouvrir Zinzine Online";const img=document.createElement("img");img.src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/zinzine/IMG.png";img.alt="Zinzine Online";img.style.cssText="display:block;width:min(100%,500px);height:auto;cursor:pointer";link.append(img);content.append(link);win.style.width="min(620px,85vw)";win.style.height="min(390px,65vh)";win.style.transform="";win.style.left="max(0px,calc(50% - 310px))";win.style.top="15%";win.classList.remove("hidden")}
