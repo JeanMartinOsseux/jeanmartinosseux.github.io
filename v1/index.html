@@ -76,7 +76,32 @@ html,body,button,input,textarea,select,option,label,output{font-family:'JMH Type
 #grebik-error .grebik-art img{animation:none!important}
 @keyframes grebik-window-pulse{0%,100%{transform:scale(.90)}50%{transform:scale(1.075)}}
 @media(prefers-reduced-motion:reduce){#grebik-error .grebik-art{animation:none!important}}
+
+/* Mobile museum: landscape touch layout. Desktop styling remains unchanged. */
+.rotate-notice{display:none}
+@media (pointer:coarse) and (max-width:950px) and (orientation:portrait){
+  .rotate-notice{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:30px;text-align:center;background:#142b35;color:#fff}
+  .rotate-notice .rotate-symbol{font-size:58px;line-height:1}
+  .rotate-notice p{font-size:clamp(18px,5vw,28px);line-height:1.4;max-width:360px;margin:0}
+}
+@media (pointer:coarse) and (max-width:950px) and (orientation:landscape){
+  body{min-height:100dvh;background-attachment:scroll}
+  .desktop{grid-template-columns:repeat(2,min(16vw,112px))!important;grid-template-rows:repeat(6,min(14.5dvh,70px))!important;column-gap:3px!important;row-gap:0!important;padding:6px 8px!important;max-height:calc(100dvh - 24px)}
+  .shortcut{width:100%!important;height:100%!important;touch-action:manipulation}
+  .shortcut img.desktop-icon{width:100%!important;height:100%!important;max-height:100%!important}
+  .taskbar{height:24px}
+  .taskbar .start{left:1.2%;width:5.5%}
+  .taskbar .refresh-button{left:6%;width:6%}
+  .taskbar .music-link{left:13.15%;width:6%}
+  .window{width:min(76vw,680px);height:min(78dvh,440px);left:18%;top:5%}
+  .window .titlebar{min-height:28px}
+  .window .content{font-size:13px}
+  .grebik-error{padding:6px}
+  .grebik-art{max-height:90dvh}
+  .grebik-art img{max-height:90dvh!important}
+}
 </style></head><body>
+<div class="rotate-notice" aria-label="Tournez votre téléphone pour visiter le musée"><div class="rotate-symbol" aria-hidden="true">↻</div><p>Tourne ton téléphone à l’horizontale pour visiter le musée.</p></div>
 <main class="desktop" id="desktop"></main>
 <section class="window hidden" id="window" aria-label="Fenêtre du musée"><div class="titlebar" id="titlebar"><span id="windowtitle">Musée numérique</span><button class="close" id="close" aria-label="Fermer">✕</button></div><div class="content" id="content"></div></section>
 <div class="grebik-error hidden" id="grebik-error" role="dialog" aria-modal="true" aria-label="Grebik Error"><div class="grebik-art"><img src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/props_new/grebik_error.png" alt="Grebik Error"><button type="button" id="grebik-error-close" aria-label="Fermer"></button></div></div><div id="screen-off" aria-hidden="true"></div><footer class="taskbar"><button class="start" id="start" title="Éteindre / rallumer l’écran" aria-label="Éteindre ou rallumer l’écran">Éteindre</button><button class="refresh-button" id="refresh-button" title="Actualiser la page (F5)" aria-label="Actualiser la page">F5</button><a class="music-link" href="https://www.youtube.com/watch?v=H5mnzJ2amy4&amp;list=OLAK5uy_kley_Q-PY0PJ802VzyAH9tNNMmWuN3Uig" target="_blank" rel="noopener noreferrer" aria-label="Écouter sur YouTube" title="Écouter sur YouTube"></a><span class="tasktitle">JEAN MARTIN OSSEUX — V1 en construction</span></footer>
