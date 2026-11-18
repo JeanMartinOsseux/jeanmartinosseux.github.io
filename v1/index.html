@@ -164,7 +164,7 @@ function openLinks(){
   a.addEventListener("mouseleave",()=>a.style.transform="translate(-50%,-50%)");
   a.append(img);stage.append(a);
  }
- if(matchMedia("(pointer:coarse)").matches){for(const a of stage.querySelectorAll("a")){a.style.width="12%";a.style.height="14%";a.style.aspectRatio="auto";a.style.padding="0";a.style.touchAction="manipulation";a.style.clipPath="none";a.style.overflow="visible";const img=a.querySelector("img");img.style.width="100%";img.style.height="100%";img.style.transform="none";img.style.pointerEvents="none"}}
+ if(matchMedia("(pointer:coarse)").matches){for(const a of stage.querySelectorAll("a")){a.style.width="15%";a.style.height="18%";a.style.aspectRatio="auto";a.style.padding="0";a.style.touchAction="manipulation";a.style.clipPath="none";a.style.overflow="visible";const img=a.querySelector("img");img.style.width="100%";img.style.height="100%";img.style.transform="none";img.style.pointerEvents="none"}}
 
  // The painted red X sits in the upper-right corner of the illustrated window.
  // The titlebar owns the close button, so its hitbox must be positioned inside that bar.
@@ -173,8 +173,8 @@ function openLinks(){
  // The red painted X is centered at roughly 89% width / 3.5% height.
  close.style.pointerEvents="none";
  let linkClose=win.querySelector("#links-close-hitbox");
- if(!linkClose){linkClose=document.createElement("button");linkClose.id="links-close-hitbox";linkClose.type="button";linkClose.setAttribute("aria-label","Fermer l'arbre à liens");win.append(linkClose);linkClose.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();win.classList.add("hidden")})}
- linkClose.style.cssText="position:absolute;right:7%;top:0;width:8%;height:8%;min-height:0;padding:0;z-index:50;border:0;background:transparent;cursor:pointer;touch-action:manipulation;display:block";
+ if(!linkClose){linkClose=document.createElement("button");linkClose.id="links-close-hitbox";linkClose.type="button";linkClose.setAttribute("aria-label","Fermer l'arbre à liens");win.append(linkClose);linkClose.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();win.classList.add("hidden")});linkClose.addEventListener("pointerdown",e=>e.stopPropagation())}
+ linkClose.style.cssText="position:fixed;min-height:0;padding:0;z-index:9999;border:0;background:transparent;cursor:pointer;touch-action:manipulation;display:block";const placeLinkClose=()=>{if(win.classList.contains("hidden"))return;const rect=win.getBoundingClientRect();linkClose.style.left=(rect.left+rect.width*.835)+"px";linkClose.style.top=(rect.top+rect.height*.005)+"px";linkClose.style.width=(rect.width*.105)+"px";linkClose.style.height=(rect.height*.07)+"px"};requestAnimationFrame(placeLinkClose);
  const titlebar=win.querySelector(".titlebar");titlebar.style.pointerEvents="auto";
  content.append(stage);win.classList.remove("hidden");
 }
