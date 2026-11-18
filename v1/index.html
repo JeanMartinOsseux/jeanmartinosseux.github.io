@@ -164,7 +164,8 @@ function openLinks(){
   a.addEventListener("mouseleave",()=>a.style.transform="translate(-50%,-50%)");
   a.append(img);stage.append(a);
  }
- if(matchMedia("(pointer:coarse)").matches){for(const a of stage.querySelectorAll("a")){a.style.width="clamp(38px,8%,70px)";a.style.aspectRatio="1";a.style.padding="0";a.style.touchAction="manipulation"}}
+ if(matchMedia("(pointer:coarse)").matches){for(const a of stage.querySelectorAll("a")){a.style.width="clamp(95px,17%,175px)";a.style.aspectRatio="1";a.style.padding="0";a.style.touchAction="manipulation";a.style.clipPath="circle(32% at 50% 50%)"}}
+ if(matchMedia("(pointer:coarse)").matches){const close=win.querySelector(".close");close.style.right="7%";close.style.top="0";close.style.width="8%";close.style.height="10%";close.style.minHeight="28px";close.style.zIndex="20"}
  content.append(stage);win.classList.remove("hidden");
 }
 function openZinzine(){document.querySelector("#windowtitle").textContent="Zinzine Online";content.replaceChildren();content.style.background="#fff";content.style.display="flex";content.style.alignItems="center";content.style.justifyContent="center";const link=document.createElement("a");link.href="https://fanzinzine.neocities.org/";link.target="_blank";link.rel="noopener noreferrer";link.title="Ouvrir Zinzine Online";const img=document.createElement("img");img.src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/zinzine/IMG.png";img.alt="Zinzine Online";img.style.cssText="display:block;width:min(100%,500px);height:auto;cursor:pointer";link.append(img);content.append(link);win.style.width="min(620px,85vw)";win.style.height="min(390px,65vh)";win.style.transform="";win.style.left="max(0px,calc(50% - 310px))";win.style.top="15%";win.classList.remove("hidden")}
