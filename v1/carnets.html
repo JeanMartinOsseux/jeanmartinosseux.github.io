@@ -120,6 +120,7 @@ button{font:inherit;cursor:pointer}a{text-decoration:none}.screen{position:fixed
 
 /* Mobile landscape corrections — November 2026 */
 @media(pointer:coarse) and (orientation:landscape) and (max-width:950px){#ribbon .ribbon-viewport{touch-action:pan-x pan-y!important;overscroll-behavior:contain}#paint .paint-tools{width:calc(100vw - 24px)!important;max-width:none!important;left:12px!important;transform:none!important;justify-content:flex-start!important;overflow-x:auto!important;overflow-y:hidden!important;gap:3px!important;padding:3px 5px!important;scrollbar-width:thin}#paint .paint-tools button{font-size:11px!important;padding:3px 5px!important}#paint .paint-tools label{font-size:11px!important}#paint .paint-tools input[type=range]{width:55px!important}#paint .paint-tools .swatch{width:18px!important;height:18px!important}}
+@media (pointer:coarse){#ribbon .ribbon-viewport{touch-action:pan-x pan-y!important;overflow-x:auto!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}#ribbon .ribbon-track{pointer-events:none}}
 </style></head><body>
 <a class="home" href="./index.html" aria-label="Retour au bureau"></a><button class="prop-button choice-back top-choice" id="topChoice" aria-label="Choix des carnets"></button>
 <section id="choice" class="screen active" aria-label="Choix des carnets">
@@ -182,8 +183,8 @@ document.getElementById('ribbonNext').append(prop('PROPS_0075_SUIVANT.png',[227,
 document.getElementById('ribbonPrev').onclick=()=>ribbonViewport.scrollBy({left:-ribbonViewport.clientWidth*.8,behavior:'smooth'});
 document.getElementById('ribbonNext').onclick=()=>ribbonViewport.scrollBy({left:ribbonViewport.clientWidth*.8,behavior:'smooth'});
 let ribbonDrag=false,ribbonDragX=0,ribbonDragY=0,ribbonStart=0,ribbonStartY=0;
-ribbonViewport.addEventListener('pointerdown',e=>{if(e.button!==0&&e.pointerType==='mouse')return;ribbonDrag=true;ribbonDragX=e.clientX;ribbonDragY=e.clientY;ribbonStart=ribbonViewport.scrollLeft;ribbonStartY=ribbonViewport.scrollTop;ribbonViewport.setPointerCapture(e.pointerId);ribbonViewport.classList.add('dragging')});
-ribbonViewport.addEventListener('pointermove',e=>{if(!ribbonDrag)return;const dx=e.clientX-ribbonDragX,dy=e.clientY-ribbonDragY;if((Math.abs(dx)>4||Math.abs(dy)>4)&&playing){playing=false;updatePlay()}ribbonViewport.scrollLeft=ribbonStart-dx;ribbonViewport.scrollTop=ribbonStartY-dy});
+ribbonViewport.addEventListener('pointerdown',e=>{if(e.button!==0&&e.pointerType==='mouse')return;ribbonDrag=true;ribbonDragX=e.clientX;ribbonDragY=e.clientY;ribbonStart=ribbonViewport.scrollLeft;ribbonStartY=ribbonViewport.scrollTop;if(e.pointerType==='mouse')ribbonViewport.setPointerCapture(e.pointerId);ribbonViewport.classList.add('dragging')});
+ribbonViewport.addEventListener('pointermove',e=>{if(!ribbonDrag||e.pointerType==='touch')return;const dx=e.clientX-ribbonDragX,dy=e.clientY-ribbonDragY;if((Math.abs(dx)>4||Math.abs(dy)>4)&&playing){playing=false;updatePlay()}ribbonViewport.scrollLeft=ribbonStart-dx;ribbonViewport.scrollTop=ribbonStartY-dy});
 function endRibbonDrag(){ribbonDrag=false;ribbonViewport.classList.remove('dragging')}
 ribbonViewport.addEventListener('pointerup',endRibbonDrag);ribbonViewport.addEventListener('pointercancel',endRibbonDrag);
 const setGalleryZoom=setupZoom('gallery'),setRibbonZoom=setupZoom('ribbon');
