@@ -192,12 +192,16 @@ function openLinks(){
  // window-relative rectangle, independently of the invisible button layout.
  if(!win._treeCloseCapture){
   win._treeCloseCapture=true;
-  win.addEventListener("click",e=>{
+  // PNG 1649x928: red X occupies approximately x=1255..1342, y=52..109.
+  // The image is rendered in ::after at left:-29.02%, top:-5.16%,
+  // width:147.87%, height:110.56%. Its projected center is (87.4%,4.4%).
+  // Capture at document level so transparent titlebar/overlays cannot steal taps.
+  document.addEventListener("pointerdown",e=>{
    if(win.classList.contains("hidden")||!content.classList.contains("links-content"))return;
    const box=win.getBoundingClientRect();
    const x=(e.clientX-box.left)/box.width;
    const y=(e.clientY-box.top)/box.height;
-   if(x>=0.84&&x<=0.95&&y>=0&&y<=0.085){
+   if(x>=0.835&&x<=0.925&&y>=0.01&&y<=0.085){
     e.preventDefault();e.stopImmediatePropagation();resetMuseumWindow();
    }
   },true);
