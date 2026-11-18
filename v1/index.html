@@ -201,7 +201,7 @@ function openLinks(){
    const box=win.getBoundingClientRect();
    const x=(e.clientX-box.left)/box.width;
    const y=(e.clientY-box.top)/box.height;
-   if(x>=0.78&&x<=0.88&&y>=0.03&&y<=0.13){
+   if(x>=0.76&&x<=1.02&&y>=-0.06&&y<=0.17){
     e.preventDefault();e.stopImmediatePropagation();resetMuseumWindow();
    }
   },true);
