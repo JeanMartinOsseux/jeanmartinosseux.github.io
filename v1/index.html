@@ -110,7 +110,7 @@ html,body,button,input,textarea,select,option,label,output{font-family:'JMH Type
 #grebik-error:not(.hidden) .grebik-art{animation:grebik-window-pulse 1.8s ease-in-out infinite!important}
 /* Unified close hitbox for the illustrated red X on both windows. */
 .window .titlebar{pointer-events:none!important}
-.window .close{pointer-events:auto!important;position:absolute!important;right:5.5%!important;top:0!important;width:10%!important;height:100%!important;min-height:0!important;padding:0!important;touch-action:manipulation!important;z-index:30!important}
+.window .close{pointer-events:auto!important;position:absolute!important;right:5.5%!important;top:0!important;width:10%!important;height:7%!important;min-height:0!important;padding:0!important;touch-action:manipulation!important;z-index:30!important}
 </style></head><body>
 <div class="rotate-notice" aria-label="Tournez votre téléphone pour visiter le musée"><div class="rotate-symbol" aria-hidden="true">↻</div><p>Tourne ton téléphone à l’horizontale pour visiter le musée.</p></div>
 <main class="desktop" id="desktop"></main>
@@ -178,11 +178,13 @@ function openLinks(){
   a.addEventListener("mouseleave",()=>a.style.transform="translate(-50%,-50%)");
   a.append(img);stage.append(a);
  }
- if(matchMedia("(pointer:coarse)").matches){for(const a of stage.querySelectorAll("a")){a.style.width="15%";a.style.height="18%";a.style.aspectRatio="auto";a.style.padding="0";a.style.touchAction="manipulation";a.style.clipPath="none";a.style.overflow="visible";const img=a.querySelector("img");img.style.width="100%";img.style.height="100%";img.style.transform="none";img.style.pointerEvents="none"}}
+ if(matchMedia("(pointer:coarse)").matches){for(const a of stage.querySelectorAll("a")){a.style.width="15%";a.style.height="18%";a.style.aspectRatio="auto";a.style.padding="0";a.style.touchAction="manipulation";a.style.clipPath="none";a.style.overflow="visible";const img=a.querySelector("img");img.style.width="100%";img.style.height="100%";img.style.transform="scale(1.2)";img.style.pointerEvents="none"}}
 
  // Use the same close control for all windows; avoid duplicated, stale overlays.
  const close=win.querySelector(".close");
  close.style.cssText="";
+ // Place the actual close button against the window, not inside its short titlebar.
+ if(close.parentElement!==win)win.append(close);
  const oldHitbox=win.querySelector("#links-close-hitbox");
  if(oldHitbox)oldHitbox.remove();
  content.append(stage);win.classList.remove("hidden");
