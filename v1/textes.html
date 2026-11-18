@@ -242,6 +242,8 @@ body{background-image:url('https://raw.githubusercontent.com/JeanMartinOsseux/je
 /* End-of-round window and modal stacking */
 .message.round-complete{width:min(94vw,960px)!important;height:min(78dvh,540px)!important;background-size:contain!important;background-position:center!important;max-width:94vw!important;max-height:78dvh!important;top:50%!important;left:50%!important}
 .overlay{z-index:1000!important;overscroll-behavior:contain}
+
+@media(pointer:coarse) and (orientation:landscape) and (max-width:1100px){.bin{width:145px!important;height:155px!important}}
 </style></head><body><div class="top"><button class="xp" id="bureauBtn" aria-label="Bureau" onclick="location.href='./index.html'">Bureau</button><span class="coins" id="coins"><span class="coin-number">0</span></span><button class="xp" id="shopBtn">🛒 Boutique</button><button class="xp" id="collectionBtn">🗂️ Collection</button><button class="xp reset-button" id="resetBtn" aria-label="Tout réinitialiser"><img class="reset-art" src="https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/props_new/jeu_renitialiser.png" alt=""></button><span class="hint">Attrape un texte, déplace la souris et relâche pour le lancer !</span></div><main class="court" id="court"><div class="bin" id="bin"><div class="symbol">🗑️</div><div class="name">Corbeille</div></div></main><script>
 const base='https://raw.githubusercontent.com/JeanMartinOsseux/jeanmartinosseux.github.io/v1-musee-numerique/assets/TEXTE/';
 const texts=['GREBIK EST DERRRIERE TOI','3916','121212','KASK','MORDOR ME HANTE','VA AU PULRA','CC CV','444.444.444.','BIENTOT PERF','EXPO'];
